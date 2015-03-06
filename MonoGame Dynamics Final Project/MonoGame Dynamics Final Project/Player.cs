@@ -100,6 +100,8 @@ namespace MonoGame_Dynamics_Final_Project
 
                 //Move the sprite
                 position += Velocity * timeLapse;
+                position.Y += initialVelocity.Y / 3;
+
             }
         }
 
@@ -165,19 +167,15 @@ namespace MonoGame_Dynamics_Final_Project
         public virtual void Right() 
         {
             velocity.X += InitialVelocity.X;
-            position.Y += initialVelocity.Y / 3;
         }
 
         public virtual void Left()
         {
             velocity.X -= InitialVelocity.X;
-            position.Y += initialVelocity.Y / 3;
         }
         public virtual void Idle()
         {
             Velocity = Velocity * .98f;
-            position.Y += initialVelocity.Y / 3;
-
         }
     }
 }

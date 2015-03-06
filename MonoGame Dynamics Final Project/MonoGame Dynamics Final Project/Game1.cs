@@ -60,8 +60,8 @@ namespace MonoGame_Dynamics_Final_Project
             background = new Player(Content.Load<Texture2D>("Images/universe0"),
                 Vector2.Zero,
                 Vector2.Zero,
-                false,
-                4.0f);
+                true,
+                6.0f);
 
             playerShip = new Player(Content.Load<Texture2D>("Images/Commandunit0"),
                 new Vector2(100,100),
@@ -94,7 +94,6 @@ namespace MonoGame_Dynamics_Final_Project
             UpdateInput();
             playerShip.Update(gameTime, GraphicsDevice);
             // TODO: Add your update logic here
-
             base.Update(gameTime);
         }
         private void UpdateInput()
