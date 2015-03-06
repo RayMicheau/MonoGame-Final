@@ -32,8 +32,8 @@ namespace MonoGame_Dynamics_Final_Project
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            graphics.PreferredBackBufferWidth = 1620;
-            graphics.PreferredBackBufferHeight = 1014;
+            graphics.PreferredBackBufferWidth = 1280;
+            graphics.PreferredBackBufferHeight = 720;
             graphics.ApplyChanges();
         }
 
@@ -68,7 +68,7 @@ namespace MonoGame_Dynamics_Final_Project
 
             playerShip = new Player(Content.Load<Texture2D>("Images/Commandunit0"),
                 new Vector2(100,100),
-                new Vector2(20,20),
+                new Vector2(10,10),
                 true,
                 1.0f);
 

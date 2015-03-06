@@ -117,7 +117,7 @@ namespace MonoGame_Dynamics_Final_Project
 
                 //Move the sprite
                 position += Velocity * timeLapse;
-                position.Y += InitialVelocity.Y / 5;
+                //position.Y += InitialVelocity.Y / 5;
             }
         }
 
@@ -137,17 +137,24 @@ namespace MonoGame_Dynamics_Final_Project
                     position.X = Device.Viewport.Width - SpriteOrigin.X * Scale;
                 }
 
-                if (Position.Y > Device.Viewport.Height - SpriteOrigin.Y * Scale)
+                if (Position.Y >= Device.Viewport.Height - SpriteOrigin.Y * Scale)
                 {
                     position.Y = Device.Viewport.Height - SpriteOrigin.Y * Scale;
-                    //velocity.Y = -Velocity.Y;
+                    if (velocity.Y >= 0)
+                    {
+                        velocity.Y *= -0.95f;
+                    }
                 }
                 else if (Position.Y < SpriteOrigin.Y * Scale)
-                {
-                    position.Y = SpriteOrigin.Y * Scale;
-                    velocity.Y *= -0.15f;
+                { 
+                   velocity.Y *= -0.15f;
                 }
-                Console.WriteLine("{0}, {1}", position.Y, velocity.Y);
+                /*
+                 If the velocity is less than 1000, increase it.
+                 */
+                 
+
+                Console.WriteLine("{0}, {1}, {2}", position.Y, velocity.Y, velocity.X);
             }
         }
         public virtual void Draw(SpriteBatch spriteBatch)
@@ -183,12 +190,19 @@ namespace MonoGame_Dynamics_Final_Project
 
         public virtual void Right() 
         {
-            velocity.X += InitialVelocity.X;
+            if (velocity.X <= 1000)
+            {
+                velocity.X += InitialVelocity.X;
+            }
         }
 
         public virtual void Left()
         {
-            velocity.X -= InitialVelocity.X;
+            if (velocity.X >= -1000)
+            {
+                velocity.X -= InitialVelocity.X;
+            }
+            
         }
         public virtual void Idle()
         {
