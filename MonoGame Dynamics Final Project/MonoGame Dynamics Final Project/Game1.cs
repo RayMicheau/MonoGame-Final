@@ -24,6 +24,9 @@ namespace MonoGame_Dynamics_Final_Project
         Player background;
         Player playerShip;
 
+        Vector2 gravityForce = new Vector2(0.0f, 150.0f);
+        
+
         public Game1()
             : base()
         {
@@ -69,6 +72,8 @@ namespace MonoGame_Dynamics_Final_Project
                 true,
                 1.0f);
 
+            playerShip.Force = gravityForce;
+
             // TODO: use this.Content to load your game content here
         }
 
@@ -92,6 +97,7 @@ namespace MonoGame_Dynamics_Final_Project
                 Exit();
 
             UpdateInput();
+
             playerShip.Update(gameTime, GraphicsDevice);
             // TODO: Add your update logic here
             base.Update(gameTime);

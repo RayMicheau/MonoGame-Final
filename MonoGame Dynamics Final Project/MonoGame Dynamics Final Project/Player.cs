@@ -46,7 +46,14 @@ namespace MonoGame_Dynamics_Final_Project
             get { return velocity; }
             set { velocity = value; }
         }
-        
+
+        protected Vector2 acceleration;
+        public Vector2 Acceleration
+        {
+            get { return acceleration; }
+            set { acceleration = value; }
+        }
+
         protected Vector2 initialVelocity;
         public Vector2 InitialVelocity
         {
@@ -54,11 +61,19 @@ namespace MonoGame_Dynamics_Final_Project
             set { initialVelocity = value; }
         }
 
+        protected Vector2 force;
+        public Vector2 Force
+        {
+            get { return force; }
+            set { force = value; }
+        }
+
         public bool SetOrigin { get; set; }
         public float Scale { get; set; }
 
         protected SpriteEffects Spriteeffect { get; set; }
-
+        
+        public float mass;
         public bool Alive { get; set; }
 
         #endregion
@@ -82,6 +97,8 @@ namespace MonoGame_Dynamics_Final_Project
             InitialVelocity = velocity;
             Velocity = velocity;
             SetOrigin = setOrig;
+            Force = force;
+            Acceleration = acceleration;
             if (SetOrigin)
             {
                 SpriteOrigin = new Vector2(TextureImage.Width / 2, TextureImage.Height / 2);
@@ -100,8 +117,7 @@ namespace MonoGame_Dynamics_Final_Project
 
                 //Move the sprite
                 position += Velocity * timeLapse;
-                position.Y += initialVelocity.Y / 3;
-
+                position.Y += InitialVelocity.Y / 5;
             }
         }
 
@@ -112,11 +128,11 @@ namespace MonoGame_Dynamics_Final_Project
                 //Keep the sprite onscreen
                 Update(gameTime);
 
-                if (Position.X > Device.Viewport.Width - SpriteOrigin.X * Scale)
+                if (Position.X > Device.Viewport.Width + SpriteOrigin.X * Scale - SpriteOrigin.X)
                 {
                     position.X = 0 + SpriteOrigin.X * Scale;
                 }
-                else if (Position.X < SpriteOrigin.X * Scale)
+                else if (Position.X < SpriteOrigin.X * Scale - spriteOrigin.X)
                 {
                     position.X = Device.Viewport.Width - SpriteOrigin.X * Scale;
                 }
@@ -124,13 +140,14 @@ namespace MonoGame_Dynamics_Final_Project
                 if (Position.Y > Device.Viewport.Height - SpriteOrigin.Y * Scale)
                 {
                     position.Y = Device.Viewport.Height - SpriteOrigin.Y * Scale;
-                    velocity.Y = -Velocity.Y;
+                    //velocity.Y = -Velocity.Y;
                 }
                 else if (Position.Y < SpriteOrigin.Y * Scale)
                 {
                     position.Y = SpriteOrigin.Y * Scale;
-                    velocity.Y = -Velocity.Y;
+                    velocity.Y *= -0.15f;
                 }
+                Console.WriteLine("{0}, {1}", position.Y, velocity.Y);
             }
         }
         public virtual void Draw(SpriteBatch spriteBatch)
