@@ -61,19 +61,12 @@ namespace MonoGame_Dynamics_Final_Project
             set { initialVelocity = value; }
         }
 
-        protected Vector2 force;
-        public Vector2 Force
-        {
-            get { return force; }
-            set { force = value; }
-        }
-
         public bool SetOrigin { get; set; }
         public float Scale { get; set; }
 
         protected SpriteEffects Spriteeffect { get; set; }
         
-        public float mass;
+        //public float mass;
         public bool Alive { get; set; }
 
         #endregion
@@ -97,7 +90,6 @@ namespace MonoGame_Dynamics_Final_Project
             InitialVelocity = velocity;
             Velocity = velocity;
             SetOrigin = setOrig;
-            Force = force;
             Acceleration = acceleration;
             if (SetOrigin)
             {
@@ -117,7 +109,17 @@ namespace MonoGame_Dynamics_Final_Project
 
                 //Move the sprite
                 position += Velocity * timeLapse;
-                //position.Y += InitialVelocity.Y / 5;
+            }
+        }
+        public virtual void Update(Player player, Vector2 offset, GameTime gameTime)
+        {
+            offset = player.position + offset;
+            float timeLapse = (float)(gameTime.ElapsedGameTime.TotalSeconds);
+            if (position !=  offset)
+            {
+                Vector2 vel = player.Position - position;
+                vel.Normalize();
+                position += vel * 250 * timeLapse;
             }
         }
 

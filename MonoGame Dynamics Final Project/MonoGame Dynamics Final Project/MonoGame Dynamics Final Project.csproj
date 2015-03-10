@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Enemy.cs" />
+    <Compile Include="Follower.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
@@ -55,6 +56,9 @@
     </Content>
     <Content Include="Content\Images\spaceBackground.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\synth-unit-move0.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\universe0.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -23,8 +23,10 @@ namespace MonoGame_Dynamics_Final_Project
 
         Player background;
         Player playerShip;
+        Player follower;
 
-        Vector2 gravityForce = new Vector2(0.0f, 150.0f);
+       // Vector2 gravityForce = new Vector2(0.0f, 150.0f);
+        Vector2 offset = new Vector2(500, 500);
         
 
         public Game1()
@@ -72,7 +74,13 @@ namespace MonoGame_Dynamics_Final_Project
                 true,
                 1.0f);
 
-            playerShip.Force = gravityForce;
+            follower = new Player(Content.Load<Texture2D>("Images/synth-unit-move0"),
+                new Vector2(120, 120),
+                new Vector2(40, 40),
+                true,
+                1.0f);
+
+            
 
             // TODO: use this.Content to load your game content here
         }
@@ -99,6 +107,8 @@ namespace MonoGame_Dynamics_Final_Project
             UpdateInput();
 
             playerShip.Update(gameTime, GraphicsDevice);
+            follower.Update(playerShip, offset, gameTime);
+
             // TODO: Add your update logic here
             base.Update(gameTime);
         }
@@ -163,6 +173,7 @@ namespace MonoGame_Dynamics_Final_Project
 
             background.Draw(spriteBatch);
             playerShip.Draw(spriteBatch);
+            follower.Draw(spriteBatch);
 
             spriteBatch.End();
 
