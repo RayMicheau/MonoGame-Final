@@ -80,5 +80,26 @@ namespace MonoGame_Dynamics_Final_Project
             }
             Alive = true;
         }
+
+        public virtual void Update()
+        {
+
+        }
+
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
+            if (Alive)
+            {
+                spriteBatch.Draw(TextureImage,
+                    position,
+                    null,
+                    Microsoft.Xna.Framework.Color.White,
+                    0f,
+                    SpriteOrigin,
+                    Scale,
+                    Spriteeffect,
+                    0);
+            }
+        }
     }
 }

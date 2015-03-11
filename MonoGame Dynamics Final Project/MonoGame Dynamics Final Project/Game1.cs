@@ -34,9 +34,9 @@ namespace MonoGame_Dynamics_Final_Project
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            graphics.PreferredBackBufferWidth = 1280;
-            graphics.PreferredBackBufferHeight = 720;
-            graphics.ApplyChanges();
+          //  graphics.PreferredBackBufferWidth = 1280;
+          //  graphics.PreferredBackBufferHeight = 720;
+          //  graphics.ApplyChanges();
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace MonoGame_Dynamics_Final_Project
                 Vector2.Zero,
                 Vector2.Zero,
                 true,
-                6.0f);
+                1.0f);
 
             playerShip = new Player(Content.Load<Texture2D>("Images/Commandunit0"),
                 new Vector2(100,100),
@@ -75,8 +75,8 @@ namespace MonoGame_Dynamics_Final_Project
                 1.0f);
 
             follower = new Player(Content.Load<Texture2D>("Images/synth-unit-move0"),
-                new Vector2(120, 120),
-                new Vector2(40, 40),
+                new Vector2(100, 100),
+                new Vector2(10, 10),
                 true,
                 1.0f);
 
