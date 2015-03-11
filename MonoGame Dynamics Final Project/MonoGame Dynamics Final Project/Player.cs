@@ -69,7 +69,9 @@ namespace MonoGame_Dynamics_Final_Project
         //public float mass;
         public bool Alive { get; set; }
 
-        #endregion
+        // pixel collision
+        public Color[] textureData;
+        public bool collisionDetected;
 
         //Texture object and a collision rectangle
         public Texture2D TextureImage { get; set; }
@@ -82,6 +84,7 @@ namespace MonoGame_Dynamics_Final_Project
                    Convert.ToInt32(TextureImage.Width * Scale), Convert.ToInt32(TextureImage.Height * Scale));
             }
         }
+        #endregion
 
         public Player(Texture2D textureImage, Vector2 position, Vector2 velocity, bool setOrig, float scale)
         {
@@ -97,6 +100,8 @@ namespace MonoGame_Dynamics_Final_Project
             }
             Scale = scale;
             Alive = true;
+            textureData = new Color[TextureImage.Width * TextureImage.Height];
+            textureImage.GetData(textureData);
         }
 
         //Update that doesn't keep sprites onscreen
