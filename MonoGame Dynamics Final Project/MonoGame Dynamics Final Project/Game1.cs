@@ -21,7 +21,8 @@ namespace MonoGame_Dynamics_Final_Project
 
         public static Random random;
 
-        Player background;
+        Rectangle backgrndRect;
+        Texture2D background;
         Player playerShip;
         Player follower;
 
@@ -62,11 +63,10 @@ namespace MonoGame_Dynamics_Final_Project
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            background = new Player(Content.Load<Texture2D>("Images/universe0"),
-                Vector2.Zero,
-                Vector2.Zero,
-                true,
-                1.0f);
+            background = Content.Load<Texture2D>("Images/Animations/universe0");
+
+            backgrndRect.Height = 480;
+            backgrndRect.Width = 800;
 
             playerShip = new Player(Content.Load<Texture2D>("Images/Commandunit0"),
                 new Vector2(100,100),
@@ -74,7 +74,7 @@ namespace MonoGame_Dynamics_Final_Project
                 true,
                 1.0f);
 
-            follower = new Player(Content.Load<Texture2D>("Images/synth-unit-move0"),
+            follower = new Player(Content.Load<Texture2D>("Images/Animations/synth-unit-move0"),
                 new Vector2(100, 100),
                 new Vector2(10, 10),
                 true,
@@ -160,6 +160,10 @@ namespace MonoGame_Dynamics_Final_Project
             }
         }
 
+        private void AnimateBackground(Rectangle rect)
+        {
+
+        }
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
@@ -169,9 +173,12 @@ namespace MonoGame_Dynamics_Final_Project
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.Opaque, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone);
+            spriteBatch.Draw(background, Vector2.Zero, backgrndRect, Color.CadetBlue, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            spriteBatch.End();
+            
             spriteBatch.Begin();
 
-            background.Draw(spriteBatch);
             playerShip.Draw(spriteBatch);
             follower.Draw(spriteBatch);
 
