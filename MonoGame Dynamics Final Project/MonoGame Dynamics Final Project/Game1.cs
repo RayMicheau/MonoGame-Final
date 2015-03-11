@@ -114,6 +114,7 @@ namespace MonoGame_Dynamics_Final_Project
             playerShip.Update(gameTime, GraphicsDevice);
             follower.Update(playerShip, offset, gameTime);
 
+            // testing collision with other player sprite
             if (playerShip.CollisionSprite(collisionTest))
             {
                 if (IntersectsPixel(playerShip.CollisionRectangle, playerShip.textureData, collisionTest.CollisionRectangle, collisionTest.textureData))
@@ -202,6 +203,7 @@ namespace MonoGame_Dynamics_Final_Project
             base.Draw(gameTime);
         }
 
+        // Pixel Collision Detection method
         static bool IntersectsPixel(Rectangle rect1, Color[] data1, Rectangle rect2, Color[] data2)
         {
             bool collision = false;

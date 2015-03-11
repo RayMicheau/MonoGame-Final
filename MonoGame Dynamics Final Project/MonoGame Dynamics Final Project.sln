@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame Dynamics Final Project", "MonoGame Dynamics Final Project\MonoGame Dynamics Final Project.csproj", "{0DF88F3A-1BAF-487C-8691-3F4A66E21E2B}"
 EndProject
 Global
