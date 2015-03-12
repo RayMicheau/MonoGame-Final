@@ -7,6 +7,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 #endregion
 
 namespace MonoGame_Dynamics_Final_Project
@@ -21,8 +23,9 @@ namespace MonoGame_Dynamics_Final_Project
 
         public static Random random;
 
-        Rectangle backgrndRect;
-        Texture2D background;
+        Texture2D background; // Current Resolution 800h x 480w
+        ScrollingBackground myBackground;
+
         Player playerShip;
         Player follower;
         Player collisionTest;
@@ -64,10 +67,9 @@ namespace MonoGame_Dynamics_Final_Project
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            background = Content.Load<Texture2D>("Images/Animations/universe0");
-
-            backgrndRect.Height = 480;
-            backgrndRect.Width = 800;
+            myBackground = new ScrollingBackground();
+            background = Content.Load<Texture2D>("Images/Animations/universe");
+            myBackground.Load(GraphicsDevice, background);
 
             playerShip = new Player(Content.Load<Texture2D>("Images/Commandunit0"),
                 new Vector2(100,100),
@@ -108,6 +110,10 @@ namespace MonoGame_Dynamics_Final_Project
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+
+            // updating scroll speed
+            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            myBackground.Update(elapsed * 100);
 
             UpdateInput();
 
@@ -186,14 +192,10 @@ namespace MonoGame_Dynamics_Final_Project
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            // TODO: Add your drawing code here
-            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.Opaque, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone);
-            spriteBatch.Draw(background, Vector2.Zero, backgrndRect, Color.CadetBlue, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
-            spriteBatch.End();
             
             spriteBatch.Begin();
 
+            myBackground.Draw(spriteBatch);
             playerShip.Draw(spriteBatch);
             follower.Draw(spriteBatch);
             collisionTest.Draw(spriteBatch);
