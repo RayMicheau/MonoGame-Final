@@ -13,17 +13,13 @@ using Microsoft.Xna.Framework.Media;
 
 namespace MonoGame_Dynamics_Final_Project
 {
-    class Enemy : Player
+    class Shot : Player
     {
-        /// Enemies
-        /// Enemy logic goes in here
-        /// Multiple types of enemies spawn, that logic is placed here 
-        /// to control enemy movements
-        /// 
-        public Enemy(ContentManager content, GraphicsDevice Device)
-            : base(content.Load<Texture2D>("Images/Commandunit0"), new Vector2(500, 100), new Vector2(20, 20), true, 1.0f)
+        public Shot(Texture2D textureImage, Vector2 startPosition, float velocity)
+            : base(textureImage, startPosition, new Vector2(0, velocity), true, 1.0f)
         {
+            textureData = new Color[TextureImage.Width * TextureImage.Height];
+            textureImage.GetData(textureData);
         }
-
     }
 }

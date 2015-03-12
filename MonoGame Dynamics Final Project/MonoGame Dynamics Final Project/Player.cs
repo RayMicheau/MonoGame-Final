@@ -185,6 +185,45 @@ namespace MonoGame_Dynamics_Final_Project
             return CollisionRectangle.Intersects(sprite.CollisionRectangle);
         }
 
+        // Pixel Collision Detection method
+        public bool IntersectsPixel(Rectangle rect1, Color[] data1, Rectangle rect2, Color[] data2)
+        {
+            bool collision = false;
+            int top = Math.Max(rect1.Top, rect2.Top);
+            int bottom = Math.Min(rect1.Bottom, rect2.Bottom);
+            int left = Math.Max(rect1.Left, rect2.Left);
+            int right = Math.Min(rect1.Right, rect2.Right);
+
+            for (int y = top; y < bottom; y++)
+            {
+                for (int x = left; x < right; x++)
+                {
+                    Color color1 = data1[(x - rect1.Left) + (y - rect1.Top) * rect1.Width];
+                    Color color2 = data2[(x - rect2.Left) + (y - rect2.Top) * rect2.Width];
+
+                    if (color1.A != 0 && color2.A != 0) // if both colors aren't transparent, collision detected
+                    {
+                        return true;
+                    }
+                }
+            }
+            return collision;
+        }
+
+        // Parses shot list for collisions
+        public int CollisionShot(List<Shot> shots)
+        {
+            for (int i = 0; i < shots.Count; i++)
+            {
+                if (IntersectsPixel(CollisionRectangle, textureData, shots[i].CollisionRectangle, shots[i].textureData))
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+
         public void Up()
         {
             velocity.Y -= InitialVelocity.Y;;

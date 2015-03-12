@@ -23,12 +23,19 @@ namespace MonoGame_Dynamics_Final_Project
 
         public static Random random;
 
+        // background
         Texture2D background; // Current Resolution 800h x 480w
         ScrollingBackground myBackground;
 
+        // player
         Player playerShip;
+        Texture2D basicShot;
+        List<Shot> shots = new List<Shot>();
+
         Player follower;
-        Player collisionTest;
+
+        // enemies
+        Enemy collisionTest;
 
        // Vector2 gravityForce = new Vector2(0.0f, 150.0f);
         Vector2 offset = new Vector2(500, 500);
@@ -67,10 +74,15 @@ namespace MonoGame_Dynamics_Final_Project
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            // background
             myBackground = new ScrollingBackground();
-            background = Content.Load<Texture2D>("Images/Animations/universe");
+            background = Content.Load<Texture2D>("Images/Backgrounds/universe");
             myBackground.Load(GraphicsDevice, background);
 
+            // weapons
+            basicShot = Content.Load<Texture2D>("Images/Animations/laser");
+
+            // player sprites
             playerShip = new Player(Content.Load<Texture2D>("Images/Commandunit0"),
                 new Vector2(100,100),
                 new Vector2(10,10),
@@ -83,11 +95,8 @@ namespace MonoGame_Dynamics_Final_Project
                 true,
                 1.0f);
 
-            collisionTest = new Player(Content.Load<Texture2D>("Images/Commandunit0"),
-                new Vector2(500, 100),
-                new Vector2(20, 20),
-                true,
-                1.0f);
+            // enemy sprites
+            collisionTest = new Enemy(Content, GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
         }
@@ -120,10 +129,23 @@ namespace MonoGame_Dynamics_Final_Project
             playerShip.Update(gameTime, GraphicsDevice);
             follower.Update(playerShip, offset, gameTime);
 
-            // testing collision with other player sprite
+            for (int i = 0; i < shots.Count; i++)
+            {
+                shots[i].Update(gameTime);
+            }
+
+            // tests for collision of shots against enemy
+            int collide = collisionTest.CollisionShot(shots);
+            if (collide != -1)
+            {
+                shots.RemoveAt(collide);
+                collisionTest.Alive = false;
+            }
+
+            // testing collision of playership with enemy
             if (playerShip.CollisionSprite(collisionTest))
             {
-                if (IntersectsPixel(playerShip.CollisionRectangle, playerShip.textureData, collisionTest.CollisionRectangle, collisionTest.textureData))
+                if (playerShip.IntersectsPixel(playerShip.CollisionRectangle, playerShip.textureData, collisionTest.CollisionRectangle, collisionTest.textureData))
                 {
                     playerShip.collisionDetected = true;
                     collisionTest.Alive = false;
@@ -175,16 +197,17 @@ namespace MonoGame_Dynamics_Final_Project
                 playerShip.Right();
                 keyPressed = true;
             }
+            if (keyState.IsKeyDown(Keys.Space))
+            {
+                Shot shot = new Shot(basicShot, new Vector2(playerShip.Position.X, playerShip.Position.Y - playerShip.SpriteOrigin.Y), -600);
+                shots.Add(shot);
+            }
             if (!keyPressed)
             {
                 playerShip.Idle();
             }
         }
 
-        private void AnimateBackground(Rectangle rect)
-        {
-
-        }
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
@@ -200,35 +223,14 @@ namespace MonoGame_Dynamics_Final_Project
             follower.Draw(spriteBatch);
             collisionTest.Draw(spriteBatch);
 
+            foreach(Shot shot in shots)
+            {
+                shot.Draw(spriteBatch);
+            }
+
             spriteBatch.End();
 
             base.Draw(gameTime);
-        }
-
-        // Pixel Collision Detection method
-        static bool IntersectsPixel(Rectangle rect1, Color[] data1, Rectangle rect2, Color[] data2)
-        {
-            bool collision = false;
-            int top = Math.Max(rect1.Top, rect2.Top);
-            int bottom = Math.Min(rect1.Bottom, rect2.Bottom);
-            int left = Math.Max(rect1.Left, rect2.Left);
-            int right = Math.Min(rect1.Right, rect2.Right);
-
-            for (int y = top; y < bottom; y++)
-            {
-                for (int x = left; x < right; x++)
-                {
-                    Color color1 = data1[(x - rect1.Left) + (y - rect1.Top) * rect1.Width];
-                    Color color2 = data2[(x - rect2.Left) + (y - rect2.Top) * rect2.Width];
-
-                    if (color1.A != 0 && color2.A != 0) // if both colors aren't transparent, collision detected
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return collision;
         }
     }
 }

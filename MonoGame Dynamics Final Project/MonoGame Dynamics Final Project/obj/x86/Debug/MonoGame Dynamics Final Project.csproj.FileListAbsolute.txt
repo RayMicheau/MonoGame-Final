@@ -89,10 +89,6 @@ C:\Users\hau5t_000\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Proje
 C:\Users\hau5t_000\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\obj\x86\Debug\MonoGame Dynamics Final Project.pdb
 C:\Users\hau5t_000\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Commandunit0.png
 C:\Users\hau5t_000\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\synth-unit-move0.png
-C:\Users\hau5t_000\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\universe0.png
-C:\Users\hau5t_000\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\universe1.png
-C:\Users\hau5t_000\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\universe2.png
-C:\Users\hau5t_000\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\spaceBackground.png
 C:\Users\hau5t_000\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\MonoGame Dynamics Final Project.exe
 C:\Users\hau5t_000\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\MonoGame Dynamics Final Project.pdb
 C:\Users\hau5t_000\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\MonoGame.Framework.dll
@@ -117,4 +113,8 @@ C:\Users\hau5t_000\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Proje
 C:\Users\hau5t_000\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\SharpDX.Direct3D9.xml
 C:\Users\hau5t_000\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\obj\x86\Debug\MonoGame Dynamics Final Project.csprojResolveAssemblyReference.cache
 C:\Users\hau5t_000\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\hydrogen.wav
-C:\Users\hau5t_000\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\universe.png
+C:\Users\hau5t_000\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\laser.png
+C:\Users\hau5t_000\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Backgrounds\universe.png
+C:\Users\hau5t_000\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Backgrounds\universe0.png
+C:\Users\hau5t_000\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Backgrounds\universe1.png
+C:\Users\hau5t_000\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Backgrounds\universe2.png
