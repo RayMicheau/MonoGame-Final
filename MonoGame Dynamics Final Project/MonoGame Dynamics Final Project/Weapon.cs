@@ -13,9 +13,9 @@ using Microsoft.Xna.Framework.Media;
 
 namespace MonoGame_Dynamics_Final_Project
 {
-    class Shot : Player
+    class Weapon : Player
     {
-        public Shot(Texture2D textureImage, Vector2 startPosition, float velocity)
+        public Weapon(Texture2D textureImage, Vector2 startPosition, float velocity)
             : base(textureImage, startPosition, new Vector2(0, velocity), true, 1.0f)
         {
             textureData = new Color[TextureImage.Width * TextureImage.Height];

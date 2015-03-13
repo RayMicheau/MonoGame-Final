@@ -26,8 +26,8 @@ namespace MonoGame_Dynamics_Final_Project
 
         // player
         Player playerShip;
-        Texture2D basicShot;
-        List<Shot> shots = new List<Shot>();
+        Texture2D basicWeapon;
+        List<Weapon> weapon = new List<Weapon>();
 
         Player follower;
 
@@ -67,7 +67,7 @@ namespace MonoGame_Dynamics_Final_Project
             myBackground.Load(GraphicsDevice, background, background.Length, 0.5f); // change float to change animation speed
 
             // weapons
-            basicShot = Content.Load<Texture2D>("Images/Animations/laser");
+            basicWeapon = Content.Load<Texture2D>("Images/Animations/laser");
 
             // player sprites
             playerShip = new Player(Content.Load<Texture2D>("Images/Commandunit0"),
@@ -108,18 +108,18 @@ namespace MonoGame_Dynamics_Final_Project
             playerShip.Update(gameTime, GraphicsDevice);
             follower.Update(playerShip, offset, gameTime);
 
-            for (int i = 0; i < shots.Count; i++)
+            for (int i = 0; i < weapon.Count; i++)
             {
-                shots[i].Update(gameTime);
+                weapon[i].Update(gameTime);
             }
 
             // tests for collision of shots against enemy
             for (int i = 0; i < Enemywave.Count; i++)
             {
-                int collide = Enemywave[i].CollisionShot(shots);
+                int collide = Enemywave[i].CollisionShot(weapon);
                 if (collide != -1)
                 {
-                    shots.RemoveAt(collide);
+                    weapon.RemoveAt(collide);
                     Enemywave.RemoveAt(i);
                 }
             }
@@ -178,8 +178,8 @@ namespace MonoGame_Dynamics_Final_Project
             }
             if (keyState.IsKeyDown(Keys.Space))
             {
-                Shot shot = new Shot(basicShot, new Vector2(playerShip.Position.X, playerShip.Position.Y - playerShip.SpriteOrigin.Y), -600);
-                shots.Add(shot);
+                Weapon shot = new Weapon(basicWeapon, new Vector2(playerShip.Position.X, playerShip.Position.Y - playerShip.SpriteOrigin.Y), -600);
+                weapon.Add(shot);
             }
             if (!keyPressed)
             {
@@ -202,7 +202,7 @@ namespace MonoGame_Dynamics_Final_Project
                 enemy.Draw(spriteBatch);
             }
 
-            foreach(Shot shot in shots)
+            foreach(Weapon shot in weapon)
             {
                 shot.Draw(spriteBatch);
             }

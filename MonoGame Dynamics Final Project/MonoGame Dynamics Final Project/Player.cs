@@ -211,7 +211,7 @@ namespace MonoGame_Dynamics_Final_Project
         }
 
         // Parses shot list for collisions
-        public int CollisionShot(List<Shot> shots)
+        public int CollisionShot(List<Weapon> shots)
         {
             for (int i = 0; i < shots.Count; i++)
             {
