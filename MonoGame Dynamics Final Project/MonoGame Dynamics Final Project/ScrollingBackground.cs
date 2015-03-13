@@ -9,29 +9,64 @@ namespace MonoGame_Dynamics_Final_Project
 {
     public class ScrollingBackground
     {
-        // class ScrollingBackground
+        #region Class Variables
         private Vector2 screenpos, origin, texturesize;
+        private Texture2D[] textureArray;
         private Texture2D mytexture;
-        private int screenheight;
-        public void Load(GraphicsDevice device, Texture2D backgroundTexture)
+        private int screenheight, screenwidth;
+        private float timeBetweenFrames { get; set; }
+        private float timeSinceLastFrame;
+        private int currentFrame;
+        #endregion
+
+        public void Load(GraphicsDevice device, Texture2D[] backgroundTexture, int frames, float timeBetweenFrames)
         {
-            mytexture = backgroundTexture;
+            textureArray = new Texture2D[frames];
+
+            for (int i = 0; i < frames; i++)
+            {
+                textureArray[i] = backgroundTexture[i];
+            }
+
+            currentFrame = 0;
+            mytexture = backgroundTexture[currentFrame];
+            this.timeBetweenFrames = timeBetweenFrames;
             screenheight = device.Viewport.Height;
-            int screenwidth = device.Viewport.Width;
-            // Set the origin so that we're drawing from the 
-            // center of the top edge.
+            screenwidth = device.Viewport.Width;
+
+            // Set the origin so that we're drawing from the center of the top edge.
             origin = new Vector2(mytexture.Width / 2, 0);
+
             // Set the screen position to the center of the screen.
             screenpos = new Vector2(screenwidth / 2, screenheight / 2);
+
             // Offset to draw the second texture, when necessary.
             texturesize = new Vector2(0, mytexture.Height);
         }
+
         // ScrollingBackground.Update
-        public void Update(float deltaY)
+        public void Update(GameTime gameTime, float deltaY)
         {
+            // animation
+            timeSinceLastFrame += (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+
+            if (timeSinceLastFrame >= timeBetweenFrames)
+            {
+                timeSinceLastFrame = 0f;
+
+                if (currentFrame < textureArray.Length - 1)
+                    currentFrame++;
+                else
+                    currentFrame = 0;
+
+                mytexture = textureArray[currentFrame];
+            }
+
+            // scrolling
             screenpos.Y += deltaY;
             screenpos.Y = screenpos.Y % mytexture.Height;
         }
+
         // ScrollingBackground.Draw
         public void Draw(SpriteBatch batch)
         {
@@ -41,8 +76,7 @@ namespace MonoGame_Dynamics_Final_Project
                 batch.Draw(mytexture, screenpos, null,
                      Color.White, 0, origin, 1, SpriteEffects.None, 0f);
             }
-            // Draw the texture a second time, behind the first,
-            // to create the scrolling illusion.
+            // Draw the texture a second time, behind the first, to create the scrolling illusion.
             batch.Draw(mytexture, screenpos - texturesize, null,
                  Color.White, 0, origin, 1, SpriteEffects.None, 0f);
         }

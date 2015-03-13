@@ -24,7 +24,7 @@ namespace MonoGame_Dynamics_Final_Project
         public static Random random;
 
         // background
-        Texture2D background; // Current Resolution 800h x 480w
+        Texture2D[] background; // Current Resolution 480w x 800h
         ScrollingBackground myBackground;
 
         // player
@@ -35,7 +35,7 @@ namespace MonoGame_Dynamics_Final_Project
         Player follower;
 
         // enemies
-        Enemy collisionTest;
+        List<Enemy> Enemywave = new List<Enemy>();
 
        // Vector2 gravityForce = new Vector2(0.0f, 150.0f);
         Vector2 offset = new Vector2(500, 500);
@@ -76,8 +76,12 @@ namespace MonoGame_Dynamics_Final_Project
 
             // background
             myBackground = new ScrollingBackground();
-            background = Content.Load<Texture2D>("Images/Backgrounds/universe");
-            myBackground.Load(GraphicsDevice, background);
+            background = new Texture2D[3];
+            for (int i = 0; i < background.Length; i++)
+            {
+                background[i] = Content.Load<Texture2D>("Images/Backgrounds/universe0" + (i + 1).ToString());
+            }
+            myBackground.Load(GraphicsDevice, background, background.Length, 0.5f); // change float to change animation speed
 
             // weapons
             basicShot = Content.Load<Texture2D>("Images/Animations/laser");
@@ -96,7 +100,12 @@ namespace MonoGame_Dynamics_Final_Project
                 1.0f);
 
             // enemy sprites
-            collisionTest = new Enemy(Content, GraphicsDevice);
+            for(int i = 0; i < 1; i++)
+            {
+                Enemy enemy = new Enemy(Content, GraphicsDevice);
+                Enemywave.Add(enemy);
+            }
+            
 
             // TODO: use this.Content to load your game content here
         }
@@ -122,7 +131,7 @@ namespace MonoGame_Dynamics_Final_Project
 
             // updating scroll speed
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            myBackground.Update(elapsed * 100);
+            myBackground.Update(gameTime, elapsed * 100);
 
             UpdateInput();
 
@@ -135,20 +144,25 @@ namespace MonoGame_Dynamics_Final_Project
             }
 
             // tests for collision of shots against enemy
-            int collide = collisionTest.CollisionShot(shots);
-            if (collide != -1)
+            for (int i = 0; i < Enemywave.Count; i++)
             {
-                shots.RemoveAt(collide);
-                collisionTest.Alive = false;
-            }
-
-            // testing collision of playership with enemy
-            if (playerShip.CollisionSprite(collisionTest))
-            {
-                if (playerShip.IntersectsPixel(playerShip.CollisionRectangle, playerShip.textureData, collisionTest.CollisionRectangle, collisionTest.textureData))
+                int collide = Enemywave[i].CollisionShot(shots);
+                if (collide != -1)
                 {
-                    playerShip.collisionDetected = true;
-                    collisionTest.Alive = false;
+                    shots.RemoveAt(collide);
+                    Enemywave.RemoveAt(i);
+                }
+            }
+            // testing collision of playership with enemy
+            for (int i = 0; i < Enemywave.Count; i++)
+            {
+                if (playerShip.CollisionSprite(Enemywave[i]))
+                {
+                    if (playerShip.IntersectsPixel(playerShip.CollisionRectangle, playerShip.textureData, Enemywave[i].CollisionRectangle, Enemywave[i].textureData))
+                    {
+                        playerShip.collisionDetected = true;
+                        Enemywave.RemoveAt(i);
+                    }
                 }
             }
 
@@ -221,7 +235,11 @@ namespace MonoGame_Dynamics_Final_Project
             myBackground.Draw(spriteBatch);
             playerShip.Draw(spriteBatch);
             follower.Draw(spriteBatch);
-            collisionTest.Draw(spriteBatch);
+
+            foreach (Enemy enemy in Enemywave)
+            {
+                enemy.Draw(spriteBatch);
+            }
 
             foreach(Shot shot in shots)
             {
