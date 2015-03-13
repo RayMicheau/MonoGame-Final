@@ -18,8 +18,6 @@ namespace MonoGame_Dynamics_Final_Project
         public Weapon(Texture2D textureImage, Vector2 startPosition, float velocity)
             : base(textureImage, startPosition, new Vector2(0, velocity), true, 1.0f)
         {
-            textureData = new Color[TextureImage.Width * TextureImage.Height];
-            textureImage.GetData(textureData);
         }
     }
 }
