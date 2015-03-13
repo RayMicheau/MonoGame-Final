@@ -13,9 +13,6 @@ using Microsoft.Xna.Framework.Media;
 
 namespace MonoGame_Dynamics_Final_Project
 {
-    /// <summary>
-    /// This is the main type for your game
-    /// </summary>
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
@@ -40,7 +37,6 @@ namespace MonoGame_Dynamics_Final_Project
        // Vector2 gravityForce = new Vector2(0.0f, 150.0f);
         Vector2 offset = new Vector2(500, 500);
         
-
         public Game1()
             : base()
         {
@@ -51,24 +47,11 @@ namespace MonoGame_Dynamics_Final_Project
           //  graphics.ApplyChanges();
         }
 
-        /// <summary>
-        /// Allows the game to perform any initialization it needs to before starting to run.
-        /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
-        /// and initialize them as well.
-        /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-            
-
             base.Initialize();
         }
 
-        /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
-        /// </summary>
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
@@ -105,25 +88,12 @@ namespace MonoGame_Dynamics_Final_Project
                 Enemy enemy = new Enemy(Content, GraphicsDevice);
                 Enemywave.Add(enemy);
             }
-            
-
-            // TODO: use this.Content to load your game content here
         }
 
-        /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// all content.
-        /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
         }
 
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -166,15 +136,10 @@ namespace MonoGame_Dynamics_Final_Project
                 }
             }
 
-            // TODO: Add your update logic here
             base.Update(gameTime);
         }
         private void UpdateInput()
         {
-            //set keyPressed to false to start.
-            //if it's still false after all keys have been tested, 
-            //nothing relevant has been pressed
-            //and we should idle
             bool keyPressed = false;
             KeyboardState keyState = Keyboard.GetState();
             GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
@@ -222,10 +187,6 @@ namespace MonoGame_Dynamics_Final_Project
             }
         }
 
-        /// <summary>
-        /// This is called when the game should draw itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
