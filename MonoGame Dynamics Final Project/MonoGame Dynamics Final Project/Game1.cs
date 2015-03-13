@@ -176,7 +176,8 @@ namespace MonoGame_Dynamics_Final_Project
                 playerShip.Right();
                 keyPressed = true;
             }
-            if (keyState.IsKeyDown(Keys.Space))
+            if (keyState.IsKeyDown(Keys.Space)
+              || gamePadState.IsButtonDown(Buttons.RightTrigger))
             {
                 Weapon shot = new Weapon(basicWeapon, new Vector2(playerShip.Position.X, playerShip.Position.Y - playerShip.SpriteOrigin.Y), -600);
                 weapon.Add(shot);
