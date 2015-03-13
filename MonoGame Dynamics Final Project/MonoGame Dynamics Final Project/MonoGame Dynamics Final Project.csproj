@@ -84,7 +84,12 @@
     </Content>
     <Content Include="Icon.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\ContentProject\ContentProject\ContentProject.csproj">
+      <Project>{e78d2a02-bbd2-4d39-87bd-45416ee1dadc}</Project>
+      <Name>ContentProject</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
