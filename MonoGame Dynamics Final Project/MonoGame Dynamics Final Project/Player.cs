@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame_Dynamics_Final_Project.Weapons;
 #endregion
 
 namespace MonoGame_Dynamics_Final_Project
@@ -285,13 +286,13 @@ namespace MonoGame_Dynamics_Final_Project
 
         public virtual void shootPrimary(Texture2D weaponTexture)
         {
-            Weapon shot = new Weapon(weaponTexture, new Vector2(position.X, position.Y - spriteOrigin.Y), -600f);
+            Weapon shot = new Weapon(weaponTexture, new Vector2(position.X, position.Y - spriteOrigin.Y), 600f);
             primary.Add(shot);
         }
 
         public virtual void shootSecondary(Texture2D weaponTexture)
         {
-            Weapon shot = new Weapon(weaponTexture, new Vector2(position.X, position.Y - spriteOrigin.Y), -600f);
+            Weapon shot = new Weapon(weaponTexture, new Vector2(position.X, position.Y - spriteOrigin.Y), 600f);
             secondary.Add(shot);
         }
     }
