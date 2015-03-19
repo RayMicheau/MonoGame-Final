@@ -84,6 +84,20 @@ namespace MonoGame_Dynamics_Final_Project
                    Convert.ToInt32(TextureImage.Width * Scale), Convert.ToInt32(TextureImage.Height * Scale));
             }
         }
+
+        // weapons
+        protected List<Weapon> primary;
+        public List<Weapon> Primary
+        {
+            get { return primary; }
+            set { primary = value; }
+        }
+        protected List<Weapon> secondary;
+        public List<Weapon> Secondary
+        {
+            get { return secondary; }
+            set { secondary = value; }
+        }
         #endregion
 
         public Player(Texture2D textureImage, Vector2 position, Vector2 velocity, bool setOrig, float scale)
@@ -102,6 +116,8 @@ namespace MonoGame_Dynamics_Final_Project
             Alive = true;
             textureData = new Color[TextureImage.Width * TextureImage.Height];
             textureImage.GetData(textureData);
+            primary =  new List<Weapon>();
+            secondary = new List<Weapon>();
         }
 
         //Update that doesn't keep sprites onscreen
@@ -111,6 +127,9 @@ namespace MonoGame_Dynamics_Final_Project
             {
                 //Time between the frames
                 float timeLapse = (float)(gameTime.ElapsedGameTime.TotalSeconds);
+
+                UpdateWeapon(primary, gameTime);
+                UpdateWeapon(secondary, gameTime);
 
                 //Move the sprite
                 position += Velocity * timeLapse;
@@ -164,6 +183,15 @@ namespace MonoGame_Dynamics_Final_Project
                 Console.WriteLine("{0}, {1}, {2}", position.Y, velocity.Y, velocity.X);
             }
         }
+
+        public virtual void UpdateWeapon(List<Weapon> weapon, GameTime gameTime)
+        {
+            for (int i = 0; i < weapon.Count; i++)
+            {
+                weapon[i].Update(gameTime);
+            }
+        }
+
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             if (Alive)
@@ -253,6 +281,18 @@ namespace MonoGame_Dynamics_Final_Project
         public virtual void Idle()
         {
             Velocity = Velocity * .98f;
+        }
+
+        public virtual void shootPrimary(Texture2D weaponTexture)
+        {
+            Weapon shot = new Weapon(weaponTexture, new Vector2(position.X, position.Y - spriteOrigin.Y), -600f);
+            primary.Add(shot);
+        }
+
+        public virtual void shootSecondary(Texture2D weaponTexture)
+        {
+            Weapon shot = new Weapon(weaponTexture, new Vector2(position.X, position.Y - spriteOrigin.Y), -600f);
+            secondary.Add(shot);
         }
     }
 }

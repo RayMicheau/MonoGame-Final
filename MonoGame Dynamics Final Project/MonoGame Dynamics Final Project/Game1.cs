@@ -27,7 +27,6 @@ namespace MonoGame_Dynamics_Final_Project
         // player
         Player playerShip;
         Texture2D basicWeapon;
-        List<Weapon> weapon = new List<Weapon>();
 
         Player follower;
 
@@ -56,7 +55,7 @@ namespace MonoGame_Dynamics_Final_Project
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            // helo
+
             Song song = Content.Load<Song>("TellMe");
             MediaPlayer.Play(song);
 
@@ -112,18 +111,13 @@ namespace MonoGame_Dynamics_Final_Project
             playerShip.Update(gameTime, GraphicsDevice);
             follower.Update(playerShip, offset, gameTime);
 
-            for (int i = 0; i < weapon.Count; i++)
-            {
-                weapon[i].Update(gameTime);
-            }
-
             // tests for collision of shots against enemy
             for (int i = 0; i < Enemywave.Count; i++)
             {
-                int collide = Enemywave[i].CollisionShot(weapon);
+                int collide = Enemywave[i].CollisionShot(playerShip.Primary);
                 if (collide != -1)
                 {
-                    weapon.RemoveAt(collide);
+                    playerShip.Primary.RemoveAt(collide);
                     Enemywave.RemoveAt(i);
                 }
             }
@@ -180,11 +174,17 @@ namespace MonoGame_Dynamics_Final_Project
                 playerShip.Right();
                 keyPressed = true;
             }
+            // Primary Weapon
             if (keyState.IsKeyDown(Keys.Space)
               || gamePadState.IsButtonDown(Buttons.RightTrigger))
             {
-                Weapon shot = new Weapon(basicWeapon, new Vector2(playerShip.Position.X, playerShip.Position.Y - playerShip.SpriteOrigin.Y), -600);
-                weapon.Add(shot);
+                playerShip.shootPrimary(basicWeapon);
+            }
+            // Secondary Weapon
+            if (keyState.IsKeyDown(Keys.B)
+              || gamePadState.IsButtonDown(Buttons.LeftTrigger))
+            {
+                playerShip.shootSecondary(basicWeapon);
             }
             if (!keyPressed)
             {
@@ -207,7 +207,11 @@ namespace MonoGame_Dynamics_Final_Project
                 enemy.Draw(spriteBatch);
             }
 
-            foreach(Weapon shot in weapon)
+            foreach(Weapon shot in playerShip.Primary)
+            {
+                shot.Draw(spriteBatch);
+            }
+            foreach (Weapon shot in playerShip.Secondary)
             {
                 shot.Draw(spriteBatch);
             }
