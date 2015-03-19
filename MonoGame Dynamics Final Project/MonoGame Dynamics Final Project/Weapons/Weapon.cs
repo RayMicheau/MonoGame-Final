@@ -17,6 +17,12 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
     class Weapon
     {
         #region Variables
+        protected int ammo;
+        public int Ammo
+        {
+            get { return ammo; }
+            set { ammo = value; }
+        }
 
         protected Vector2 position;
         public Vector2 Position
