@@ -47,7 +47,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
 
         // pixel collision
         public Color[] textureData;
-        public bool collisionDetected;
+        public bool offScreen;
 
         //Texture object and a collision rectangle
         public Texture2D TextureImage { get; set; }
@@ -78,6 +78,11 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
 
             //Move the sprite
             position += Velocity * timeLapse;
+
+            if (position.Y < 0)
+            {
+                offScreen = true;
+            }
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)

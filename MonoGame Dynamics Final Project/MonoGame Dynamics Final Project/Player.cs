@@ -99,7 +99,20 @@ namespace MonoGame_Dynamics_Final_Project
             get { return secondary; }
             set { secondary = value; }
         }
-        public Weapon shot;
+
+        protected int primaryAmmo;
+        public int PrimaryAmmo
+        {
+            get { return primaryAmmo; }
+            set { primaryAmmo = value; }
+        }
+
+        protected int secondaryAmmo;
+        public int SecondaryAmmo
+        {
+            get { return secondaryAmmo; }
+            set { secondaryAmmo = value; }
+        }
         #endregion
 
         public Player(Texture2D textureImage, Vector2 position, Vector2 velocity, bool setOrig, float scale)
@@ -120,7 +133,7 @@ namespace MonoGame_Dynamics_Final_Project
             textureImage.GetData(textureData);
             primary =  new List<Weapon>();
             secondary = new List<Weapon>();
- 
+            setWeapon("gravityWell", 1);
         }
 
         //Update that doesn't keep sprites onscreen
@@ -192,6 +205,11 @@ namespace MonoGame_Dynamics_Final_Project
             for (int i = 0; i < weapon.Count; i++)
             {
                 weapon[i].Update(gameTime);
+
+                if (weapon[i].offScreen)
+                {
+                    weapon.RemoveAt(i);
+                }
             }
         }
 
@@ -255,6 +273,14 @@ namespace MonoGame_Dynamics_Final_Project
             return -1;
         }
 
+        public void setWeapon(string weaponType, int ammoCapacity)
+        {
+            if (weaponType == "gravityWell")
+            {
+                secondaryAmmo = ammoCapacity;
+            }
+        }
+
         public void Up()
         {
             velocity.Y -= InitialVelocity.Y;;
@@ -294,13 +320,11 @@ namespace MonoGame_Dynamics_Final_Project
 
         public virtual void shootSecondary(Texture2D weaponTexture)
         {
-            shot = new GravityWell(weaponTexture, new Vector2(position.X, position.Y - spriteOrigin.Y), 100f);
-            secondary.Add(shot);
-            /*if (shot.Ammo != 0)
+            if (secondary.Count + 1 <= secondaryAmmo)
             {
+                Weapon shot = new GravityWell(weaponTexture, new Vector2(position.X, position.Y - spriteOrigin.Y), 100f);
                 secondary.Add(shot);
-                shot.Ammo--;
-            }*/
+            }
         }
     }
 }
