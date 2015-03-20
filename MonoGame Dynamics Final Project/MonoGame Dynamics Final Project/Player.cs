@@ -210,6 +210,15 @@ namespace MonoGame_Dynamics_Final_Project
                 if (weapon[i].offScreen)
                 {
                     weapon.RemoveAt(i);
+
+                    if (weapon[i].WeaponType == 1)
+                    {
+                        primaryAmmo--;
+                    }
+                    else if (weapon[i].WeaponType == 2)
+                    {
+                        secondaryAmmo--;
+                    }
                 }
             }
         }
@@ -331,7 +340,7 @@ namespace MonoGame_Dynamics_Final_Project
             if (primary.Count + 1 <= primaryAmmo)
             {
                 //Weapon shot = new Weapon(weaponTexture, new Vector2(position.X, position.Y - spriteOrigin.Y), 600f);
-                Weapon shot = new HelixMissile(weaponTexture, new Vector2(position.X, position.Y - spriteOrigin.Y), 600f);
+                Weapon shot = new HelixMissile(weaponTexture, new Vector2(position.X, position.Y - spriteOrigin.Y), 200f);
                 primary.Add(shot);
             }
         }

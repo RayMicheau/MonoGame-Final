@@ -18,7 +18,7 @@ namespace MonoGame_Dynamics_Final_Project
     class GravityWell : Weapon
     {
         public GravityWell(Texture2D textureImage, Vector2 startPosition, float velocity) 
-            :base(textureImage, startPosition, velocity)
+            :base(textureImage, startPosition, velocity, 2)
         {
         }
 

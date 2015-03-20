@@ -20,7 +20,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
         float time;
 
         public HelixMissile(Texture2D textureImage, Vector2 startPosition, float velocity)
-            : base(textureImage, startPosition, velocity)
+            : base(textureImage, startPosition, velocity, 1)
         {
             endPosition = new Vector2(startPosition.X, startPosition.Y - 200);
             time = 0;

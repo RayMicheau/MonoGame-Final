@@ -60,13 +60,17 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
                    Convert.ToInt32(TextureImage.Width), Convert.ToInt32(TextureImage.Height));
             }
         }
+
+        protected int weaponType;
+        public int WeaponType { get; set; }
         #endregion
 
-        public Weapon(Texture2D textureImage, Vector2 startPoisition, float velocity)
+        public Weapon(Texture2D textureImage, Vector2 startPoisition, float velocity, int weaponType)
         {
             this.TextureImage = textureImage;
             this.position = startPoisition;
             this.velocity = new Vector2(0, velocity * -1);
+            this.weaponType = weaponType;
             textureData = new Color[TextureImage.Width * TextureImage.Height];
             textureImage.GetData(textureData);
         }
