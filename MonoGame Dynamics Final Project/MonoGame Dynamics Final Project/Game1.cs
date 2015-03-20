@@ -28,6 +28,7 @@ namespace MonoGame_Dynamics_Final_Project
         // player
         Player playerShip;
         Texture2D basicWeapon;
+        Texture2D gravityWell;
 
         Player follower;
 
@@ -72,19 +73,21 @@ namespace MonoGame_Dynamics_Final_Project
 
             // weapons
             basicWeapon = Content.Load<Texture2D>("Images/Animations/laser");
-
+            gravityWell = Content.Load<Texture2D>("Images/Animations/yellowstar");
             // player sprites
             playerShip = new Player(Content.Load<Texture2D>("Images/Commandunit0"),
                 new Vector2(100,100),
                 new Vector2(10,10),
                 true,
-                1.0f);
+                1.0f
+                );
 
             follower = new Player(Content.Load<Texture2D>("Images/Animations/synth-unit-move0"),
                 new Vector2(100, 100),
                 new Vector2(10, 10),
                 true,
-                1.0f);
+                1.0f
+                );
 
             // enemy sprites
             for(int i = 0; i < 1; i++)
@@ -185,7 +188,7 @@ namespace MonoGame_Dynamics_Final_Project
             if (keyState.IsKeyDown(Keys.B)
               || gamePadState.IsButtonDown(Buttons.LeftTrigger))
             {
-                playerShip.shootSecondary(basicWeapon);
+                playerShip.shootSecondary(gravityWell);
             }
             if (!keyPressed)
             {

@@ -99,6 +99,7 @@ namespace MonoGame_Dynamics_Final_Project
             get { return secondary; }
             set { secondary = value; }
         }
+        public Weapon shot;
         #endregion
 
         public Player(Texture2D textureImage, Vector2 position, Vector2 velocity, bool setOrig, float scale)
@@ -119,6 +120,7 @@ namespace MonoGame_Dynamics_Final_Project
             textureImage.GetData(textureData);
             primary =  new List<Weapon>();
             secondary = new List<Weapon>();
+ 
         }
 
         //Update that doesn't keep sprites onscreen
@@ -292,8 +294,12 @@ namespace MonoGame_Dynamics_Final_Project
 
         public virtual void shootSecondary(Texture2D weaponTexture)
         {
-            Weapon shot = new Weapon(weaponTexture, new Vector2(position.X, position.Y - spriteOrigin.Y), 600f);
-            secondary.Add(shot);
+            shot = new GravityWell(weaponTexture, new Vector2(position.X, position.Y - spriteOrigin.Y), 100f); 
+            if (shot.Ammo != 0)
+            {
+                secondary.Add(shot);
+                shot.Ammo--;
+            }
         }
     }
 }

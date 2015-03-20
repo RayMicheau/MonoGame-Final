@@ -18,12 +18,20 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
     {
         #region Variables
         protected int ammo;
+<<<<<<< Updated upstream
         public int Ammo
         {
             get { return ammo; }
             set { ammo = value; }
         }
 
+=======
+        public int Ammo 
+        {
+            get { return ammo; }
+            set { ammo = value; }
+        }
+>>>>>>> Stashed changes
         protected Vector2 position;
         public Vector2 Position
         {

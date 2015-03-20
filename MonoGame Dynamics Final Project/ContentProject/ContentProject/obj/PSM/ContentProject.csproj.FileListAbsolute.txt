@@ -4,3 +4,9 @@ C:\Users\hau5t_000\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Proje
 C:\Users\hau5t_000\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\ContentProject\ContentProject\obj\PSM\IgnoreMe.dll
 C:\Users\hau5t_000\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\ContentProject\ContentProject\bin\PSM\Content\TellMe.xnb
 C:\Users\hau5t_000\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\ContentProject\ContentProject\bin\PSM\Content\TellMe.wma
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\ContentProject\ContentProject\bin\PSM\Content\TellMe.xnb
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\ContentProject\ContentProject\bin\PSM\Content\TellMe.wma
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\ContentProject\ContentProject\bin\PSM\IgnoreMe.dll
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\ContentProject\ContentProject\obj\PSM\ContentProject.csprojResolveAssemblyReference.cache
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\ContentProject\ContentProject\obj\PSM\Microsoft.Xna.Framework.RuntimeProfile.txt
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\ContentProject\ContentProject\obj\PSM\IgnoreMe.dll
