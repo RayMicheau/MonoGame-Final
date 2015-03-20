@@ -226,6 +226,15 @@ namespace MonoGame_Dynamics_Final_Project
                     Scale, 
                     Spriteeffect,
                     0);
+
+            foreach(Weapon shot in primary)
+            {
+                shot.Draw(spriteBatch);
+            }
+            foreach (Weapon shot in secondary)
+            {
+                shot.Draw(spriteBatch);
+            }
             }
         }
 

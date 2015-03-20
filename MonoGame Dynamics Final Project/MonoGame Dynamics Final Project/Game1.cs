@@ -211,15 +211,6 @@ namespace MonoGame_Dynamics_Final_Project
                 enemy.Draw(spriteBatch);
             }
 
-            foreach(Weapon shot in playerShip.Primary)
-            {
-                shot.Draw(spriteBatch);
-            }
-            foreach (Weapon shot in playerShip.Secondary)
-            {
-                shot.Draw(spriteBatch);
-            }
-
             spriteBatch.End();
 
             base.Draw(gameTime);
