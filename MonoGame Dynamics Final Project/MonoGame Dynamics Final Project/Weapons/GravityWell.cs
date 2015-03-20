@@ -21,5 +21,10 @@ namespace MonoGame_Dynamics_Final_Project
             :base(textureImage, startPosition, velocity)
         {
         }
+
+        public void forcePull(GameTime gameTime)
+        {
+            
+        }
     }
 }
