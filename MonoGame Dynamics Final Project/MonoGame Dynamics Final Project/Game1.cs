@@ -58,8 +58,8 @@ namespace MonoGame_Dynamics_Final_Project
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            Song song = Content.Load<Song>("TellMe");
-            MediaPlayer.Play(song);
+            /*Song song = Content.Load<Song>("TellMe");
+            MediaPlayer.Play(song);*/
 
 
             // background

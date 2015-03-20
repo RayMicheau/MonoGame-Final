@@ -18,9 +18,6 @@ namespace MonoGame_Dynamics_Final_Project
         public GravityWell(Texture2D textureImage, Vector2 startPosition, float velocity) 
             :base(textureImage, startPosition, velocity)
         {
-
-            ammo = 1;
-
         }
     }
 }

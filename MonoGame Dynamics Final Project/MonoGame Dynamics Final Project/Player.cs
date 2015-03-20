@@ -294,12 +294,13 @@ namespace MonoGame_Dynamics_Final_Project
 
         public virtual void shootSecondary(Texture2D weaponTexture)
         {
-            shot = new GravityWell(weaponTexture, new Vector2(position.X, position.Y - spriteOrigin.Y), 100f); 
-            if (shot.Ammo != 0)
+            shot = new GravityWell(weaponTexture, new Vector2(position.X, position.Y - spriteOrigin.Y), 100f);
+            secondary.Add(shot);
+            /*if (shot.Ammo != 0)
             {
                 secondary.Add(shot);
                 shot.Ammo--;
-            }
+            }*/
         }
     }
 }
