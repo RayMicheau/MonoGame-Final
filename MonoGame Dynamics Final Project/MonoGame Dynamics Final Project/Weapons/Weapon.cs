@@ -83,7 +83,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
             //Move the sprite
             position += Velocity * timeLapse;
 
-            if (position.Y < 0)
+            if (position.Y + TextureImage.Height < 0)
             {
                 offScreen = true;
             }
