@@ -6,7 +6,6 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
 using MonoGame_Dynamics_Final_Project.Weapons;
@@ -14,11 +13,20 @@ using MonoGame_Dynamics_Final_Project.Weapons;
 
 namespace MonoGame_Dynamics_Final_Project
 {
+    public enum GameState
+    {
+        SplashScreen, 
+        Play, 
+        Exit
+    }
+
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        GameState gameState = GameState.Play;
+        
         public static Random random;
 
         // background
@@ -201,20 +209,20 @@ namespace MonoGame_Dynamics_Final_Project
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-            
-            spriteBatch.Begin();
+            GraphicsDevice.Clear(Color.White);
 
-            myBackground.Draw(spriteBatch);
-            playerShip.Draw(spriteBatch);
-            follower.Draw(spriteBatch);
-
-            foreach (Enemy enemy in Enemywave)
+            if (gameState == GameState.Play)
             {
-                enemy.Draw(spriteBatch);
+                spriteBatch.Begin();
+                myBackground.Draw(spriteBatch);
+                playerShip.Draw(spriteBatch);
+                follower.Draw(spriteBatch);
+                foreach (Enemy enemy in Enemywave)
+                {
+                    enemy.Draw(spriteBatch);
+                }
+                spriteBatch.End();
             }
-
-            spriteBatch.End();
 
             base.Draw(gameTime);
         }
