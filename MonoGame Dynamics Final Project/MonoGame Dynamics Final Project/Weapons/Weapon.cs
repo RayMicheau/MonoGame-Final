@@ -44,6 +44,13 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
             set { acceleration = value; }
         }
 
+        protected float angle;
+        public float Angle
+        {
+            get { return angle; }
+            set { angle = value; }
+        }
+
         // pixel collision
         public Color[] textureData;
         public bool offScreen;
@@ -72,6 +79,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
             this.weaponType = weaponType;
             textureData = new Color[TextureImage.Width * TextureImage.Height];
             textureImage.GetData(textureData);
+            angle = 0f;
         }
 
         public virtual void Update(GameTime gameTime)
@@ -94,7 +102,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
                 position,
                 null,
                 Microsoft.Xna.Framework.Color.White,
-                0f,
+                angle,
                 SpriteOrigin,
                 1f, // scale
                 SpriteEffects.None,

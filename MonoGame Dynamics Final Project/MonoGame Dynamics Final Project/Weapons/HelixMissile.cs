@@ -17,14 +17,21 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
     {
         float time;
         float offsetX;
+        float velocitySpeed;
+        Vector2 startPosition;
+        int orientation; // -1 left, 1 right
 
-        public HelixMissile(Texture2D textureImage, Vector2 startPosition, float velocity)
+        public HelixMissile(Texture2D textureImage, Vector2 startPosition, float velocity, int orientation)
             : base(textureImage, startPosition, velocity, 1)
         {
-            offsetX = 100f;
-            acceleration = new Vector2(-100, 0);
-            base.velocity = new Vector2(25f, -velocity);
+            velocitySpeed = velocity;
+            this.startPosition = startPosition;
             time = 0;
+            this.orientation = orientation;
+            acceleration = new Vector2(-100 * orientation, 0);
+            base.Velocity = new Vector2(30f * orientation, -velocity);
+            offsetX = 100f;
+            spriteOrigin = new Vector2(0f, textureImage.Height / 2);
         }
 
         public override void Update(GameTime gameTime)
@@ -34,10 +41,12 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
 
             if (position.X > offsetX && timeStep == 1)
             {
-                velocity.X *= -1;
-                acceleration.X *= -1;
+                velocity.X *= -1f;
+                acceleration.X *= -1f;
                 timeStep = 0f;
             }
+
+            angle = getAngle(position);
 
             position += velocity * time + 0.5f * acceleration * time * time;
 
@@ -45,6 +54,12 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
             {
                 offScreen = true;
             }
+        }
+
+        public float getAngle(Vector2 pos)
+        {
+            float angle = (float)Math.Atan2(pos.Y, pos.X) * 20f; // adjust rotation here
+            return angle;
         }
     }
 }

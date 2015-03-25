@@ -209,10 +209,9 @@ namespace MonoGame_Dynamics_Final_Project
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.White);
-
             if (gameState == GameState.Play)
             {
+                GraphicsDevice.Clear(Color.White);
                 spriteBatch.Begin();
                 myBackground.Draw(spriteBatch);
                 playerShip.Draw(spriteBatch);
@@ -222,9 +221,8 @@ namespace MonoGame_Dynamics_Final_Project
                     enemy.Draw(spriteBatch);
                 }
                 spriteBatch.End();
+                base.Draw(gameTime);
             }
-
-            base.Draw(gameTime);
         }
     }
 }

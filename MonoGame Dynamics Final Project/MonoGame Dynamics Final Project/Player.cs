@@ -133,7 +133,7 @@ namespace MonoGame_Dynamics_Final_Project
             primary =  new List<Weapon>();
             secondary = new List<Weapon>();
             setWeapon("gravityWell", 1);
-            setWeapon("helixMissile", 5);
+            setWeapon("helixMissile", 2);
         }
 
         //Update that doesn't keep sprites onscreen
@@ -340,8 +340,10 @@ namespace MonoGame_Dynamics_Final_Project
             if (primary.Count + 1 <= primaryAmmo)
             {
                 //Weapon shot = new Weapon(weaponTexture, new Vector2(position.X, position.Y - spriteOrigin.Y), 600f);
-                Weapon shot = new HelixMissile(weaponTexture, new Vector2(position.X, position.Y - spriteOrigin.Y), 10f);
-                primary.Add(shot);
+                Weapon left = new HelixMissile(weaponTexture, new Vector2(position.X, position.Y - spriteOrigin.Y), 10f, -1);
+                primary.Add(left);
+                Weapon right = new HelixMissile(weaponTexture, new Vector2(position.X, position.Y - spriteOrigin.Y), 10f, 1);
+                primary.Add(right);
             }
         }
 
