@@ -43,7 +43,6 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
             {
                 velocity.X *= -1f;
                 acceleration.X *= -1f;
-                timeStep = 0f;
             }
 
             angle = getAngle(position);
