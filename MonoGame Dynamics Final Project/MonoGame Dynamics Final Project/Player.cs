@@ -112,6 +112,9 @@ namespace MonoGame_Dynamics_Final_Project
             get { return secondaryAmmo; }
             set { secondaryAmmo = value; }
         }
+
+        protected string primaryType;
+        protected string secondaryType;
         #endregion
 
         public Player(Texture2D textureImage, Vector2 position, Vector2 velocity, bool setOrig, float scale)
@@ -294,13 +297,18 @@ namespace MonoGame_Dynamics_Final_Project
 
         public void setWeapon(string weaponType, int ammoCapacity)
         {
-            if (weaponType == "gravityWell")
-            {
-                secondaryAmmo = ammoCapacity;
-            }
+            // List of Primary Weapons
             if (weaponType == "helixMissile")
             {
+                primaryType = weaponType;
                 primaryAmmo = ammoCapacity;
+            }
+
+            // List of Secondary Weapons
+            if (weaponType == "gravityWell")
+            {
+                secondaryType = weaponType;
+                secondaryAmmo = ammoCapacity;
             }
         }
 
@@ -337,22 +345,39 @@ namespace MonoGame_Dynamics_Final_Project
 
         public virtual void shootPrimary(Texture2D weaponTexture)
         {
-            if (primary.Count + 1 <= primaryAmmo)
+            if (primaryType == "helixMissile")
             {
-                //Weapon shot = new Weapon(weaponTexture, new Vector2(position.X, position.Y - spriteOrigin.Y), 600f);
-                Weapon left = new HelixMissile(weaponTexture, new Vector2(position.X, position.Y - spriteOrigin.Y), 10f, -1);
-                primary.Add(left);
-                Weapon right = new HelixMissile(weaponTexture, new Vector2(position.X, position.Y - spriteOrigin.Y), 10f, 1);
-                primary.Add(right);
+                shootHelixMissile(weaponTexture);
             }
         }
 
         public virtual void shootSecondary(Texture2D weaponTexture)
         {
+            if (secondaryType == "gravityWell")
+            {
+                shootGravityWell(weaponTexture);
+            }
+        }
+
+        // Functions for specific Weapons
+        public void shootGravityWell(Texture2D weaponTexture)
+        {
             if (secondary.Count + 1 <= secondaryAmmo)
             {
                 Weapon shot = new GravityWell(weaponTexture, new Vector2(position.X, position.Y - spriteOrigin.Y), 100f);
                 secondary.Add(shot);
+            }
+        }
+
+        public void shootHelixMissile(Texture2D weaponTexture)
+        {
+            if (primary.Count + 1 <= primaryAmmo)
+            {
+                //Weapon shot = new Weapon(weaponTexture, new Vector2(position.X, position.Y - spriteOrigin.Y), 600f); 
+                Weapon left = new HelixMissile(weaponTexture, new Vector2(position.X, position.Y - spriteOrigin.Y), 10f, -1);
+                primary.Add(left);
+                Weapon right = new HelixMissile(weaponTexture, new Vector2(position.X, position.Y - spriteOrigin.Y), 10f, 1);
+                primary.Add(right);
             }
         }
     }
