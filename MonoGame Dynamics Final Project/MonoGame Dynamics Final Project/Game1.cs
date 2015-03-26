@@ -47,6 +47,9 @@ namespace MonoGame_Dynamics_Final_Project
 
        // Vector2 gravityForce = new Vector2(0.0f, 150.0f);
         Vector2 offset = new Vector2(500, 500);
+
+        // input
+        KeyboardState oldState;
         
         public Game1()
             : base()
@@ -196,8 +199,8 @@ namespace MonoGame_Dynamics_Final_Project
                 playerShip.shootPrimary(rocket);
             }
             // Secondary Weapon
-            if (keyState.IsKeyDown(Keys.B)
-              || gamePadState.IsButtonDown(Buttons.LeftTrigger))
+            if (keyState.IsKeyDown(Keys.B))
+              //|| gamePadState.IsButtonDown(Buttons.LeftTrigger))
             {
                 playerShip.shootSecondary(gravityWell);
             }
@@ -205,6 +208,8 @@ namespace MonoGame_Dynamics_Final_Project
             {
                 playerShip.Idle();
             }
+
+            oldState = keyState;
         }
 
         protected override void Draw(GameTime gameTime)

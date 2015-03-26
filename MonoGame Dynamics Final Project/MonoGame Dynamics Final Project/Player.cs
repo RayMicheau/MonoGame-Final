@@ -114,7 +114,7 @@ namespace MonoGame_Dynamics_Final_Project
         }
 
         protected string primaryType;
-        protected string secondaryType;
+        protected string secondaryType;           
         #endregion
 
         public Player(Texture2D textureImage, Vector2 position, Vector2 velocity, bool setOrig, float scale)

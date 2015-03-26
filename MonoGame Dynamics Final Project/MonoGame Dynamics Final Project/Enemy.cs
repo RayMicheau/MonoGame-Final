@@ -19,9 +19,18 @@ namespace MonoGame_Dynamics_Final_Project
         /// Multiple types of enemies spawn, that logic is placed here 
         /// to control enemy movements
         /// 
+
+        protected float mass;
+        public float Mass
+        {
+            get { return mass; }
+            set { mass = value; }
+        }
+
         public Enemy(ContentManager content, GraphicsDevice Device)
             : base(content.Load<Texture2D>("Images/Commandunit0"), new Vector2(500, 100), new Vector2(20, 20), true, 1.0f)
         {
+            mass = 5f;
         }
 
     }
