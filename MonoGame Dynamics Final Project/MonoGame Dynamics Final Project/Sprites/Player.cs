@@ -9,9 +9,10 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame_Dynamics_Final_Project.Weapons;
+using MonoGame_Dynamics_Final_Project;
 #endregion
 
-namespace MonoGame_Dynamics_Final_Project
+namespace MonoGame_Dynamics_Final_Project.Sprites
 {
     class Player
     {

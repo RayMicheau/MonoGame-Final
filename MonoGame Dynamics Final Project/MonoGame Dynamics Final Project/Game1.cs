@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
+using MonoGame_Dynamics_Final_Project.Sprites;
 using MonoGame_Dynamics_Final_Project.Weapons;
 #endregion
 

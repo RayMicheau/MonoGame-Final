@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame_Dynamics_Final_Project;
+using MonoGame_Dynamics_Final_Project.Sprites;
 #endregion
 
 namespace MonoGame_Dynamics_Final_Project.Weapons

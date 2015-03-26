@@ -8,9 +8,10 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
+using MonoGame_Dynamics_Final_Project;
 #endregion
 
-namespace MonoGame_Dynamics_Final_Project
+namespace MonoGame_Dynamics_Final_Project.Sprites
 {
     class Enemy : Player
     {
