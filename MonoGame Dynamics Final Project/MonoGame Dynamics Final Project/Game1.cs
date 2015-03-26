@@ -57,9 +57,10 @@ namespace MonoGame_Dynamics_Final_Project
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-          //  graphics.PreferredBackBufferWidth = 1280;
-          //  graphics.PreferredBackBufferHeight = 720;
-          //  graphics.ApplyChanges();
+            graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            this.Window.IsBorderless = true;
+            graphics.ApplyChanges();
         }
 
         protected override void Initialize()
@@ -238,7 +239,7 @@ namespace MonoGame_Dynamics_Final_Project
         {
             if (gameState == GameState.Play)
             {
-                GraphicsDevice.Clear(Color.White);
+                GraphicsDevice.Clear(Color.Black);
                 spriteBatch.Begin();
                 myBackground.Draw(spriteBatch);
                 playerShip.Draw(spriteBatch);
