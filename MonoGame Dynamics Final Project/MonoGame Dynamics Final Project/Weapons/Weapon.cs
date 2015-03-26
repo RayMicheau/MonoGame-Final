@@ -69,6 +69,12 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
 
         protected int weaponType;
         public int WeaponType { get; set; }
+        protected float elapsedTime;
+        public float ElapsedTime
+        {
+            get { return elapsedTime; }
+            set { elapsedTime = value; }
+        }
         #endregion
 
         public Weapon(Texture2D textureImage, Vector2 startPoisition, float velocity, int weaponType)
@@ -138,5 +144,8 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
             }
             return collision;
         }
+
+        public virtual void forcePull(GameTime gameTime, List<Enemy> enemies)
+        { }
     }
 }

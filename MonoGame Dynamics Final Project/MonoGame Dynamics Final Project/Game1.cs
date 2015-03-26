@@ -124,7 +124,7 @@ namespace MonoGame_Dynamics_Final_Project
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
             myBackground.Update(gameTime, elapsed * 100);
 
-            UpdateInput();
+            UpdateInput(gameTime);
 
             playerShip.Update(gameTime, GraphicsDevice);
             follower.Update(playerShip, offset, gameTime);
@@ -152,9 +152,21 @@ namespace MonoGame_Dynamics_Final_Project
                 }
             }
 
+            // gravity well
+            if (playerShip.ForcePull)
+            {
+                playerShip.Secondary[0].forcePull(gameTime, Enemywave);
+
+                if ((elapsed - playerShip.Secondary[0].ElapsedTime) > 1f)
+                {
+                    playerShip.ForcePull = false;
+                    playerShip.Secondary.RemoveAt(0);
+                }
+            }
+
             base.Update(gameTime);
         }
-        private void UpdateInput()
+        private void UpdateInput(GameTime gameTime)
         {
             bool keyPressed = false;
             KeyboardState keyState = Keyboard.GetState();
@@ -199,10 +211,19 @@ namespace MonoGame_Dynamics_Final_Project
                 playerShip.shootPrimary(rocket);
             }
             // Secondary Weapon
-            if (keyState.IsKeyDown(Keys.B))
+            if (oldState.IsKeyUp(Keys.B) && keyState.IsKeyDown(Keys.B))
               //|| gamePadState.IsButtonDown(Buttons.LeftTrigger))
             {
-                playerShip.shootSecondary(gravityWell);
+                if (playerShip.HasShot)
+                {
+                    playerShip.HasShot = false;
+                    playerShip.ForcePull = true;
+                    playerShip.Secondary[0].ElapsedTime = gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+                }
+                else if (!playerShip.HasShot)
+                {
+                    playerShip.shootSecondary(gravityWell);
+                }
             }
             if (!keyPressed)
             {

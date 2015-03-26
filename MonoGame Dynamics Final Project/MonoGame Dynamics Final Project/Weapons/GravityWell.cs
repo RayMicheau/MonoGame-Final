@@ -30,7 +30,7 @@ namespace MonoGame_Dynamics_Final_Project
             set { mass = value; }
         }
 
-        private const float G = 500.0f;
+        private const float G = 250.0f;
 
         Vector2 difference;
 
@@ -38,17 +38,20 @@ namespace MonoGame_Dynamics_Final_Project
             :base(textureImage, startPosition, velocity, 2)
         {
             gravityForce = Vector2.Zero;
+            mass = 5f;
         }
 
-        public void forcePull(GameTime gameTime, List<Enemy> enemies)
+        public override void forcePull(GameTime gameTime, List<Enemy> enemies)
         {
+            velocity = Vector2.Zero;
+
             float timeInterval = gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
 
             float magnitude, radius;
 
             foreach (Enemy enemy in enemies)
             {
-                difference += position - enemy.Position;
+                difference = position - enemy.Position;
                 difference.Normalize();
                 gravityForce = difference;
                 radius = difference.Length();

@@ -114,7 +114,19 @@ namespace MonoGame_Dynamics_Final_Project
         }
 
         protected string primaryType;
-        protected string secondaryType;           
+        protected string secondaryType;
+        private bool hasShot;
+        public bool HasShot
+        {
+            get { return hasShot; }
+            set { hasShot = value; }
+        }
+        private bool forcePull;
+        public bool ForcePull
+        {
+            get { return forcePull; }
+            set { forcePull = value; }
+        }
         #endregion
 
         public Player(Texture2D textureImage, Vector2 position, Vector2 velocity, bool setOrig, float scale)
@@ -137,6 +149,8 @@ namespace MonoGame_Dynamics_Final_Project
             secondary = new List<Weapon>();
             setWeapon("gravityWell", 1);
             setWeapon("helixMissile", 2);
+            hasShot = false;
+            forcePull = false;
         }
 
         //Update that doesn't keep sprites onscreen
@@ -364,8 +378,9 @@ namespace MonoGame_Dynamics_Final_Project
         {
             if (secondary.Count + 1 <= secondaryAmmo)
             {
-                Weapon shot = new GravityWell(weaponTexture, new Vector2(position.X, position.Y - spriteOrigin.Y), 100f);
+                GravityWell shot = new GravityWell(weaponTexture, new Vector2(position.X, position.Y - spriteOrigin.Y), 100f);
                 secondary.Add(shot);
+                hasShot = true;
             }
         }
 
