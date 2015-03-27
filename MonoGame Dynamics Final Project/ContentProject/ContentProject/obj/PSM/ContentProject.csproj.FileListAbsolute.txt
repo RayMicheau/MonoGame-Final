@@ -16,3 +16,4 @@ C:\Users\Hau5\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\Co
 C:\Users\Hau5\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\ContentProject\ContentProject\obj\PSM\ContentProject.csprojResolveAssemblyReference.cache
 C:\Users\Hau5\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\ContentProject\ContentProject\obj\PSM\Microsoft.Xna.Framework.RuntimeProfile.txt
 C:\Users\Hau5\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\ContentProject\ContentProject\obj\PSM\IgnoreMe.dll
+C:\Users\Hau5\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\ContentProject\ContentProject\bin\PSM\Content\TellMe.mp3

@@ -78,10 +78,10 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
         }
         #endregion
 
-        public Weapon(Texture2D textureImage, Vector2 startPoisition, float velocity, int weaponType)
+        public Weapon(Texture2D textureImage, Vector2 startPosition, float velocity, int weaponType)
         {
             this.TextureImage = textureImage;
-            this.position = startPoisition;
+            this.position = startPosition;
             this.velocity = new Vector2(0, velocity * -1);
             this.weaponType = weaponType;
             textureData = new Color[TextureImage.Width * TextureImage.Height];
@@ -147,6 +147,9 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
         }
 
         public virtual void forcePull(GameTime gameTime, List<Enemy> enemies)
+        { }
+
+        public virtual void Update(GameTime gameTime, List<Enemy> enemyWave)
         { }
     }
 }

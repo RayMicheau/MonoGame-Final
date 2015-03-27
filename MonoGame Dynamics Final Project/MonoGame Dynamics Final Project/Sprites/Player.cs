@@ -149,21 +149,48 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             primary =  new List<Weapon>();
             secondary = new List<Weapon>();
             setWeapon("gravityWell", 1);
-            setWeapon("helixMissile", 2);
+            setWeapon("homingMissile", 2);
             hasShot = false;
             forcePull = false;
         }
 
+        // Draws the ship and all projectiles currently in motion
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
+            if (Alive)
+            {
+                spriteBatch.Draw(TextureImage,
+                    position,
+                    null,
+                    Microsoft.Xna.Framework.Color.White,
+                    0f,
+                    SpriteOrigin,
+                    Scale,
+                    Spriteeffect,
+                    0);
+
+                foreach (Weapon shot in primary)
+                {
+                    shot.Draw(spriteBatch);
+                }
+                foreach (Weapon shot in secondary)
+                {
+                    shot.Draw(spriteBatch);
+                }
+            }
+        }
+
+        #region Update Methods
         //Update that doesn't keep sprites onscreen
-        public virtual void Update(GameTime gameTime)
+        public virtual void Update(GameTime gameTime, List<Enemy> enemyWave)
         {
             if (Alive)
             {
                 //Time between the frames
                 float timeLapse = (float)(gameTime.ElapsedGameTime.TotalSeconds);
 
-                UpdateWeapon(primary, gameTime);
-                UpdateWeapon(secondary, gameTime);
+                UpdateWeapon(primary, gameTime, enemyWave);
+                UpdateWeapon(secondary, gameTime, enemyWave);
 
                 //Move the sprite
                 position += Velocity * timeLapse;
@@ -181,12 +208,12 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             }
         }
 
-        public virtual void Update(GameTime gameTime, GraphicsDevice Device)
+        public virtual void Update(GameTime gameTime, GraphicsDevice Device, List<Enemy> enemyWave)
         {
             if (Alive)
             {
                 //Keep the sprite onscreen
-                Update(gameTime);
+                Update(gameTime, enemyWave);
 
                 if (Position.X > Device.Viewport.Width + SpriteOrigin.X * Scale - SpriteOrigin.X)
                 {
@@ -218,11 +245,19 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             }
         }
 
-        public virtual void UpdateWeapon(List<Weapon> weapon, GameTime gameTime)
+        // Updates ammo counts and removes weapons that are off screen
+        public virtual void UpdateWeapon(List<Weapon> weapon, GameTime gameTime, List<Enemy> enemyWave)
         {
             for (int i = 0; i < weapon.Count; i++)
             {
-                weapon[i].Update(gameTime);
+                if (secondaryType == "homingMissile")
+                {
+                    weapon[i].Update(gameTime, enemyWave);
+                }
+                else
+                {
+                    weapon[i].Update(gameTime);
+                }
 
                 if (weapon[i].offScreen)
                 {
@@ -240,38 +275,16 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                 }
             }
         }
+        #endregion
 
-        public virtual void Draw(SpriteBatch spriteBatch)
-        {
-            if (Alive)
-            {
-                spriteBatch.Draw(TextureImage, 
-                    position, 
-                    null, 
-                    Microsoft.Xna.Framework.Color.White, 
-                    0f, 
-                    SpriteOrigin, 
-                    Scale, 
-                    Spriteeffect,
-                    0);
-
-            foreach(Weapon shot in primary)
-            {
-                shot.Draw(spriteBatch);
-            }
-            foreach (Weapon shot in secondary)
-            {
-                shot.Draw(spriteBatch);
-            }
-            }
-        }
-
+        #region Collision Detection Methods
+        // Basic Collision Detection
         public bool CollisionSprite(Player sprite)
         {
             return CollisionRectangle.Intersects(sprite.CollisionRectangle);
         }
 
-        // Pixel Collision Detection method
+        // Pixel Collision Detection
         public bool IntersectsPixel(Rectangle rect1, Color[] data1, Rectangle rect2, Color[] data2)
         {
             bool collision = false;
@@ -309,24 +322,10 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
 
             return -1;
         }
+        #endregion
 
-        public void setWeapon(string weaponType, int ammoCapacity)
-        {
-            // List of Primary Weapons
-            if (weaponType == "helixMissile")
-            {
-                primaryType = weaponType;
-                primaryAmmo = ammoCapacity;
-            }
-
-            // List of Secondary Weapons
-            if (weaponType == "gravityWell")
-            {
-                secondaryType = weaponType;
-                secondaryAmmo = ammoCapacity;
-            }
-        }
-
+        #region Movement Methods
+        /******* Movement methods *******/
         public void Up()
         {
             velocity.Y -= InitialVelocity.Y;;
@@ -357,24 +356,59 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         {
             Velocity = Velocity * .98f;
         }
+        #endregion
 
-        public virtual void shootPrimary(Texture2D weaponTexture)
+        #region Weapon Methods
+        public void setWeapon(string weaponType, int ammoCapacity)
         {
-            if (primaryType == "helixMissile")
+            // List of Primary Weapons
+
+
+            // List of Secondary Weapons
+            if (weaponType == "gravityWell")
             {
-                shootHelixMissile(weaponTexture);
+                secondaryType = weaponType;
+                secondaryAmmo = ammoCapacity;
+            }
+
+            if (weaponType == "helixMissile")
+            {
+                secondaryType = weaponType;
+                secondaryAmmo = ammoCapacity;
+            }
+
+            if (weaponType == "homingMissile")
+            {
+                secondaryType = weaponType;
+                secondaryAmmo = ammoCapacity;
             }
         }
 
-        public virtual void shootSecondary(Texture2D weaponTexture)
+        // Chooses which primary weapon to shoot
+        public virtual void shootPrimary(Texture2D weaponTexture)
+        {
+        }
+
+        // Chooses which secondary weapon to shoot
+        public virtual void shootSecondary(ContentManager content, Texture2D weaponTexture)
         {
             if (secondaryType == "gravityWell")
             {
                 shootGravityWell(weaponTexture);
             }
+            if (secondaryType == "helixMissile")
+            {
+                shootHelixMissile(weaponTexture);
+            }
+            if (secondaryType == "homingMissile")
+            {
+                shootHomingMissile(content, weaponTexture);
+            }
         }
+        #endregion
 
-        // Functions for specific Weapons
+        #region Specific Weapon Methods
+        /******* Weapon methods *******/
         public void shootGravityWell(Texture2D weaponTexture)
         {
             if (secondary.Count + 1 <= secondaryAmmo)
@@ -396,5 +430,12 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                 primary.Add(right);
             }
         }
+
+        public void shootHomingMissile(ContentManager content, Texture2D weaponTexture)
+        {
+            HomingMissile missile = new HomingMissile(content, weaponTexture, new Vector2(position.X, position.Y - spriteOrigin.Y), 500f);
+            secondary.Add(missile);
+        }
+        #endregion
     }
 }
