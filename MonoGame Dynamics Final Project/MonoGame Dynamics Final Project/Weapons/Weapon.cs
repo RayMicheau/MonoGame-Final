@@ -76,6 +76,13 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
             get { return elapsedTime; }
             set { elapsedTime = value; }
         }
+
+        protected int damage;
+        public int Damage
+        {
+            get { return damage; }
+            set { damage = value; }
+        }
         #endregion
 
         public Weapon(Texture2D textureImage, Vector2 startPosition, float velocity, int weaponType)
@@ -146,10 +153,19 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
             return collision;
         }
 
+        // Helper method for rotating projectiles
+        public float getAngle(Vector2 pos)
+        {
+            float angle = (float)Math.Atan2(pos.Y, pos.X);
+            return angle;
+        }
+
+        #region Abstract Classes
         public virtual void forcePull(GameTime gameTime, List<Enemy> enemies)
         { }
 
         public virtual void Update(GameTime gameTime, List<Enemy> enemyWave)
         { }
+        #endregion
     }
 }

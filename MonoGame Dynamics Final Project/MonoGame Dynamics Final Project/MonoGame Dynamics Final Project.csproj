@@ -38,6 +38,7 @@
     <Compile Include="Sprites\Enemy.cs" />
     <Compile Include="Content\Test Classes\Follower.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="Weapons\BasicLaser.cs" />
     <Compile Include="Weapons\GravityWell.cs" />
     <Compile Include="Sprites\Player.cs" />
     <Compile Include="Program.cs" />

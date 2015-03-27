@@ -32,10 +32,10 @@ namespace MonoGame_Dynamics_Final_Project
 
         private const float G = 250.0f;
 
-        Vector2 difference;
+        protected Vector2 difference;
 
-        public GravityWell(Texture2D textureImage, Vector2 startPosition, float velocity) 
-            :base(textureImage, startPosition, velocity, 2)
+        public GravityWell(ContentManager content, Vector2 startPosition, float velocity) 
+            :base(content.Load<Texture2D>("Images/Animations/yellowstar"), startPosition, velocity, 2)
         {
             gravityForce = Vector2.Zero;
             mass = 5f;

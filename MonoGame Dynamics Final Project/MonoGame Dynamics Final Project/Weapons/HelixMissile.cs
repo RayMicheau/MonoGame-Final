@@ -15,15 +15,17 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
 {
     class HelixMissile : Weapon
     {
-        float time;
-        float offsetX;
-        float velocitySpeed;
-        Vector2 startPosition;
-        int orientation; // -1 left, 1 right
+        protected float time;
+        protected float offsetX;
+        protected float velocitySpeed;
+        protected Vector2 startPosition;
+        protected Texture2D textureImage;
+        protected int orientation; // -1 left, 1 right
 
-        public HelixMissile(Texture2D textureImage, Vector2 startPosition, float velocity, int orientation)
-            : base(textureImage, startPosition, velocity, 1)
+        public HelixMissile(ContentManager content, Vector2 startPosition, float velocity, int orientation)
+            : base(content.Load<Texture2D>("Images/Animations/rocket"), startPosition, velocity, 2)
         {
+            textureImage = content.Load<Texture2D>("Images/Animations/rocket");
             velocitySpeed = velocity;
             this.startPosition = startPosition;
             time = 0;
@@ -34,11 +36,13 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
             spriteOrigin = new Vector2(0f, textureImage.Height / 2);
         }
 
+        // Update method that curves the missile
         public override void Update(GameTime gameTime)
         {
             time += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
             float timeStep = time;
 
+            // changes missile movement to opposite direction for curve effect
             if (position.X > offsetX && timeStep == 1)
             {
                 velocity.X *= -1f;
@@ -53,12 +57,6 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
             {
                 offScreen = true;
             }
-        }
-
-        public float getAngle(Vector2 pos)
-        {
-            float angle = (float)Math.Atan2(pos.Y, pos.X) * 1f; // adjust rotation here
-            return angle;
         }
     }
 }

@@ -21,6 +21,20 @@ namespace MonoGame_Dynamics_Final_Project
         Exit
     }
 
+    public enum Level
+    {
+        Level1 = 1,
+        Level2,
+        Level3
+    }
+
+    public enum Wave
+    {
+        Wave1 = 1,
+        Wave2,
+        Wave3
+    }
+
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
@@ -38,11 +52,6 @@ namespace MonoGame_Dynamics_Final_Project
         // player
         Texture2D playerTexture;
         Player playerShip;
-        // Weapons
-        Texture2D basicWeapon;
-        Texture2D gravityWell;
-        Texture2D rocket;
-
         Player follower;
 
         // enemies
@@ -90,12 +99,7 @@ namespace MonoGame_Dynamics_Final_Project
             {
                 background[i] = Content.Load<Texture2D>("Images/Backgrounds/universe0" + (i + 1).ToString());
             }
-            myBackground.Load(GraphicsDevice, background, background.Length, 0.5f); // change float to change animation speed
-
-            // weapons
-            basicWeapon = Content.Load<Texture2D>("Images/Animations/laser");
-            gravityWell = Content.Load<Texture2D>("Images/Animations/yellowstar");
-            rocket = Content.Load<Texture2D>("Images/Animations/rocket");            
+            myBackground.Load(GraphicsDevice, background, background.Length, 0.5f); // change float to change animation speed           
             
             // player sprites
             playerTexture = Content.Load<Texture2D>("Images/Commandunit0");
@@ -233,7 +237,7 @@ namespace MonoGame_Dynamics_Final_Project
             if (keyState.IsKeyDown(Keys.Space)
               || gamePadState.IsButtonDown(Buttons.RightTrigger))
             {
-                playerShip.shootPrimary(rocket);
+                playerShip.shootPrimary(Content);
             }
             // Secondary Weapon
             if (oldState.IsKeyUp(Keys.B) && keyState.IsKeyDown(Keys.B))
@@ -247,7 +251,7 @@ namespace MonoGame_Dynamics_Final_Project
                 }
                 else if (!playerShip.HasShot)
                 {
-                    playerShip.shootSecondary(Content, rocket);
+                    playerShip.shootSecondary(Content);
                 }
             }
             if (!keyPressed)
@@ -274,6 +278,11 @@ namespace MonoGame_Dynamics_Final_Project
                 spriteBatch.End();
                 base.Draw(gameTime);
             }
+        }
+
+        public void LoadLevel()
+        {
+
         }
     }
 }

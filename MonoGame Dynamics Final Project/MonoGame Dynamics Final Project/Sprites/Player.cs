@@ -128,6 +128,13 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             get { return forcePull; }
             set { forcePull = value; }
         }
+
+        protected int health;
+        public int Health
+        {
+            get { return health; }
+            set { health = value; }
+        }
         #endregion
 
         public Player(Texture2D textureImage, Vector2 position, Vector2 velocity, bool setOrig, float scale)
@@ -148,10 +155,16 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             textureImage.GetData(textureData);
             primary =  new List<Weapon>();
             secondary = new List<Weapon>();
+            
+            // Set Primary Weapons
+
+            // Set Secondary Weapons
             setWeapon("gravityWell", 1);
+            //setWeapon("helixMissile", 2);
             setWeapon("homingMissile", 2);
             hasShot = false;
             forcePull = false;
+            health = 100;
         }
 
         // Draws the ship and all projectiles currently in motion
@@ -181,7 +194,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         }
 
         #region Update Methods
-        //Update that doesn't keep sprites onscreen
+        // Main update method
         public virtual void Update(GameTime gameTime, List<Enemy> enemyWave)
         {
             if (Alive)
@@ -196,6 +209,8 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                 position += Velocity * timeLapse;
             }
         }
+
+        // Follower Update?
         public virtual void Update(Player player, Vector2 offset, GameTime gameTime)
         {
             offset = player.position + offset;
@@ -208,6 +223,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             }
         }
 
+        // Update methods for bounds checks
         public virtual void Update(GameTime gameTime, GraphicsDevice Device, List<Enemy> enemyWave)
         {
             if (Alive)
@@ -245,7 +261,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             }
         }
 
-        // Updates ammo counts and removes weapons that are off screen
+        // Update helper: updates weapons, ammo counts and removes weapons that are off screen
         public virtual void UpdateWeapon(List<Weapon> weapon, GameTime gameTime, List<Enemy> enemyWave)
         {
             for (int i = 0; i < weapon.Count; i++)
@@ -385,57 +401,59 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         }
 
         // Chooses which primary weapon to shoot
-        public virtual void shootPrimary(Texture2D weaponTexture)
+        public virtual void shootPrimary(ContentManager content)
         {
         }
 
         // Chooses which secondary weapon to shoot
-        public virtual void shootSecondary(ContentManager content, Texture2D weaponTexture)
+        public virtual void shootSecondary(ContentManager content)
         {
             if (secondaryType == "gravityWell")
             {
-                shootGravityWell(weaponTexture);
+                shootGravityWell(content);
             }
             if (secondaryType == "helixMissile")
             {
-                shootHelixMissile(weaponTexture);
+                shootHelixMissile(content);
             }
             if (secondaryType == "homingMissile")
             {
-                shootHomingMissile(content, weaponTexture);
+                shootHomingMissile(content);
             }
         }
         #endregion
 
         #region Specific Weapon Methods
-        /******* Weapon methods *******/
-        public void shootGravityWell(Texture2D weaponTexture)
+        public void shootGravityWell(ContentManager content)
         {
             if (secondary.Count + 1 <= secondaryAmmo)
             {
-                GravityWell shot = new GravityWell(weaponTexture, new Vector2(position.X, position.Y - spriteOrigin.Y), 100f);
+                GravityWell shot = new GravityWell(content, new Vector2(position.X, position.Y - spriteOrigin.Y), 100f);
                 secondary.Add(shot);
                 hasShot = true;
             }
         }
 
-        public void shootHelixMissile(Texture2D weaponTexture)
+        public void shootHelixMissile(ContentManager content)
         {
             if (primary.Count + 1 <= primaryAmmo)
             {
                 //Weapon shot = new Weapon(weaponTexture, new Vector2(position.X, position.Y - spriteOrigin.Y), 600f); 
-                Weapon left = new HelixMissile(weaponTexture, new Vector2(position.X, position.Y + 50f - spriteOrigin.Y), 10f, -1);
+                Weapon left = new HelixMissile(content, new Vector2(position.X, position.Y + 50f - spriteOrigin.Y), 10f, -1);
                 primary.Add(left);
-                Weapon right = new HelixMissile(weaponTexture, new Vector2(position.X, position.Y + 50f - spriteOrigin.Y), 10f, 1);
+                Weapon right = new HelixMissile(content, new Vector2(position.X, position.Y + 50f - spriteOrigin.Y), 10f, 1);
                 primary.Add(right);
             }
         }
 
-        public void shootHomingMissile(ContentManager content, Texture2D weaponTexture)
+        public void shootHomingMissile(ContentManager content)
         {
-            HomingMissile missile = new HomingMissile(content, weaponTexture, new Vector2(position.X, position.Y - spriteOrigin.Y), 500f);
+            HomingMissile missile = new HomingMissile(content, new Vector2(position.X, position.Y - spriteOrigin.Y), 500f);
             secondary.Add(missile);
         }
+        #endregion
+
+        #region Reinforcement Methods
         #endregion
     }
 }

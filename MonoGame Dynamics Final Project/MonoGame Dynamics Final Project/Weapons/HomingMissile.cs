@@ -16,24 +16,27 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
 {
     class HomingMissile : Weapon
     {
-        Vector2 closestEnemy;
-        Vector2 startPosition;
-        bool targeted;
-        Texture2D crossHair;
-        Enemy targetEnemy;
-        float velocity;
+        protected Vector2 closestEnemy;
+        protected Vector2 startPosition;
+        protected bool targeted;
+        protected Texture2D crossHair;
+        protected Enemy targetEnemy;
+        protected float homingSpeed;
 
-        public HomingMissile(ContentManager content, Texture2D textureImage, Vector2 startPosition, float velocity)
-            : base(textureImage, startPosition, velocity, 2)
+        public HomingMissile(ContentManager content, Vector2 startPosition, float velocity)
+            : base(content.Load<Texture2D>("Images/Animations/rocket"), startPosition, velocity, 2)
         {
             this.startPosition = startPosition;
             targeted = false;            
             crossHair = content.Load<Texture2D>("Images/Animations/crossHair");
-            this.velocity = velocity;
+            homingSpeed = velocity;
         } 
 
+        // Helper method: cycles through enemy list and finds the closest one, returns false if no enemies on screen
         public bool Target(List<Enemy> enemyWave)
         {
+            targeted = false;
+
             if (enemyWave.Count != 0)
             {
                 targetEnemy = enemyWave[0];
@@ -53,16 +56,16 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
             return targeted;
         }
 
+        // updates missile velocity to home in on targetted enemy
         public override void Update(GameTime gameTime, List<Enemy> enemyWave)
         {
             base.Update(gameTime);
-            Target(enemyWave);
-            if (targeted)
+
+            if (Target(enemyWave))
             {
                 Vector2 newVelocity = targetEnemy.Position - position;
-                float magnitude = newVelocity.Length();
-                newVelocity /= magnitude;
-                base.velocity = newVelocity * this.velocity;
+                newVelocity /= newVelocity.Length();
+                velocity = newVelocity * homingSpeed;
             }
             if(targeted && !targetEnemy.Alive)
             {
@@ -70,6 +73,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
             }
         }
 
+        // Draws the crosshairs for targetted enemies
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
@@ -83,7 +87,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
                                  spriteOrigin, 
                                  1f, 
                                  SpriteEffects.None, 
-                                 0f);
+                                 1f);
             }
         }
     }
