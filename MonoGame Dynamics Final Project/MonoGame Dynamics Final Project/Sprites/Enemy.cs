@@ -28,8 +28,8 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             set { mass = value; }
         }
 
-        public Enemy(ContentManager content, GraphicsDevice Device)
-            : base(content.Load<Texture2D>("Images/Commandunit0"), new Vector2(500, 100), new Vector2(20, 20), true, 1.0f)
+        public Enemy(ContentManager content, GraphicsDevice Device, Vector2 position)
+            : base(content.Load<Texture2D>("Images/Commandunit0"), position, new Vector2(20, 20), true, 1.0f)
         {
             mass = 5f;
         }

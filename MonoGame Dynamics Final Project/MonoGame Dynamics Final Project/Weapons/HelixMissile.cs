@@ -45,7 +45,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
                 acceleration.X *= -1f;
             }
 
-            angle = getAngle(position);
+            angle = getAngle(position) * orientation;
 
             position += velocity * time + 0.5f * acceleration * time * time;
 
@@ -57,7 +57,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
 
         public float getAngle(Vector2 pos)
         {
-            float angle = (float)Math.Atan2(pos.Y, pos.X) * 20f; // adjust rotation here
+            float angle = (float)Math.Atan2(pos.Y, pos.X) * 1f; // adjust rotation here
             return angle;
         }
     }

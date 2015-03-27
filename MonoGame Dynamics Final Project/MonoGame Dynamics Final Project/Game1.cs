@@ -31,6 +31,7 @@ namespace MonoGame_Dynamics_Final_Project
         public static Random random;
 
         // background
+        int windowWidth, windowHeight;
         Texture2D[] background; // Current Resolution 480w x 800h
         ScrollingBackground myBackground;
 
@@ -44,6 +45,7 @@ namespace MonoGame_Dynamics_Final_Project
         Player follower;
 
         // enemies
+        int maxEnemies;
         List<Enemy> Enemywave = new List<Enemy>();
 
        // Vector2 gravityForce = new Vector2(0.0f, 150.0f);
@@ -76,6 +78,9 @@ namespace MonoGame_Dynamics_Final_Project
             /*Song song = Content.Load<Song>("TellMe");
             MediaPlayer.Play(song);*/
 
+            windowWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            windowHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            random = new Random();
 
             // background
             myBackground = new ScrollingBackground();
@@ -106,9 +111,11 @@ namespace MonoGame_Dynamics_Final_Project
                 );
 
             // enemy sprites
-            for(int i = 0; i < 1; i++)
+            maxEnemies = 10;
+            for(int i = 0; i < maxEnemies; i++)
             {
-                Enemy enemy = new Enemy(Content, GraphicsDevice);
+                Vector2 position = new Vector2(random.Next(windowWidth), 150);
+                Enemy enemy = new Enemy(Content, GraphicsDevice, position);
                 Enemywave.Add(enemy);
             }
         }

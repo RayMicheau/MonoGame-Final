@@ -390,9 +390,9 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             if (primary.Count + 1 <= primaryAmmo)
             {
                 //Weapon shot = new Weapon(weaponTexture, new Vector2(position.X, position.Y - spriteOrigin.Y), 600f); 
-                Weapon left = new HelixMissile(weaponTexture, new Vector2(position.X, position.Y - spriteOrigin.Y), 10f, -1);
+                Weapon left = new HelixMissile(weaponTexture, new Vector2(position.X, position.Y + 50f - spriteOrigin.Y), 10f, -1);
                 primary.Add(left);
-                Weapon right = new HelixMissile(weaponTexture, new Vector2(position.X, position.Y - spriteOrigin.Y), 10f, 1);
+                Weapon right = new HelixMissile(weaponTexture, new Vector2(position.X, position.Y + 50f - spriteOrigin.Y), 10f, 1);
                 primary.Add(right);
             }
         }
