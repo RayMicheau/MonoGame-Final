@@ -37,6 +37,7 @@ namespace MonoGame_Dynamics_Final_Project
 
     public class Game1 : Game
     {
+        #region Variables
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
@@ -63,7 +64,8 @@ namespace MonoGame_Dynamics_Final_Project
 
         // input
         KeyboardState oldState;
-        
+        #endregion
+
         public Game1()
             : base()
         {
@@ -85,52 +87,60 @@ namespace MonoGame_Dynamics_Final_Project
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            /*Song song = Content.Load<Song>("TellMe");
-            MediaPlayer.Play(song);*/
-
-            windowWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-            windowHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
-            random = new Random();
-
-            // background
-            myBackground = new ScrollingBackground();
-            background = new Texture2D[3];
-            for (int i = 0; i < background.Length; i++)
+            try
             {
-                background[i] = Content.Load<Texture2D>("Images/Backgrounds/universe0" + (i + 1).ToString());
+                /*Song song = Content.Load<Song>("TellMe");
+                MediaPlayer.Play(song);*/
+
+                windowWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+                windowHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+                random = new Random();
+
+                // background
+                myBackground = new ScrollingBackground();
+                background = new Texture2D[3];
+                for (int i = 0; i < background.Length; i++)
+                {
+                    background[i] = Content.Load<Texture2D>("Images/Backgrounds/universe0" + (i + 1).ToString());
+                }
+                myBackground.Load(GraphicsDevice, background, background.Length, 0.5f); // change float to change animation speed           
+
+                // player sprites
+                playerTexture = Content.Load<Texture2D>("Images/Commandunit0");
+                playerShip = new Player(playerTexture,
+                    new Vector2(windowWidth / 2, windowHeight - playerTexture.Height),
+                    new Vector2(10, 10),
+                    true,
+                    1.0f
+                    );
+
+                follower = new Player(Content.Load<Texture2D>("Images/Animations/synth-unit-move0"),
+                    new Vector2(100, 100),
+                    new Vector2(10, 10),
+                    true,
+                    1.0f
+                    );
+
+                // enemy sprites
+                maxEnemies = 10;
+                for (int i = 0; i < maxEnemies; i++)
+                {
+                    Vector2 position = new Vector2(random.Next(windowWidth), 150);
+                    Enemy enemy = new Enemy(Content, GraphicsDevice, position);
+                    Enemywave.Add(enemy);
+                }
             }
-            myBackground.Load(GraphicsDevice, background, background.Length, 0.5f); // change float to change animation speed           
+            catch (ContentLoadException)
+            {
+                //Will properly display error messages soon
+                Console.WriteLine("Could not load a thing!");
+            }
             
-            // player sprites
-            playerTexture = Content.Load<Texture2D>("Images/Commandunit0");
-            playerShip = new Player(playerTexture,
-                new Vector2(windowWidth/2, windowHeight - playerTexture.Height),
-                new Vector2(10,10),
-                true,
-                1.0f
-                );
-
-            follower = new Player(Content.Load<Texture2D>("Images/Animations/synth-unit-move0"),
-                new Vector2(100, 100),
-                new Vector2(10, 10),
-                true,
-                1.0f
-                );
-
-            // enemy sprites
-            maxEnemies = 10;
-            for(int i = 0; i < maxEnemies; i++)
-            {
-                Vector2 position = new Vector2(random.Next(windowWidth), 150);
-                Enemy enemy = new Enemy(Content, GraphicsDevice, position);
-                Enemywave.Add(enemy);
-            }
         }
 
         protected override void UnloadContent()
         {
         }
-
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -143,7 +153,7 @@ namespace MonoGame_Dynamics_Final_Project
             UpdateInput(gameTime);
 
             playerShip.Update(gameTime, GraphicsDevice, Enemywave);
-            follower.Update(playerShip, offset, gameTime);
+            follower.Update(playerShip, gameTime);
 
             // tests for collision of primary shots against enemy
             for (int i = 0; i < Enemywave.Count; i++)

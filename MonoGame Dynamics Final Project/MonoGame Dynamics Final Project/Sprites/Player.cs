@@ -162,6 +162,8 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             setWeapon("gravityWell", 1);
             //setWeapon("helixMissile", 2);
             setWeapon("homingMissile", 2);
+            setWeapon("laser", 3);
+            setWeapon("rail", 4);
             hasShot = false;
             forcePull = false;
             health = 100;
@@ -210,18 +212,17 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             }
         }
 
-        // Follower Update?
-        public virtual void Update(Player player, Vector2 offset, GameTime gameTime)
+        // Follower Update. Confirmed. 
+        public virtual void Update(Player player, GameTime gameTime)
         {
-            offset = player.position + offset;
             float timeLapse = (float)(gameTime.ElapsedGameTime.TotalSeconds);
-            if (position !=  offset)
-            {
-                Vector2 vel = player.Position - position;
-                vel.Normalize();
-                position += vel * 250 * timeLapse;
-            }
+
+            position.Y = player.position.Y + player.TextureImage.Height / 2;
+            position.X = player.position.X - player.TextureImage.Width;
+            position += Velocity * timeLapse;
+
         }
+
 
         // Update methods for bounds checks
         public virtual void Update(GameTime gameTime, GraphicsDevice Device, List<Enemy> enemyWave)
@@ -378,7 +379,17 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         public void setWeapon(string weaponType, int ammoCapacity)
         {
             // List of Primary Weapons
+            if (weaponType == "laser")
+            {
+                primaryType = weaponType;
+                primaryAmmo = ammoCapacity;
+            }
 
+            if (weaponType == "rail")
+            {
+                primaryType = weaponType;
+                primaryAmmo = ammoCapacity;
+            }
 
             // List of Secondary Weapons
             if (weaponType == "gravityWell")
@@ -398,11 +409,21 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                 secondaryType = weaponType;
                 secondaryAmmo = ammoCapacity;
             }
+
+           
         }
 
         // Chooses which primary weapon to shoot
         public virtual void shootPrimary(ContentManager content)
         {
+            if (primaryType == "laser")
+            {
+                shootLaser(content);
+            }
+            if (primaryType == "rail")
+            {
+                shootRail(content);
+            }
         }
 
         // Chooses which secondary weapon to shoot
@@ -450,6 +471,18 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         {
             HomingMissile missile = new HomingMissile(content, new Vector2(position.X, position.Y - spriteOrigin.Y), 500f);
             secondary.Add(missile);
+        }
+
+        public void shootLaser(ContentManager content)
+        {
+            BasicLaser laser = new BasicLaser(content, new Vector2(position.X, position.Y - spriteOrigin.Y), 500f);
+            primary.Add(laser);
+        }
+
+        public void shootRail(ContentManager content)
+        {
+            Rail rail = new Rail(content, new Vector2(position.X, position.Y - spriteOrigin.Y), 300f);
+            primary.Add(rail);
         }
         #endregion
 

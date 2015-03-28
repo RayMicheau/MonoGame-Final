@@ -46,6 +46,7 @@
     <Compile Include="ScrollingBackground.cs" />
     <Compile Include="Weapons\HelixMissile.cs" />
     <Compile Include="Weapons\HomingMissile.cs" />
+    <Compile Include="Weapons\Rail.cs" />
     <Compile Include="Weapons\Weapon.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -93,12 +94,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Icon.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ContentProject\ContentProject\ContentProject.csproj">
-      <Project>{e78d2a02-bbd2-4d39-87bd-45416ee1dadc}</Project>
-      <Name>ContentProject</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
