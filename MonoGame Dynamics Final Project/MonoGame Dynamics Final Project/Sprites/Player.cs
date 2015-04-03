@@ -14,7 +14,7 @@ using MonoGame_Dynamics_Final_Project;
 
 namespace MonoGame_Dynamics_Final_Project.Sprites
 {
-    class Player
+    class Player:animateSprite
     {
         
         //IDEAL CLASS SET UP
@@ -82,7 +82,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             get
             {
                 return new Rectangle((int)(position.X - SpriteOrigin.X * Scale), (int)(position.Y - SpriteOrigin.Y * Scale),
-                   Convert.ToInt32(TextureImage.Width * Scale), Convert.ToInt32(TextureImage.Height * Scale));
+                   Convert.ToInt32(frameWidth * Scale), Convert.ToInt32(frameHeight * Scale));
             }
         }
 
@@ -135,10 +135,19 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             get { return health; }
             set { health = value; }
         }
+
+
+        public int frameWidth;
+        public int frameHeight;
+
+        public bool isMoving;
+
         #endregion
 
-        public Player(Texture2D textureImage, Vector2 position, Vector2 velocity, bool setOrig, float scale)
+        public Player(int FrameWidth, int FrameHeight, Texture2D textureImage, Vector2 position, Vector2 velocity, bool setOrig, float scale)
         {
+            frameWidth = FrameWidth;
+            frameHeight = FrameHeight;
             Position = position;
             TextureImage = textureImage;
             InitialVelocity = velocity;
@@ -147,10 +156,11 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             Acceleration = acceleration;
             if (SetOrigin)
             {
-                SpriteOrigin = new Vector2(TextureImage.Width / 2, TextureImage.Height / 2);
+                SpriteOrigin = new Vector2(FrameWidth / 2, FrameHeight / 2);
             }
             Scale = scale;
             Alive = true;
+            isMoving = false;
             textureData = new Color[TextureImage.Width * TextureImage.Height];
             textureImage.GetData(textureData);
             primary =  new List<Weapon>();
@@ -170,17 +180,18 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         }
 
         // Draws the ship and all projectiles currently in motion
-        public virtual void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(int framenum, float frameTime, int FrameWidth, int FrameHeight,SpriteBatch spriteBatch, GameTime gameTime)
         {
+            float timeLapse = (float)(gameTime.ElapsedGameTime.TotalSeconds);
             if (Alive)
             {
                 spriteBatch.Draw(TextureImage,
-                    position,
-                    null,
+                    Position,
+                    animatedSprite(framenum, frameTime, FrameWidth, FrameHeight, TextureImage, timeLapse),
                     Microsoft.Xna.Framework.Color.White,
                     0f,
                     SpriteOrigin,
-                    Scale,
+                    Scale*2,
                     Spriteeffect,
                     0);
 
@@ -215,12 +226,11 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         // Follower Update. Confirmed. 
         public virtual void Update(Player player, GameTime gameTime)
         {
-            float timeLapse = (float)(gameTime.ElapsedGameTime.TotalSeconds);
+            //float timeLapse = (float)(gameTime.ElapsedGameTime.TotalSeconds);
 
-            position.Y = player.position.Y + player.TextureImage.Height / 2;
-            position.X = player.position.X - player.TextureImage.Width;
-            position += Velocity * timeLapse;
-
+            //position.Y = player.position.Y;
+            //position.X = player.position.X;
+            //position += Velocity * timeLapse;
         }
 
 
@@ -232,11 +242,11 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                 //Keep the sprite onscreen
                 Update(gameTime, enemyWave);
 
-                if (Position.X > Device.Viewport.Width + SpriteOrigin.X * Scale - SpriteOrigin.X)
+                if (Position.X > Device.Viewport.Width + frameWidth)
                 {
                     position.X = 0 + SpriteOrigin.X * Scale;
                 }
-                else if (Position.X < SpriteOrigin.X * Scale - spriteOrigin.X)
+                else if (Position.X < frameWidth*-1)
                 {
                     position.X = Device.Viewport.Width - SpriteOrigin.X * Scale;
                 }
@@ -345,16 +355,19 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         /******* Movement methods *******/
         public void Up()
         {
+            isMoving = true;
             velocity.Y -= InitialVelocity.Y;;
         }
 
         public void Down()
         {
+            isMoving = true;
             velocity.Y += InitialVelocity.Y;;
         }
 
         public virtual void Right() 
         {
+            isMoving = true;
             if (velocity.X <= 1000)
             {
                 velocity.X += InitialVelocity.X;
@@ -363,6 +376,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
 
         public virtual void Left()
         {
+            isMoving = true;
             if (velocity.X >= -1000)
             {
                 velocity.X -= InitialVelocity.X;
@@ -371,6 +385,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         }
         public virtual void Idle()
         {
+            isMoving = false;
             Velocity = Velocity * .98f;
         }
         #endregion

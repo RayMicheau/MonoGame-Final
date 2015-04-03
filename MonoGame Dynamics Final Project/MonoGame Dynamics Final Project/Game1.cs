@@ -106,20 +106,15 @@ namespace MonoGame_Dynamics_Final_Project
                 myBackground.Load(GraphicsDevice, background, background.Length, 0.5f); // change float to change animation speed           
 
                 // player sprites
-                playerTexture = Content.Load<Texture2D>("Images/Commandunit0");
-                playerShip = new Player(playerTexture,
-                    new Vector2(windowWidth / 2, windowHeight - playerTexture.Height),
+                playerTexture = Content.Load<Texture2D>("Images/Animations/Commandunit-idle");
+                playerShip = new Player(64,70,playerTexture,
+                    new Vector2(windowWidth / 2, windowHeight - 70),
                     new Vector2(10, 10),
                     true,
                     1.0f
                     );
 
-                follower = new Player(Content.Load<Texture2D>("Images/Animations/synth-unit-move0"),
-                    new Vector2(100, 100),
-                    new Vector2(10, 10),
-                    true,
-                    1.0f
-                    );
+                follower = new Follower(32,32,Content, playerShip,new Vector2(0, playerShip.frameHeight+20),1.0f, true);
 
                 // enemy sprites
                 maxEnemies = 10;
@@ -141,6 +136,7 @@ namespace MonoGame_Dynamics_Final_Project
         protected override void UnloadContent()
         {
         }
+
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -277,14 +273,14 @@ namespace MonoGame_Dynamics_Final_Project
             if (gameState == GameState.Play)
             {
                 GraphicsDevice.Clear(Color.Black);
-                spriteBatch.Begin();
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
                 myBackground.Draw(spriteBatch);
-                playerShip.Draw(spriteBatch);
-                follower.Draw(spriteBatch);
-                foreach (Enemy enemy in Enemywave)
+                playerShip.Draw(4, 0.2f, 64, 70,spriteBatch, gameTime);
+                follower.Draw(4, 0.1f, 32, 32, spriteBatch, gameTime);
+                /*foreach (Enemy enemy in Enemywave)
                 {
-                    enemy.Draw(spriteBatch);
-                }
+                    enemy.Draw(spriteBatch, gameTime);
+                }*/
                 spriteBatch.End();
                 base.Draw(gameTime);
             }
