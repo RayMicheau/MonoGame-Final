@@ -162,7 +162,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             Alive = true;
             isMoving = false;
             textureData = new Color[TextureImage.Width * TextureImage.Height];
-            textureImage.GetData(textureData);
+            TextureImage.GetData(textureData);
             primary =  new List<Weapon>();
             secondary = new List<Weapon>();
             
@@ -185,6 +185,9 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             float timeLapse = (float)(gameTime.ElapsedGameTime.TotalSeconds);
             if (Alive)
             {
+                textureData = new Color[TextureImage.Width * TextureImage.Height];
+                TextureImage.GetData(textureData);
+
                 spriteBatch.Draw(TextureImage,
                     Position,
                     animatedSprite(framenum, frameTime, FrameWidth, FrameHeight, TextureImage, timeLapse),
@@ -244,11 +247,11 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
 
                 if (Position.X > Device.Viewport.Width + frameWidth)
                 {
-                    position.X = 0 + SpriteOrigin.X * Scale;
+                    position.X = frameWidth*-1;
                 }
                 else if (Position.X < frameWidth*-1)
                 {
-                    position.X = Device.Viewport.Width - SpriteOrigin.X * Scale;
+                    position.X = Device.Viewport.Width + frameWidth;
                 }
 
                 if (Position.Y >= Device.Viewport.Height - SpriteOrigin.Y * Scale)
@@ -356,7 +359,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         public void Up()
         {
             isMoving = true;
-            velocity.Y -= InitialVelocity.Y;;
+            velocity.Y -= InitialVelocity.Y;
         }
 
         public void Down()

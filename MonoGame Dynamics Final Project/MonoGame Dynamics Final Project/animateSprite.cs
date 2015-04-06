@@ -17,18 +17,36 @@ namespace MonoGame_Dynamics_Final_Project
 {
     class animateSprite
     {
-        int frameIndex = 1;
-        int y = 0;
-        int x = 0;
-        float time;
+        public int frameIndex = 1;
+        public int y = 0;
+        public int x = 0;
+        public float time;
         public int FrameWidth;
         public int FrameHeight;
+        public int framesOverride = 0;
+        public float frameTimeOverride = 0f;
 
+        public void resetAnimation()
+        {
+            frameIndex = 1;
+            y = 0;
+            x = 0;
+            time = 0f;
+        }
+        
         public Rectangle animatedSprite(int frames, float frameTime,int frameWidth, int frameHeight, Texture2D image, float timeLapse) 
         {
             FrameWidth = frameWidth;
             FrameHeight = frameHeight;
 
+            if (framesOverride != 0)
+            {
+                frames = framesOverride;
+            }
+            if (frameTimeOverride != 0)
+            {
+                frameTime = frameTimeOverride;
+            }
    
             if (frameIndex == frames + 1)
             {

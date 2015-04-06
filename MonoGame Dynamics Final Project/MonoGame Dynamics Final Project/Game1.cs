@@ -52,6 +52,11 @@ namespace MonoGame_Dynamics_Final_Project
 
         // player
         Texture2D playerTexture;
+        Texture2D playerMove;
+        Texture2D playerRight;
+        Texture2D playerLeft;
+        Texture2D playerRightTurn;
+        Texture2D playerLeftTurn;
         Player playerShip;
         Player follower;
 
@@ -64,6 +69,10 @@ namespace MonoGame_Dynamics_Final_Project
 
         // input
         KeyboardState oldState;
+        int animationResetSwitchU;
+        int animationResetSwitchL;
+        int animationResetSwitchR;
+        
         #endregion
 
         public Game1()
@@ -98,15 +107,20 @@ namespace MonoGame_Dynamics_Final_Project
 
                 // background
                 myBackground = new ScrollingBackground();
-                background = new Texture2D[3];
+                background = new Texture2D[1];
                 for (int i = 0; i < background.Length; i++)
                 {
-                    background[i] = Content.Load<Texture2D>("Images/Backgrounds/universe0" + (i + 1).ToString());
+                    background[i] = Content.Load<Texture2D>("Images/Backgrounds/background-level-1");
                 }
                 myBackground.Load(GraphicsDevice, background, background.Length, 0.5f); // change float to change animation speed           
 
                 // player sprites
                 playerTexture = Content.Load<Texture2D>("Images/Animations/Commandunit-idle");
+                playerMove = Content.Load<Texture2D>("Images/Animations/Commandunit-move");
+                playerRight = Content.Load<Texture2D>("Images/Animations/Commandunit-right");
+                playerLeft = Content.Load<Texture2D>("Images/Animations/Commandunit-left");
+                playerRightTurn = Content.Load<Texture2D>("Images/Animations/Commandunit-Turn");
+                playerLeftTurn = Content.Load<Texture2D>("Images/Animations/Commandunit-Turn-left");
                 playerShip = new Player(64,70,playerTexture,
                     new Vector2(windowWidth / 2, windowHeight - 70),
                     new Vector2(10, 10),
@@ -116,6 +130,9 @@ namespace MonoGame_Dynamics_Final_Project
 
                 follower = new Follower(32,32,Content, playerShip,new Vector2(0, playerShip.frameHeight+20),1.0f, true);
 
+                animationResetSwitchU = 0;
+                animationResetSwitchL = 0;
+                animationResetSwitchR = 0;
                 // enemy sprites
                 maxEnemies = 10;
                 for (int i = 0; i < maxEnemies; i++)
@@ -204,6 +221,7 @@ namespace MonoGame_Dynamics_Final_Project
         private void UpdateInput(GameTime gameTime)
         {
             bool keyPressed = false;
+
             KeyboardState keyState = Keyboard.GetState();
             GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
 
@@ -214,6 +232,29 @@ namespace MonoGame_Dynamics_Final_Project
             {
                 playerShip.Up();
                 keyPressed = true;
+
+                if (animationResetSwitchU == 0)
+                {
+                    playerShip.resetAnimation();
+                    playerShip.TextureImage = playerMove;
+                    animationResetSwitchU++;
+                    keyPressed = true;
+                }
+
+
+            }
+            else if (keyState.IsKeyUp(Keys.Up)
+              || keyState.IsKeyUp(Keys.W)
+              || gamePadState.DPad.Up == ButtonState.Released
+              || gamePadState.ThumbSticks.Left.Y == 0)
+            {
+                if (animationResetSwitchU > 0)
+                {
+                    playerShip.resetAnimation();
+                    animationResetSwitchU = 0;
+                    playerShip.TextureImage = playerTexture;
+                }
+                
             }
             if (keyState.IsKeyDown(Keys.Down)
               || keyState.IsKeyDown(Keys.S)
@@ -223,6 +264,12 @@ namespace MonoGame_Dynamics_Final_Project
                 playerShip.Down();
                 keyPressed = true;
             }
+            else if (keyState.IsKeyUp(Keys.Down)
+              || keyState.IsKeyUp(Keys.S)
+              || gamePadState.DPad.Down == ButtonState.Released
+              || gamePadState.ThumbSticks.Left.Y == 0)
+            {}
+             
             if (keyState.IsKeyDown(Keys.Left)
               || keyState.IsKeyDown(Keys.A)
               || gamePadState.DPad.Left == ButtonState.Pressed
@@ -230,6 +277,40 @@ namespace MonoGame_Dynamics_Final_Project
             {
                 playerShip.Left();
                 keyPressed = true;
+
+                if (animationResetSwitchL == 0)
+                {
+                    playerShip.resetAnimation();
+                    animationResetSwitchL ++;
+                    playerShip.framesOverride = 6;
+                    playerShip.TextureImage = playerLeftTurn;
+                }
+                if (animationResetSwitchL == 1)
+                {
+                    
+                    if (playerShip.frameIndex > 6) { animationResetSwitchL++; }
+                }
+                if (animationResetSwitchL == 2)
+                {
+                    playerShip.resetAnimation();
+                    playerShip.framesOverride = 0;
+                    playerShip.TextureImage = playerLeft;
+                    animationResetSwitchL++;
+                }
+            }
+            else if (keyState.IsKeyUp(Keys.Left)
+              || keyState.IsKeyUp(Keys.A)
+              || gamePadState.DPad.Left == ButtonState.Released
+              || gamePadState.ThumbSticks.Left.X == 0)
+            {
+                if (animationResetSwitchL > 0)
+                {
+                    playerShip.resetAnimation();
+                    playerShip.framesOverride = 0;
+                    animationResetSwitchL = 0;
+                    playerShip.TextureImage = playerTexture;
+                }
+                
             }
             if (keyState.IsKeyDown(Keys.Right)
               || keyState.IsKeyDown(Keys.D)
@@ -238,12 +319,46 @@ namespace MonoGame_Dynamics_Final_Project
             {
                 playerShip.Right();
                 keyPressed = true;
+
+                if (animationResetSwitchR == 0)
+                {
+                    playerShip.resetAnimation();
+                    animationResetSwitchR ++;
+                    playerShip.framesOverride = 6;
+                    playerShip.TextureImage = playerRightTurn;
+                }
+                if (animationResetSwitchR == 1)
+                {
+                    if(playerShip.frameIndex > 6){animationResetSwitchR++;}
+                }
+                if (animationResetSwitchR == 2)
+                {
+                    playerShip.resetAnimation();
+                    playerShip.framesOverride = 0;
+                    playerShip.TextureImage = playerRight;
+                    animationResetSwitchR++;
+                }
+            }
+            else if (keyState.IsKeyUp(Keys.Right)
+              || keyState.IsKeyUp(Keys.D)
+              || gamePadState.DPad.Right == ButtonState.Released
+              || gamePadState.ThumbSticks.Left.X == 0)
+            {
+                if (animationResetSwitchR > 0)
+                {
+                    playerShip.resetAnimation();
+                    playerShip.framesOverride = 0;
+                    animationResetSwitchR = 0;
+                    playerShip.TextureImage = playerTexture;
+                }
+                
             }
             // Primary Weapon
             if (keyState.IsKeyDown(Keys.Space)
               || gamePadState.IsButtonDown(Buttons.RightTrigger))
             {
                 playerShip.shootPrimary(Content);
+
             }
             // Secondary Weapon
             if (oldState.IsKeyUp(Keys.B) && keyState.IsKeyDown(Keys.B))
