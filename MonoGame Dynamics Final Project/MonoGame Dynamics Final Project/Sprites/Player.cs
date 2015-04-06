@@ -244,11 +244,11 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
 
                 if (Position.X > Device.Viewport.Width + frameWidth)
                 {
-                    position.X = 0 - frameWidth;
+                    position.X = 0 + SpriteOrigin.X * Scale;
                 }
                 else if (Position.X < frameWidth*-1)
                 {
-                    position.X = Device.Viewport.Width + frameWidth;
+                    position.X = Device.Viewport.Width - SpriteOrigin.X * Scale;
                 }
 
                 if (Position.Y >= Device.Viewport.Height - SpriteOrigin.Y * Scale)
