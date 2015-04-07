@@ -225,7 +225,6 @@ C:\Users\Andante\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project
 C:\Users\Andante\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\SharpDX.XInput.dll
 C:\Users\Andante\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\SharpDX.RawInput.dll
 C:\Users\Andante\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\SharpDX.Direct3D9.dll
-C:\Users\Andante\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\MonoGame.Framework.xml
 C:\Users\Andante\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\SharpDX.MediaFoundation.xml
 C:\Users\Andante\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\SharpDX.xml
 C:\Users\Andante\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\SharpDX.XAudio2.xml
@@ -277,3 +276,6 @@ C:\Users\Kai\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\Mon
 C:\Users\Kai\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\obj\x86\Debug\MonoGame Dynamics Final Project.pdb
 C:\Users\Hau5\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\Commandunit-idle.png
 C:\Users\Hau5\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\synth-unit.png
+C:\Users\Andante\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\Commandunit-idle.png
+C:\Users\Andante\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\synth-unit.png
+C:\Users\Andante\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Lidgren.Network.dll

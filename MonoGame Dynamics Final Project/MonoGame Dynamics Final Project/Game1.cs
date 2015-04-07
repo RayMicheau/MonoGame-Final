@@ -256,6 +256,7 @@ namespace MonoGame_Dynamics_Final_Project
             {
                 if (playerShip.HasShot)
                 {
+                    
                     playerShip.HasShot = false;
                     playerShip.ForcePull = true;
                     playerShip.Secondary[0].ElapsedTime = gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
