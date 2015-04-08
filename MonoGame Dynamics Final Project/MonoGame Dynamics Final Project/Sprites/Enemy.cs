@@ -28,11 +28,202 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             set { mass = value; }
         }
 
-        public Enemy(ContentManager content, GraphicsDevice Device, Vector2 position)
-            : base(10,10,content.Load<Texture2D>("Images/Commandunit0"), position, new Vector2(20, 20), true, 1f)
+        protected float tileWidth;
+        protected float tileHeight;
+        protected float windowHeight;
+
+        public Enemy(ContentManager content, GraphicsDevice Device, int spotinFormation, string formationType)
+            : base(10,10,content.Load<Texture2D>("Images/Commandunit0"), new Vector2(0, 0), new Vector2(0, 0), true, 1f)
         {
             mass = 5f;
+
+            tileWidth = Device.Adapter.CurrentDisplayMode.Width / 7f;
+            tileHeight = Device.Adapter.CurrentDisplayMode.Height / 5f;
+            windowHeight = Device.Adapter.CurrentDisplayMode.Height;
+
+            setEnemy(spotinFormation, formationType);
         }
 
+        // This method sets the enemy position depending on it's spot in the formation            
+        private void setEnemy(int spotinFormation, string formationType)
+        {        
+            switch(formationType)
+            {
+                case "delta": // formation size: 10
+                    switch(spotinFormation)
+                    {
+                        case 1:
+                            position = getGridPos(4, 5);
+                            break;
+                        case 2:
+                            position = getGridPos(3, 4);
+                            break;
+                        case 3:
+                            position = getGridPos(5, 4);
+                            break;
+                        case 4:
+                            position = getGridPos(2, 3);
+                            break;
+                        case 5:
+                            position = getGridPos(4, 3);
+                            break;
+                        case 6:
+                            position = getGridPos(6, 3);
+                            break;
+                        case 7:
+                            position = getGridPos(1, 2);
+                            break;
+                        case 8:
+                            position = getGridPos(3, 2);
+                            break;
+                        case 9:
+                            position = getGridPos(5, 2);
+                            break;
+                        case 10:
+                            position = getGridPos(7, 2);
+                            break;
+                        default:
+                            Console.WriteLine("Could not set position {0} in {1} formation", spotinFormation, formationType);
+                            break;
+                    }
+                    break;
+
+                case "v": // formation size: 7
+                    switch(spotinFormation)
+                    {
+                        case 1:
+                            position = getGridPos(4, 5);
+                            break;
+                        case 2:
+                            position = getGridPos(3, 4);
+                            break;
+                        case 3:
+                            position = getGridPos(5, 4);
+                            break;
+                        case 4:
+                            position = getGridPos(2, 3);
+                            break;
+                        case 5:
+                            position = getGridPos(6, 3);
+                            break;
+                        case 6:
+                            position = getGridPos(1, 2);
+                            break;
+                        case 7:
+                            position = getGridPos(7, 2);
+                            break;
+                        default:
+                            Console.WriteLine("Could not set position {0} in {1} formation", spotinFormation, formationType);
+                            break;
+                    }
+                    break;
+
+                case "line": // formation size: 5
+                    switch (spotinFormation)
+                    {
+                        case 1:
+                            position = getGridPos(2, 5);
+                            break;
+                        case 2:
+                            position = getGridPos(3, 5);
+                            break;
+                        case 3:
+                            position = getGridPos(4, 5);
+                            break;
+                        case 4:
+                            position = getGridPos(5, 5);
+                            break;
+                        case 5:
+                            position = getGridPos(6, 5);
+                            break;
+                        default:
+                            Console.WriteLine("Could not set position {0} in {1} formation", spotinFormation, formationType);
+                            break;
+                    }
+                    break;
+
+                case "diamond": // formation size: 9
+                    switch (spotinFormation)
+                    {
+                        case 1:
+                            position = getGridPos(4, 5);
+                            break;
+                        case 2:
+                            position = getGridPos(3, 4);
+                            break;
+                        case 3:
+                            position = getGridPos(5, 4);
+                            break;
+                        case 4:
+                            position = getGridPos(2, 3);
+                            break;
+                        case 5:
+                            position = getGridPos(4, 3);
+                            break;
+                        case 6:
+                            position = getGridPos(6, 3);
+                            break;
+                        case 7:
+                            position = getGridPos(3, 2);
+                            break;
+                        case 8:
+                            position = getGridPos(5, 2);
+                            break;
+                        case 9:
+                            position = getGridPos(4, 1);
+                            break;
+                        default:
+                            Console.WriteLine("Could not set position {0} in {1} formation", spotinFormation, formationType);
+                            break;
+                    }
+                    break;
+
+                case "shockwave": // formation size: 9
+                    switch (spotinFormation)
+                    {
+                        case 1:
+                            position = getGridPos(4, 5);
+                            break;
+                        case 2:
+                            position = getGridPos(3, 4);
+                            break;
+                        case 3:
+                            position = getGridPos(5, 4);
+                            break;
+                        case 4:
+                            position = getGridPos(2, 3);
+                            break;
+                        case 5:
+                            position = getGridPos(4, 3);
+                            break;
+                        case 6:
+                            position = getGridPos(6, 3);
+                            break;
+                        case 7:
+                            position = getGridPos(4, 2);
+                            break;
+                        case 8:
+                            position = getGridPos(3, 1);
+                            break;
+                        case 9:
+                            position = getGridPos(5, 1);
+                            break;
+                        default:
+                            Console.WriteLine("Could not set position {0} in {1} formation", spotinFormation, formationType);
+                            break;
+                    }
+                    break;
+
+                default:
+                    Console.WriteLine("Could not load formation type");
+                    break;
+            }
+        }
+
+        // grid helper method
+        private Vector2 getGridPos(int x, int y)
+        {
+            return new Vector2(x * tileWidth, (y * tileHeight) /*- windowHeight*/);
+        }
     }
 }

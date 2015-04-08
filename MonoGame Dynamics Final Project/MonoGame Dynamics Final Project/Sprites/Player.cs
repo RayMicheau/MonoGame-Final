@@ -289,6 +289,15 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                     weapon[i].Update(gameTime);
                 }
 
+                if (primaryType == "laser")
+                {
+                    weapon[i].Update(gameTime, enemyWave);
+                }
+                else
+                {
+                    weapon[i].Update(gameTime);
+                }
+
                 if (weapon[i].offScreen)
                 {
                     // updates ammo count

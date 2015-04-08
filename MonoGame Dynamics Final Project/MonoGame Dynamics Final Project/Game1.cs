@@ -23,16 +23,24 @@ namespace MonoGame_Dynamics_Final_Project
 
     public enum Level
     {
-        Level1 = 1,
+        Null,
+        Level1,
         Level2,
         Level3
     }
 
     public enum Wave
     {
-        Wave1 = 1,
+        Null,
+        Wave1,
         Wave2,
-        Wave3
+        Wave3,
+        Wave4,
+        Wave5,
+        Wave6,
+        Wave7,
+        Wave8,
+        Wave9
     }
 
     public class Game1 : Game
@@ -42,7 +50,9 @@ namespace MonoGame_Dynamics_Final_Project
         SpriteBatch spriteBatch;
 
         GameState gameState = GameState.Play;
-        
+        Wave wave = Wave.Null;
+        Level level = Level.Null;
+
         public static Random random;
 
         // background
@@ -61,8 +71,9 @@ namespace MonoGame_Dynamics_Final_Project
         Player follower;
 
         // enemies
-        int maxEnemies;
+        int currentWave;
         List<Enemy> Enemywave = new List<Enemy>();
+        List<Enemy>[] WaveDef = new List<Enemy>[9];
 
        // Vector2 gravityForce = new Vector2(0.0f, 150.0f);
         Vector2 offset = new Vector2(500, 500);
@@ -130,6 +141,7 @@ namespace MonoGame_Dynamics_Final_Project
 
                 follower = new Follower(32,32,Content, playerShip,new Vector2(0, playerShip.frameHeight+20),1.0f, true);
 
+<<<<<<< HEAD
                 animationResetSwitchU = 0;
                 animationResetSwitchL = 0;
                 animationResetSwitchR = 0;
@@ -141,6 +153,10 @@ namespace MonoGame_Dynamics_Final_Project
                     Enemy enemy = new Enemy(Content, GraphicsDevice, position);
                     Enemywave.Add(enemy);
                 }
+=======
+                LoadWaves();
+                LoadLevel(1, 1);
+>>>>>>> origin/master
             }
             catch (ContentLoadException)
             {
@@ -366,6 +382,7 @@ namespace MonoGame_Dynamics_Final_Project
             {
                 if (playerShip.HasShot)
                 {
+                    
                     playerShip.HasShot = false;
                     playerShip.ForcePull = true;
                     playerShip.Secondary[0].ElapsedTime = gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
@@ -392,18 +409,115 @@ namespace MonoGame_Dynamics_Final_Project
                 myBackground.Draw(spriteBatch);
                 playerShip.Draw(4, 0.2f, 64, 70,spriteBatch, gameTime);
                 follower.Draw(4, 0.1f, 32, 32, spriteBatch, gameTime);
-                /*foreach (Enemy enemy in Enemywave)
+                foreach (Enemy enemy in Enemywave)
                 {
-                    enemy.Draw(spriteBatch, gameTime);
-                }*/
+                    enemy.Draw(4, 0.2f, 64, 70,spriteBatch, gameTime);
+                }
                 spriteBatch.End();
                 base.Draw(gameTime);
             }
         }
 
-        public void LoadLevel()
+        // Load the enemy level/waves here
+        public void LoadLevel(int levelNum, int waveNum)
         {
+            switch(levelNum)
+            {
+                case 1:
+                    level = Level.Level1;
+                    switch(waveNum)
+                    {
+                        case 1:
+                            wave = Wave.Wave1;
+                            Enemywave = WaveDef[0];
+                            break;
+                        case 2:
+                            wave = Wave.Wave2;
+                            break;
+                        case 3:
+                            wave = Wave.Wave3;
+                            break;
+                        default:
+                            Console.WriteLine("Could not load wave (1-3)");
+                            break;
+                    }
+                    break;
+                case 2:
+                    level = Level.Level2;
+                    switch (levelNum)
+                    {
+                        case 1:
+                            wave = Wave.Wave4;
+                            break;
+                        case 2:
+                            wave = Wave.Wave5;
+                            break;
+                        case 3:
+                            wave = Wave.Wave6;
+                            break;
+                        default:
+                            Console.WriteLine("Could not load wave (4-6)");
+                            break;
+                    }
+                    break;
+                case 3:
+                    level = Level.Level3;
+                    switch (levelNum)
+                    {
+                        case 1:
+                            wave = Wave.Wave7;
+                            break;
+                        case 2:
+                            wave = Wave.Wave8;
+                            break;
+                        case 3:
+                            wave = Wave.Wave9;
+                            break;
+                        default:
+                            Console.WriteLine("Could not load wave (7-9)");
+                            break;
+                    }
+                    break;
+                default:
+                    Console.WriteLine("Could not load Level");
+                    break;
+            }
+        }
 
+        // Define the enemy waves here
+        public void LoadWaves()
+        {
+            Enemy enemy;
+
+            // Wave 1
+            WaveDef[0] = new List<Enemy>();
+            //formationSize = 10;
+            enemy = new Enemy(Content, GraphicsDevice, 6, "delta");
+            WaveDef[0].Add(enemy);
+
+            // Wave 2
+            WaveDef[1] = new List<Enemy>();
+
+            // Wave 3
+            WaveDef[2] = new List<Enemy>();
+
+            // Wave 4
+            WaveDef[3] = new List<Enemy>();
+
+            // Wave 5
+            WaveDef[4] = new List<Enemy>();
+
+            // Wave 6
+            WaveDef[5] = new List<Enemy>();
+
+            // Wave 7
+            WaveDef[6] = new List<Enemy>();
+
+            // Wave 8
+            WaveDef[7] = new List<Enemy>();
+
+            // Wave 9
+            WaveDef[8] = new List<Enemy>();
         }
     }
 }
