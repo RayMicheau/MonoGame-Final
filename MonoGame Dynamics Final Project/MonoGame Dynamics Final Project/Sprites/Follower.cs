@@ -40,26 +40,21 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         {
             float timeLapse = (float)(gameTime.ElapsedGameTime.TotalSeconds);
 
-            directionVector = Position - (player.Position + Offset);
-            float vectorMagnitude = Convert.ToSingle(Math.Sqrt(Math.Pow(directionVector.X, 2) + Math.Pow(directionVector.Y, 2)));
-            directionVector /= vectorMagnitude;
-
-            float velocityMagnitude = Convert.ToSingle(Math.Sqrt(Math.Pow(player.Velocity.X, 2) + Math.Pow(player.Velocity.Y, 2)));
-           if (player.isMoving && vectorMagnitude>2)
+           if (player.isMoving)
            {
-               
+               directionVector = Position - (player.Position + Offset);
+               float vectorMagnitude = Convert.ToSingle(Math.Sqrt(Math.Pow(directionVector.X, 2) + Math.Pow(directionVector.Y, 2)));
+               directionVector /= vectorMagnitude;
                if (readyCounter.X < 10)
                {
                    readyCounter += new Vector2(0.5f, 0.5f);
-                   readyCounter += new Vector2(-20.0f, -20.0f)/velocityMagnitude;
                }
            }
            Position = player.Position + Offset + directionVector * readyCounter;
 
-           if (!player.isMoving && readyCounter.X > 0)
+           if (!player.isMoving && readyCounter.X != 0)
            {
-
-               readyCounter += new Vector2(-1f, -1f);
+               readyCounter += new Vector2(-0.5f, -0.5f);
            }
             
         }
