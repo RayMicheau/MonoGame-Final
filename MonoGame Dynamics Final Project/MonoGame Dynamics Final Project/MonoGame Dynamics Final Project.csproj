@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="animateSprite.cs" />
+    <Compile Include="Menu.cs" />
     <Compile Include="Sprites\Enemy.cs" />
     <Compile Include="Sprites\Follower.cs" />
     <Compile Include="Game1.cs" />
