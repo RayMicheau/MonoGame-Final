@@ -122,6 +122,12 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             get { return hasShot; }
             set { hasShot = value; }
         }
+        private bool hasShotPrim;
+        public bool HasShotPrim
+        {
+            get { return hasShotPrim; }
+            set { hasShotPrim = value; }
+        }
         private bool forcePull;
         public bool ForcePull
         {
@@ -136,7 +142,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             set { health = value; }
         }
 
-
+        public float timer;
         public int frameWidth;
         public int frameHeight;
 
@@ -162,7 +168,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             Alive = true;
             isMoving = false;
             textureData = new Color[TextureImage.Width * TextureImage.Height];
-            TextureImage.GetData(textureData);
+            textureImage.GetData(textureData);
             primary =  new List<Weapon>();
             secondary = new List<Weapon>();
             
@@ -173,8 +179,9 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             //setWeapon("helixMissile", 2);
             setWeapon("homingMissile", 2);
             setWeapon("laser", 3);
-            setWeapon("rail", 4);
+            //setWeapon("rail", 4);
             hasShot = false;
+            hasShotPrim = false;
             forcePull = false;
             health = 100;
         }
@@ -185,9 +192,6 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             float timeLapse = (float)(gameTime.ElapsedGameTime.TotalSeconds);
             if (Alive)
             {
-                textureData = new Color[TextureImage.Width * TextureImage.Height];
-                TextureImage.GetData(textureData);
-
                 spriteBatch.Draw(TextureImage,
                     Position,
                     animatedSprite(framenum, frameTime, FrameWidth, FrameHeight, TextureImage, timeLapse),
@@ -247,7 +251,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
 
                 if (Position.X > Device.Viewport.Width + frameWidth)
                 {
-                    position.X = frameWidth*-1;
+                    position.X = 0 - frameWidth;
                 }
                 else if (Position.X < frameWidth*-1)
                 {
@@ -289,13 +293,19 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                     weapon[i].Update(gameTime);
                 }
 
-                if (primaryType == "laser")
+                switch (primaryType)
                 {
-                    weapon[i].Update(gameTime, enemyWave);
-                }
-                else
-                {
-                    weapon[i].Update(gameTime);
+                    case "laser":
+                        weapon[i].Update(gameTime);
+                        break;
+
+                    case "rail":
+                        weapon[i].Update(gameTime);
+                        break;
+
+                    default:
+                        weapon[i].Update(gameTime);
+                        break;
                 }
 
                 if (weapon[i].offScreen)
@@ -368,7 +378,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         public void Up()
         {
             isMoving = true;
-            velocity.Y -= InitialVelocity.Y;
+            velocity.Y -= InitialVelocity.Y;;
         }
 
         public void Down()
@@ -441,15 +451,15 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         }
 
         // Chooses which primary weapon to shoot
-        public virtual void shootPrimary(ContentManager content)
+        public virtual void shootPrimary(ContentManager content, GameTime gameTime)
         {
             if (primaryType == "laser")
             {
-                shootLaser(content);
+                shootLaser(content, gameTime);
             }
             if (primaryType == "rail")
             {
-                shootRail(content);
+                shootRail(content, gameTime);
             }
         }
 
@@ -500,16 +510,34 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             secondary.Add(missile);
         }
 
-        public void shootLaser(ContentManager content)
+        public void shootLaser(ContentManager content, GameTime gameTime)
         {
-            BasicLaser laser = new BasicLaser(content, new Vector2(position.X, position.Y - spriteOrigin.Y), 500f);
-            primary.Add(laser);
+            timer += (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+            if (hasShotPrim && timer <= 0.5f)
+            {
+                Velocity = new Vector2(0.0f, 0.0f);
+                BasicLaser laser = new BasicLaser(content, new Vector2(position.X, position.Y - spriteOrigin.Y), 500f);
+                primary.Add(laser);
+            }
+            if (timer > 0.8f)
+            {
+                timer = 0.0f;
+            }
         }
 
-        public void shootRail(ContentManager content)
+        public void shootRail(ContentManager content, GameTime gameTime)
         {
-            Rail rail = new Rail(content, new Vector2(position.X, position.Y - spriteOrigin.Y), 300f);
-            primary.Add(rail);
+            timer += (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+            if (hasShotPrim && timer <= 0.1f)
+            {
+                Rail rail = new Rail(content, new Vector2(position.X, position.Y - spriteOrigin.Y), 3000f);
+                primary.Add(rail);
+                Velocity = new Vector2(0.0f, 0.0f);
+            }
+            if (timer > 2.0f)
+            {
+                timer = 0.0f;
+            }
         }
         #endregion
 
