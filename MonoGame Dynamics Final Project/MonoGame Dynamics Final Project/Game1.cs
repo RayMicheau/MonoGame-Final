@@ -17,6 +17,7 @@ namespace MonoGame_Dynamics_Final_Project
     public enum GameState
     {
         SplashScreen, 
+        StartMenu,
         Play, 
         Exit
     }
@@ -49,7 +50,7 @@ namespace MonoGame_Dynamics_Final_Project
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        GameState gameState = GameState.Play;
+        GameState gameState = GameState.StartMenu;
         Wave wave = Wave.Null;
         Level level = Level.Null;
 
@@ -59,6 +60,13 @@ namespace MonoGame_Dynamics_Final_Project
         int windowWidth, windowHeight;
         Texture2D[] background; // Current Resolution 480w x 800h
         ScrollingBackground myBackground;
+
+
+        // menu
+        Texture2D startMenuScreen;
+        Menu menuScreen;
+        SpriteFont menuFont;
+
 
         // player
         Texture2D playerTexture;
@@ -98,10 +106,15 @@ namespace MonoGame_Dynamics_Final_Project
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            string[] menuItems = { "Launch Ship","How to Play", "Exit Cockpit" };
             try
             {
                 /*Song song = Content.Load<Song>("TellMe");
                 MediaPlayer.Play(song);*/
+
+                menuFont = Content.Load<SpriteFont>("Fonts/titleFont");
+                menuScreen = new Menu(GraphicsDevice, menuFont, menuItems);
+                startMenuScreen = Content.Load<Texture2D>("Images/Backgrounds/Menu");
 
                 windowWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
                 windowHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
@@ -130,10 +143,10 @@ namespace MonoGame_Dynamics_Final_Project
                 LoadWaves();
                 LoadLevel(1, 1);
             }
-            catch (ContentLoadException)
+            catch (ContentLoadException e)
             {
                 //Will properly display error messages soon
-                Console.WriteLine("Could not load a thing!");
+                Console.WriteLine("Could not load " + e.Message + " at" + e.Source);
             }
             
         }
@@ -211,83 +224,122 @@ namespace MonoGame_Dynamics_Final_Project
             bool keyPressed = false;
             KeyboardState keyState = Keyboard.GetState();
           //  GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
+            if (gameState == GameState.StartMenu)
+            {
+                Rectangle exit = new Rectangle(572, 384, 100, 50);
+                Rectangle start = new Rectangle(572, 274, 200, 50);
+                Rectangle instr = new Rectangle(572, 344, 150, 50);
+                menuScreen.Update();
 
-            if (keyState.IsKeyDown(Keys.Up)
-              || keyState.IsKeyDown(Keys.W))
-            {
-                playerShip.Up();
-                keyPressed = true;
-            }
-            if (keyState.IsKeyDown(Keys.Down)
-              || keyState.IsKeyDown(Keys.S))
-            {
-                playerShip.Down();
-                keyPressed = true;
-            }
-            if (keyState.IsKeyDown(Keys.Left)
-              || keyState.IsKeyDown(Keys.A))
-            {
-                playerShip.Left();
-                keyPressed = true;
-            }
-            if (keyState.IsKeyDown(Keys.Right)
-              || keyState.IsKeyDown(Keys.D))
-            {
-                playerShip.Right();
-                keyPressed = true;
-            }
-            // Primary Weapon
-            if (keyState.IsKeyDown(Keys.Space))
-            {
-                playerShip.HasShotPrim = true;
-                if (playerShip.HasShotPrim) { 
-                    playerShip.shootPrimary(Content, gameTime);
-                }
-                else
+                if (menuScreen.ItemSelected == 3)
                 {
-                    playerShip.HasShotPrim = false;
+                    this.Exit();
                 }
-
-            }
-            // Secondary Weapon
-            if (oldState.IsKeyUp(Keys.B) && keyState.IsKeyDown(Keys.B))
-              //|| gamePadState.IsButtonDown(Buttons.LeftTrigger))
-            {
-                if (playerShip.HasShot)
+                else if (menuScreen.ItemSelected == 1)
                 {
-                    playerShip.HasShot = false;
-                    playerShip.ForcePull = true;
-                    playerShip.Secondary[0].ElapsedTime = gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+                    gameState = GameState.Play;
                 }
-                else if (!playerShip.HasShot)
-                {
-                    playerShip.shootSecondary(Content);
-                }
-            }
-            if (!keyPressed)
-            {
-                playerShip.Idle();
             }
 
-            oldState = keyState;
+            if (gameState == GameState.Play)
+            {
+                if (keyState.IsKeyDown(Keys.Up)
+                  || keyState.IsKeyDown(Keys.W))
+                {
+                    playerShip.Up();
+                    keyPressed = true;
+                }
+                if (keyState.IsKeyDown(Keys.Down)
+                  || keyState.IsKeyDown(Keys.S))
+                {
+                    playerShip.Down();
+                    keyPressed = true;
+                }
+                if (keyState.IsKeyDown(Keys.Left)
+                  || keyState.IsKeyDown(Keys.A))
+                {
+                    playerShip.Left();
+                    keyPressed = true;
+                }
+                if (keyState.IsKeyDown(Keys.Right)
+                  || keyState.IsKeyDown(Keys.D))
+                {
+                    playerShip.Right();
+                    keyPressed = true;
+                }
+                // Primary Weapon
+                if (keyState.IsKeyDown(Keys.Space))
+                {
+                    playerShip.HasShotPrim = true;
+                    if (playerShip.HasShotPrim)
+                    {
+                        playerShip.shootPrimary(Content, gameTime);
+                    }
+                    else
+                    {
+                        playerShip.HasShotPrim = false;
+                    }
+
+                }
+                // Secondary Weapon
+                if (oldState.IsKeyUp(Keys.B) && keyState.IsKeyDown(Keys.B))
+                //|| gamePadState.IsButtonDown(Buttons.LeftTrigger))
+                {
+                    if (playerShip.HasShot)
+                    {
+                        playerShip.HasShot = false;
+                        playerShip.ForcePull = true;
+                        playerShip.Secondary[0].ElapsedTime = gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+                    }
+                    else if (!playerShip.HasShot)
+                    {
+                        playerShip.shootSecondary(Content);
+                    }
+                }
+                if (!keyPressed)
+                {
+                    playerShip.Idle();
+                }
+
+                oldState = keyState;
+            }
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            if (gameState == GameState.Play)
+            switch (gameState)
             {
-                GraphicsDevice.Clear(Color.Black);
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
-                myBackground.Draw(spriteBatch);
-                playerShip.Draw(4, 0.2f, 64, 70,spriteBatch, gameTime);
-                follower.Draw(4, 0.1f, 32, 32, spriteBatch, gameTime);
-                foreach (Enemy enemy in Enemywave)
-                {
-                    enemy.Draw(4, 0.2f, 64, 70,spriteBatch, gameTime);
-                }
-                spriteBatch.End();
-                base.Draw(gameTime);
+                case GameState.SplashScreen:
+
+                    break;
+
+                case GameState.StartMenu:
+                    spriteBatch.Begin();
+                    myBackground.Draw(spriteBatch);
+                    spriteBatch.Draw(startMenuScreen, new Rectangle(Window.ClientBounds.Width / 2 - startMenuScreen.Width / 2, 20, startMenuScreen.Width, startMenuScreen.Height), Color.White);
+                    menuScreen.Draw(spriteBatch);
+                    spriteBatch.End();
+                    break;
+
+                case GameState.Play:
+                    GraphicsDevice.Clear(Color.Black);
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
+                    myBackground.Draw(spriteBatch);
+                    playerShip.Draw(4, 0.2f, 64, 70, spriteBatch, gameTime);
+                    follower.Draw(4, 0.1f, 32, 32, spriteBatch, gameTime);
+                    foreach (Enemy enemy in Enemywave)
+                    {
+                        enemy.Draw(4, 0.2f, 64, 70, spriteBatch, gameTime);
+                    }
+                    spriteBatch.End();
+                    base.Draw(gameTime);
+                    break;
+
+                case GameState.Exit:
+
+                    break;
             }
+
         }
 
         // Load the enemy level/waves here
