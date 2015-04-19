@@ -72,7 +72,7 @@ namespace MonoGame_Dynamics_Final_Project
                 if (size.X > width)
                     width = size.X;
                 //add all heights
-                height += spriteFont.LineSpacing + 5;
+                height += spriteFont.LineSpacing;
             }
             position = new Vector2((Device.Viewport.Width - width) / 2, (Device.Viewport.Height - height) / 2);
         }
@@ -132,7 +132,7 @@ namespace MonoGame_Dynamics_Final_Project
                 {
                     hilight = normal;
                 }
-                spriteBatch.DrawString(spriteFont, menuItems[i], location + new Vector2(460, 0), hilight, 0.0f, Vector2.Zero, 0.25f, SpriteEffects.None, 0.0f);
+                spriteBatch.DrawString(spriteFont, menuItems[i], location + new Vector2(0, 100), hilight, 0.0f, Vector2.Zero, 0.25f, SpriteEffects.None, 0.0f);
                 location.Y += spriteFont.LineSpacing + 5;
             }
         }

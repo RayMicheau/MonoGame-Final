@@ -149,7 +149,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         public bool isMoving;
 
         #endregion
-
+        
         public Player(int FrameWidth, int FrameHeight, Texture2D textureImage, Vector2 position, Vector2 velocity, bool setOrig, float scale)
         {
             frameWidth = FrameWidth;

@@ -66,7 +66,7 @@ namespace MonoGame_Dynamics_Final_Project
         Texture2D startMenuScreen;
         Menu menuScreen;
         SpriteFont menuFont;
-
+        Color customColor;
 
         // player
         Texture2D playerTexture;
@@ -106,7 +106,10 @@ namespace MonoGame_Dynamics_Final_Project
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            string[] menuItems = { "Launch Ship","How to Play", "Exit Cockpit" };
+            string[] menuItems = { "Launch Ship", "How to Fly", "Exit Cockpit" };
+            customColor.R = 200;
+            customColor.G = 0;
+            customColor.B = 255;
             try
             {
                 /*Song song = Content.Load<Song>("TellMe");
@@ -114,7 +117,7 @@ namespace MonoGame_Dynamics_Final_Project
 
                 menuFont = Content.Load<SpriteFont>("Fonts/titleFont");
                 menuScreen = new Menu(GraphicsDevice, menuFont, menuItems);
-                startMenuScreen = Content.Load<Texture2D>("Images/Backgrounds/Menu");
+                startMenuScreen = Content.Load<Texture2D>("Images/Backgrounds/MenuTwo");
 
                 windowWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
                 windowHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
@@ -315,9 +318,11 @@ namespace MonoGame_Dynamics_Final_Project
 
                 case GameState.StartMenu:
                     spriteBatch.Begin();
+                    GraphicsDevice.Clear(Color.Black);
                     myBackground.Draw(spriteBatch);
-                    spriteBatch.Draw(startMenuScreen, new Rectangle(Window.ClientBounds.Width / 2 - startMenuScreen.Width / 2, 20, startMenuScreen.Width, startMenuScreen.Height), Color.White);
+                    spriteBatch.Draw(startMenuScreen, new Vector2(0,0),null, Color.White, 0.0f, Vector2.Zero, 0.8f, SpriteEffects.None, 0.0f);
                     menuScreen.Draw(spriteBatch);
+                    spriteBatch.DrawString(menuFont, "Cataclysm", new Vector2(100, 0), customColor);
                     spriteBatch.End();
                     break;
 
