@@ -147,6 +147,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         public int frameHeight;
 
         public bool isMoving;
+        public bool firstMove = true;
 
         #endregion
         
@@ -405,10 +406,21 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             }
             
         }
+        public virtual void Menu()
+        {
+            isMoving = false;
+            Velocity = new Vector2(0, 0);
+            Position = new Vector2(800, 250);
+        }
         public virtual void Idle()
         {
             isMoving = false;
             Velocity = Velocity * .98f;
+            if (firstMove)
+            {
+                Position = new Vector2(800, 700);
+                firstMove = false;
+            }
         }
         #endregion
 

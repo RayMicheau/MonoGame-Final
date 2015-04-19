@@ -242,6 +242,7 @@ namespace MonoGame_Dynamics_Final_Project
                 {
                     gameState = GameState.Play;
                 }
+                playerShip.Menu();
             }
 
             if (gameState == GameState.Play)
@@ -322,6 +323,7 @@ namespace MonoGame_Dynamics_Final_Project
                     myBackground.Draw(spriteBatch);
                     spriteBatch.Draw(startMenuScreen, new Vector2(0,0),null, Color.White, 0.0f, Vector2.Zero, 0.8f, SpriteEffects.None, 0.0f);
                     menuScreen.Draw(spriteBatch);
+                    playerShip.Draw(4, 0.2f, 64, 70, spriteBatch, gameTime);
                     spriteBatch.DrawString(menuFont, "Cataclysm", new Vector2(100, 0), customColor);
                     spriteBatch.End();
                     break;
