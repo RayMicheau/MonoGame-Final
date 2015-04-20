@@ -328,12 +328,10 @@ namespace MonoGame_Dynamics_Final_Project
                     spriteBatch.Begin();
                     spriteBatch.Draw(spaceBackground, Vector2.Zero, Color.White);
                     myBackground.Draw(spriteBatch);
-                   
                     spriteBatch.Draw(startMenuScreen, new Rectangle(0,0,GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
-
                     menuScreen.Draw(spriteBatch);
                     playerShip.Draw(4, 0.2f, 64, 70, spriteBatch, gameTime);
-                    spriteBatch.DrawString(menuFont, "Cataclysm", new Vector2(100, 0), customColor);
+                    spriteBatch.DrawString(menuFont, "Cataclysm", new Vector2(GraphicsDevice.Viewport.Width / 10, 0), customColor);
                     spriteBatch.End();
                     break;
 
