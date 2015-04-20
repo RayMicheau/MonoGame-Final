@@ -22,6 +22,7 @@ namespace MonoGame_Dynamics_Final_Project
         Exit
     }
 
+
     public enum Level
     {
         Null,
@@ -60,6 +61,7 @@ namespace MonoGame_Dynamics_Final_Project
         int windowWidth, windowHeight;
         Texture2D[] background; // Current Resolution 480w x 800h
         ScrollingBackground myBackground;
+        Texture2D spaceBackground;
 
 
         // menu
@@ -121,6 +123,7 @@ namespace MonoGame_Dynamics_Final_Project
 
                 windowWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
                 windowHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+                
                 random = new Random();
 
                 // background
@@ -132,6 +135,8 @@ namespace MonoGame_Dynamics_Final_Project
                 }
                 myBackground.Load(GraphicsDevice, background, background.Length, 0.5f); // change float to change animation speed           
 
+
+                spaceBackground = Content.Load<Texture2D>("Images/Backgrounds/SPACE");
                 // player sprites
                 playerTexture = Content.Load<Texture2D>("Images/Animations/Commandunit-idle");
                 playerShip = new Player(64,70,playerTexture,
@@ -313,15 +318,19 @@ namespace MonoGame_Dynamics_Final_Project
         {
             switch (gameState)
             {
+
+                    
                 case GameState.SplashScreen:
 
                     break;
 
                 case GameState.StartMenu:
                     spriteBatch.Begin();
-                    GraphicsDevice.Clear(Color.Black);
+                    spriteBatch.Draw(spaceBackground, Vector2.Zero, Color.White);
                     myBackground.Draw(spriteBatch);
-                    spriteBatch.Draw(startMenuScreen, new Vector2(0,0),null, Color.White, 0.0f, Vector2.Zero, 0.8f, SpriteEffects.None, 0.0f);
+                   
+                    spriteBatch.Draw(startMenuScreen, new Rectangle(0,0,GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
+
                     menuScreen.Draw(spriteBatch);
                     playerShip.Draw(4, 0.2f, 64, 70, spriteBatch, gameTime);
                     spriteBatch.DrawString(menuFont, "Cataclysm", new Vector2(100, 0), customColor);
@@ -331,6 +340,7 @@ namespace MonoGame_Dynamics_Final_Project
                 case GameState.Play:
                     GraphicsDevice.Clear(Color.Black);
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
+                    spriteBatch.Draw(spaceBackground, Vector2.Zero, Color.White);
                     myBackground.Draw(spriteBatch);
                     playerShip.Draw(4, 0.2f, 64, 70, spriteBatch, gameTime);
                     follower.Draw(4, 0.1f, 32, 32, spriteBatch, gameTime);
@@ -344,6 +354,9 @@ namespace MonoGame_Dynamics_Final_Project
 
                 case GameState.Exit:
 
+                    break;
+                   
+                default:
                     break;
             }
 
@@ -450,5 +463,6 @@ namespace MonoGame_Dynamics_Final_Project
             // Wave 9
             WaveDef[8] = new List<Enemy>();
         }
+
     }
 }

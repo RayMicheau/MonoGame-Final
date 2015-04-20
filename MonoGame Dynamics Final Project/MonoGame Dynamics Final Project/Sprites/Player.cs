@@ -525,13 +525,13 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         public void shootLaser(ContentManager content, GameTime gameTime)
         {
             timer += (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
-            if (hasShotPrim && timer <= 0.5f)
+            if (hasShotPrim && timer <= 0.3f)
             {
-                Velocity = new Vector2(0.0f, 0.0f);
+                Velocity = new Vector2(0, 0);
                 BasicLaser laser = new BasicLaser(content, new Vector2(position.X, position.Y - spriteOrigin.Y), 500f);
                 primary.Add(laser);
             }
-            if (timer > 0.8f)
+            if (timer > 0.5f)
             {
                 timer = 0.0f;
             }
