@@ -359,3 +359,4 @@ C:\GameDev\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Fina
 C:\GameDev\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\SharpDX.Direct3D9.xml
 C:\GameDev\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\obj\x86\Debug\MonoGame Dynamics Final Project.exe
 C:\GameDev\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\obj\x86\Debug\MonoGame Dynamics Final Project.pdb
+C:\GameDev\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\obj\x86\Debug\MonoGame Dynamics Final Project.csprojResolveAssemblyReference.cache

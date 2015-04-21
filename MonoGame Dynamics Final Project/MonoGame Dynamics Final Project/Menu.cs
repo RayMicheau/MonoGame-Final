@@ -74,7 +74,7 @@ namespace MonoGame_Dynamics_Final_Project
                 //add all heights
                 height += spriteFont.LineSpacing;
             }
-            position = new Vector2((Device.Viewport.Width - width) / 2, (Device.Viewport.Height - height) / 2);
+            position = new Vector2((Device.Viewport.Width) / 6, (Device.Viewport.Height - height) / 2);
         }
 
         private bool CheckKey(Keys theKey)

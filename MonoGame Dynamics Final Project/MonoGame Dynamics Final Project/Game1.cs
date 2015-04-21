@@ -18,10 +18,10 @@ namespace MonoGame_Dynamics_Final_Project
     {
         SplashScreen, 
         StartMenu,
+        HelpMenu,
         Play, 
         Exit
     }
-
 
     public enum Level
     {
@@ -61,6 +61,8 @@ namespace MonoGame_Dynamics_Final_Project
         int windowWidth, windowHeight;
         Texture2D[] background; // Current Resolution 480w x 800h
         ScrollingBackground myBackground;
+        /* TESTING BACKGROUND FIX */
+        ScrollingBackground myBGTwo;
         Texture2D spaceBackground;
 
 
@@ -128,14 +130,14 @@ namespace MonoGame_Dynamics_Final_Project
 
                 // background
                 myBackground = new ScrollingBackground();
+                myBGTwo = new ScrollingBackground();
                 background = new Texture2D[3];
                 for (int i = 0; i < background.Length; i++)
                 {
                     background[i] = Content.Load<Texture2D>("Images/Backgrounds/universe0" + (i + 1).ToString());
                 }
-                myBackground.Load(GraphicsDevice, background, background.Length, 0.5f); // change float to change animation speed           
-
-
+                myBackground.Load(GraphicsDevice, background, background.Length, 0.5f, 1); // change float to change animation speed, change last number to change position of background
+                myBGTwo.Load(GraphicsDevice, background, background.Length, 0.5f, 2);
                 spaceBackground = Content.Load<Texture2D>("Images/Backgrounds/SPACE");
                 // player sprites
                 playerTexture = Content.Load<Texture2D>("Images/Animations/Commandunit-idle");
@@ -171,7 +173,7 @@ namespace MonoGame_Dynamics_Final_Project
             // updating scroll speed
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
             myBackground.Update(gameTime, elapsed * 100);
-
+            myBGTwo.Update(gameTime, elapsed * 100);
             UpdateInput(gameTime);
 
             playerShip.Update(gameTime, GraphicsDevice, Enemywave);
@@ -326,8 +328,8 @@ namespace MonoGame_Dynamics_Final_Project
 
                 case GameState.StartMenu:
                     spriteBatch.Begin();
-                    spriteBatch.Draw(spaceBackground, Vector2.Zero, Color.White);
                     myBackground.Draw(spriteBatch);
+                    myBGTwo.Draw(spriteBatch);
                     spriteBatch.Draw(startMenuScreen, new Rectangle(0,0,GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
                     menuScreen.Draw(spriteBatch);
                     playerShip.Draw(4, 0.2f, 64, 70, spriteBatch, gameTime);
@@ -338,8 +340,8 @@ namespace MonoGame_Dynamics_Final_Project
                 case GameState.Play:
                     GraphicsDevice.Clear(Color.Black);
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
-                    spriteBatch.Draw(spaceBackground, Vector2.Zero, Color.White);
                     myBackground.Draw(spriteBatch);
+                    myBGTwo.Draw(spriteBatch);
                     playerShip.Draw(4, 0.2f, 64, 70, spriteBatch, gameTime);
                     follower.Draw(4, 0.1f, 32, 32, spriteBatch, gameTime);
                     foreach (Enemy enemy in Enemywave)

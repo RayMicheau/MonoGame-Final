@@ -531,7 +531,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                 BasicLaser laser = new BasicLaser(content, new Vector2(position.X, position.Y - spriteOrigin.Y), 500f);
                 primary.Add(laser);
             }
-            if (timer > 0.5f)
+            if (timer > 0.85f)
             {
                 timer = 0.0f;
             }
