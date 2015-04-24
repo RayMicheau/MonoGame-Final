@@ -17,19 +17,37 @@ namespace MonoGame_Dynamics_Final_Project
 {
     class animateSprite
     {
-        int frameIndex = 1;
-        int y = 0;
-        int x = 0;
-        float time;
+        public int frameIndex = 1;
+        public int y = 0;
+        public int x = 0;
+        public float time;
         public int FrameWidth;
         public int FrameHeight;
+        public int framesOverride = 0;
+        public float frameTimeOverride = 0f;
 
-        public Rectangle animatedSprite(int frames, float frameTime,int frameWidth, int frameHeight, Texture2D image, float timeLapse) 
+        public void resetAnimation()
+        {
+            frameIndex = 1;
+            y = 0;
+            x = 0;
+            time = 0f;
+        }
+
+        public Rectangle animatedSprite(int frames, float frameTime, int frameWidth, int frameHeight, Texture2D image, float timeLapse)
         {
             FrameWidth = frameWidth;
             FrameHeight = frameHeight;
 
-   
+            if (framesOverride != 0)
+            {
+                frames = framesOverride;
+            }
+            if (frameTimeOverride != 0)
+            {
+                frameTime = frameTimeOverride;
+            }
+
             if (frameIndex == frames + 1)
             {
                 frameIndex = 1;
@@ -37,13 +55,13 @@ namespace MonoGame_Dynamics_Final_Project
                 x = 0;
             }
             // Calculate the source rectangle of the current frame.
-            if (frameIndex == (image.Width/frameWidth)+1)
+            if (frameIndex == (image.Width / frameWidth) + 1)
             {
-                y ++;
+                y++;
                 x = 0;
             }
 
-            Rectangle source = new Rectangle(x * frameWidth, y* frameHeight, frameWidth, frameHeight);
+            Rectangle source = new Rectangle(x * frameWidth, y * frameHeight, frameWidth, frameHeight);
             time += timeLapse;
             while (time > frameTime)
             {

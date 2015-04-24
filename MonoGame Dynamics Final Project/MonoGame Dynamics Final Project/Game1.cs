@@ -18,7 +18,6 @@ namespace MonoGame_Dynamics_Final_Project
     {
         SplashScreen, 
         StartMenu,
-        HelpMenu,
         Play, 
         Exit
     }
@@ -61,19 +60,21 @@ namespace MonoGame_Dynamics_Final_Project
         int windowWidth, windowHeight;
         Texture2D[] background; // Current Resolution 480w x 800h
         ScrollingBackground myBackground;
-        /* TESTING BACKGROUND FIX */
-        ScrollingBackground myBGTwo;
-        Texture2D spaceBackground;
 
 
         // menu
         Texture2D startMenuScreen;
         Menu menuScreen;
         SpriteFont menuFont;
-        Color customColor;
+
 
         // player
         Texture2D playerTexture;
+        Texture2D playerMove;
+        Texture2D playerRight;
+        Texture2D playerLeft;
+        Texture2D playerRightTurn;
+        Texture2D playerLeftTurn;
         Player playerShip;
         Player follower;
 
@@ -87,6 +88,9 @@ namespace MonoGame_Dynamics_Final_Project
 
         // input
         KeyboardState oldState;
+        int animationResetSwitchU;
+        int animationResetSwitchL;
+        int animationResetSwitchR;
         #endregion
 
         public Game1()
@@ -110,10 +114,7 @@ namespace MonoGame_Dynamics_Final_Project
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            string[] menuItems = { "Launch Ship", "How to Fly", "Exit Cockpit" };
-            customColor.R = 200;
-            customColor.G = 0;
-            customColor.B = 255;
+            string[] menuItems = { "Launch Ship","How to Play", "Exit Cockpit" };
             try
             {
                 /*Song song = Content.Load<Song>("TellMe");
@@ -121,26 +122,28 @@ namespace MonoGame_Dynamics_Final_Project
 
                 menuFont = Content.Load<SpriteFont>("Fonts/titleFont");
                 menuScreen = new Menu(GraphicsDevice, menuFont, menuItems);
-                startMenuScreen = Content.Load<Texture2D>("Images/Backgrounds/MenuTwo");
+                startMenuScreen = Content.Load<Texture2D>("Images/Backgrounds/Menu");
 
                 windowWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
                 windowHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
-                
                 random = new Random();
 
                 // background
                 myBackground = new ScrollingBackground();
-                myBGTwo = new ScrollingBackground();
                 background = new Texture2D[3];
                 for (int i = 0; i < background.Length; i++)
                 {
-                    background[i] = Content.Load<Texture2D>("Images/Backgrounds/universe0" + (i + 1).ToString());
+                    background[i] = Content.Load<Texture2D>("Images/Backgrounds/background-level-1");
                 }
-                myBackground.Load(GraphicsDevice, background, background.Length, 0.5f, 1); // change float to change animation speed, change last number to change position of background
-                myBGTwo.Load(GraphicsDevice, background, background.Length, 0.5f, 2);
-                spaceBackground = Content.Load<Texture2D>("Images/Backgrounds/SPACE");
+                myBackground.Load(GraphicsDevice, background, background.Length, 0.5f); // change float to change animation speed           
+
                 // player sprites
                 playerTexture = Content.Load<Texture2D>("Images/Animations/Commandunit-idle");
+                playerMove = Content.Load<Texture2D>("Images/Animations/Commandunit-move");
+                playerRight = Content.Load<Texture2D>("Images/Animations/Commandunit-right");
+                playerLeft = Content.Load<Texture2D>("Images/Animations/Commandunit-left");
+                playerRightTurn = Content.Load<Texture2D>("Images/Animations/Commandunit-Turn");
+                playerLeftTurn = Content.Load<Texture2D>("Images/Animations/Commandunit-Turn-left");
                 playerShip = new Player(64,70,playerTexture,
                     new Vector2(windowWidth / 2, windowHeight - 70),
                     new Vector2(10, 10),
@@ -173,11 +176,21 @@ namespace MonoGame_Dynamics_Final_Project
             // updating scroll speed
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
             myBackground.Update(gameTime, elapsed * 100);
-            myBGTwo.Update(gameTime, elapsed * 100);
+
             UpdateInput(gameTime);
 
             playerShip.Update(gameTime, GraphicsDevice, Enemywave);
             follower.Update(playerShip, gameTime);
+
+            foreach (Enemy enemy in Enemywave)
+            {
+                enemy.Update(gameTime, playerShip);
+
+                foreach (Stingray stingRay in Enemywave)
+                {
+                    stingRay.Update(gameTime, playerShip);
+                }
+            }
 
             // tests for collision of primary shots against enemy
             for (int i = 0; i < Enemywave.Count; i++)
@@ -233,7 +246,7 @@ namespace MonoGame_Dynamics_Final_Project
         {
             bool keyPressed = false;
             KeyboardState keyState = Keyboard.GetState();
-          //  GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
+            GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
             if (gameState == GameState.StartMenu)
             {
                 Rectangle exit = new Rectangle(572, 384, 100, 50);
@@ -249,34 +262,139 @@ namespace MonoGame_Dynamics_Final_Project
                 {
                     gameState = GameState.Play;
                 }
-                playerShip.Menu();
             }
 
             if (gameState == GameState.Play)
             {
                 if (keyState.IsKeyDown(Keys.Up)
-                  || keyState.IsKeyDown(Keys.W))
+               || keyState.IsKeyDown(Keys.W)
+               || gamePadState.DPad.Up == ButtonState.Pressed
+               || gamePadState.ThumbSticks.Left.Y > 0)
                 {
                     playerShip.Up();
                     keyPressed = true;
+
+                    if (animationResetSwitchU == 0 && animationResetSwitchR == 0 && animationResetSwitchL == 0)
+                    {
+                        playerShip.resetAnimation();
+                        playerShip.TextureImage = playerMove;
+                        animationResetSwitchU++;
+                        keyPressed = true;
+                    }
+
+
+                }
+                else if (keyState.IsKeyUp(Keys.Up)
+                  || keyState.IsKeyUp(Keys.W)
+                  || gamePadState.DPad.Up == ButtonState.Released
+                  || gamePadState.ThumbSticks.Left.Y == 0)
+                {
+                    if (animationResetSwitchU > 0)
+                    {
+                        playerShip.resetAnimation();
+                        animationResetSwitchU = 0;
+                        playerShip.TextureImage = playerTexture;
+                    }
+
                 }
                 if (keyState.IsKeyDown(Keys.Down)
-                  || keyState.IsKeyDown(Keys.S))
+                  || keyState.IsKeyDown(Keys.S)
+                  || gamePadState.DPad.Down == ButtonState.Pressed
+                  || gamePadState.ThumbSticks.Left.Y < -0.5f)
                 {
                     playerShip.Down();
                     keyPressed = true;
                 }
+                else if (keyState.IsKeyUp(Keys.Down)
+                  || keyState.IsKeyUp(Keys.S)
+                  || gamePadState.DPad.Down == ButtonState.Released
+                  || gamePadState.ThumbSticks.Left.Y == 0)
+                { }
+
                 if (keyState.IsKeyDown(Keys.Left)
-                  || keyState.IsKeyDown(Keys.A))
+                  || keyState.IsKeyDown(Keys.A)
+                  || gamePadState.DPad.Left == ButtonState.Pressed
+                  || gamePadState.ThumbSticks.Left.X < -0.5f)
                 {
                     playerShip.Left();
                     keyPressed = true;
+
+                    if (animationResetSwitchL == 0)
+                    {
+                        playerShip.resetAnimation();
+                        animationResetSwitchL++;
+                        playerShip.framesOverride = 6;
+                        playerShip.TextureImage = playerLeftTurn;
+                    }
+                    if (animationResetSwitchL == 1)
+                    {
+
+                        if (playerShip.frameIndex > 6) { animationResetSwitchL++; }
+                    }
+                    if (animationResetSwitchL == 2)
+                    {
+                        playerShip.resetAnimation();
+                        playerShip.framesOverride = 0;
+                        playerShip.TextureImage = playerLeft;
+                        animationResetSwitchL++;
+                    }
+                }
+                else if (keyState.IsKeyUp(Keys.Left)
+                  || keyState.IsKeyUp(Keys.A)
+                  || gamePadState.DPad.Left == ButtonState.Released
+                  || gamePadState.ThumbSticks.Left.X == 0)
+                {
+                    if (animationResetSwitchL > 0)
+                    {
+                        playerShip.resetAnimation();
+                        playerShip.framesOverride = 0;
+                        animationResetSwitchL = 0;
+                        animationResetSwitchR = 0;
+                        playerShip.TextureImage = playerTexture;
+                    }
+
                 }
                 if (keyState.IsKeyDown(Keys.Right)
-                  || keyState.IsKeyDown(Keys.D))
+                  || keyState.IsKeyDown(Keys.D)
+                  || gamePadState.DPad.Right == ButtonState.Pressed
+                  || gamePadState.ThumbSticks.Left.X > 0.5f)
                 {
                     playerShip.Right();
                     keyPressed = true;
+
+                    if (animationResetSwitchR == 0)
+                    {
+                        playerShip.resetAnimation();
+                        animationResetSwitchR++;
+                        playerShip.framesOverride = 6;
+                        playerShip.TextureImage = playerRightTurn;
+                    }
+                    if (animationResetSwitchR == 1)
+                    {
+                        if (playerShip.frameIndex > 6) { animationResetSwitchR++; }
+                    }
+                    if (animationResetSwitchR == 2)
+                    {
+                        playerShip.resetAnimation();
+                        playerShip.framesOverride = 0;
+                        playerShip.TextureImage = playerRight;
+                        animationResetSwitchR++;
+                    }
+                }
+                else if (keyState.IsKeyUp(Keys.Right)
+                  || keyState.IsKeyUp(Keys.D)
+                  || gamePadState.DPad.Right == ButtonState.Released
+                  || gamePadState.ThumbSticks.Left.X == 0)
+                {
+                    if (animationResetSwitchR > 0)
+                    {
+                        playerShip.resetAnimation();
+                        playerShip.framesOverride = 0;
+                        animationResetSwitchR = 0;
+                        animationResetSwitchL = 0;
+                        playerShip.TextureImage = playerTexture;
+                    }
+
                 }
                 // Primary Weapon
                 if (keyState.IsKeyDown(Keys.Space))
@@ -320,8 +438,6 @@ namespace MonoGame_Dynamics_Final_Project
         {
             switch (gameState)
             {
-
-                    
                 case GameState.SplashScreen:
 
                     break;
@@ -329,11 +445,8 @@ namespace MonoGame_Dynamics_Final_Project
                 case GameState.StartMenu:
                     spriteBatch.Begin();
                     myBackground.Draw(spriteBatch);
-                    myBGTwo.Draw(spriteBatch);
-                    spriteBatch.Draw(startMenuScreen, new Rectangle(0,0,GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
+                    spriteBatch.Draw(startMenuScreen, new Rectangle(Window.ClientBounds.Width / 2 - startMenuScreen.Width / 2, 20, startMenuScreen.Width, startMenuScreen.Height), Color.White);
                     menuScreen.Draw(spriteBatch);
-                    playerShip.Draw(4, 0.2f, 64, 70, spriteBatch, gameTime);
-                    spriteBatch.DrawString(menuFont, "Cataclysm", new Vector2(GraphicsDevice.Viewport.Width / 10, 0), customColor);
                     spriteBatch.End();
                     break;
 
@@ -341,12 +454,11 @@ namespace MonoGame_Dynamics_Final_Project
                     GraphicsDevice.Clear(Color.Black);
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
                     myBackground.Draw(spriteBatch);
-                    myBGTwo.Draw(spriteBatch);
-                    playerShip.Draw(4, 0.2f, 64, 70, spriteBatch, gameTime);
-                    follower.Draw(4, 0.1f, 32, 32, spriteBatch, gameTime);
+                    playerShip.Draw(4, 0.2f, spriteBatch, gameTime);
+                    follower.Draw(4, 0.1f, spriteBatch, gameTime);
                     foreach (Enemy enemy in Enemywave)
                     {
-                        enemy.Draw(4, 0.2f, 64, 70, spriteBatch, gameTime);
+                        enemy.Draw(spriteBatch, gameTime);
                     }
                     spriteBatch.End();
                     base.Draw(gameTime);
@@ -354,9 +466,6 @@ namespace MonoGame_Dynamics_Final_Project
 
                 case GameState.Exit:
 
-                    break;
-                   
-                default:
                     break;
             }
 
@@ -436,7 +545,8 @@ namespace MonoGame_Dynamics_Final_Project
             // Wave 1
             WaveDef[0] = new List<Enemy>();
             //formationSize = 10;
-            enemy = new Enemy(Content, GraphicsDevice, 6, "delta");
+            enemy = new Stingray(Content, GraphicsDevice, 6, "delta");
+
             WaveDef[0].Add(enemy);
 
             // Wave 2
@@ -463,6 +573,5 @@ namespace MonoGame_Dynamics_Final_Project
             // Wave 9
             WaveDef[8] = new List<Enemy>();
         }
-
     }
 }

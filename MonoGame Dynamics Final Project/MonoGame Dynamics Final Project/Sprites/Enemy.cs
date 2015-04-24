@@ -32,8 +32,10 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         protected float tileHeight;
         protected float windowHeight;
 
-        public Enemy(ContentManager content, GraphicsDevice Device, int spotinFormation, string formationType)
-            : base(10,10,content.Load<Texture2D>("Images/Commandunit0"), new Vector2(0, 0), new Vector2(0, 0), true, 1f)
+        protected Vector2 distanceBetween;
+
+        public Enemy(int width, int height, Texture2D textureImage, GraphicsDevice Device, int spotinFormation, string formationType, float scale)
+            : base(width,height, textureImage, new Vector2(0, 0), new Vector2(0, 0), true, scale)
         {
             mass = 5f;
 
@@ -42,6 +44,14 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             windowHeight = Device.Adapter.CurrentDisplayMode.Height;
 
             setEnemy(spotinFormation, formationType);
+        }
+
+        public void ChasePlayer(Vector2 playerPos)
+        {
+            distanceBetween = playerPos - position;
+            distanceBetween.Normalize();
+            rotation = (float)Math.Atan2(distanceBetween.Y, distanceBetween.X) - MathHelper.PiOver2;
+            position += distanceBetween * 5.0f; // set speed here
         }
 
         // This method sets the enemy position depending on it's spot in the formation            

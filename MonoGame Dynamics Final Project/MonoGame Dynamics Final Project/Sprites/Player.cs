@@ -65,6 +65,8 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         public bool SetOrigin { get; set; }
         public float Scale { get; set; }
 
+        protected float rotation;
+
         protected SpriteEffects Spriteeffect { get; set; }
         
         //public float mass;
@@ -85,6 +87,8 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                    Convert.ToInt32(frameWidth * Scale), Convert.ToInt32(frameHeight * Scale));
             }
         }
+
+        public BoundingSphere collisionRange;
 
         // weapons
         protected List<Weapon> primary;
@@ -147,10 +151,9 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         public int frameHeight;
 
         public bool isMoving;
-        public bool firstMove = true;
 
         #endregion
-        
+
         public Player(int FrameWidth, int FrameHeight, Texture2D textureImage, Vector2 position, Vector2 velocity, bool setOrig, float scale)
         {
             frameWidth = FrameWidth;
@@ -165,7 +168,9 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             {
                 SpriteOrigin = new Vector2(FrameWidth / 2, FrameHeight / 2);
             }
+            collisionRange = new BoundingSphere(new Vector3(position.X + spriteOrigin.X, position.Y + spriteOrigin.Y, 0), frameWidth / 2);
             Scale = scale;
+            rotation = 0f;
             Alive = true;
             isMoving = false;
             textureData = new Color[TextureImage.Width * TextureImage.Height];
@@ -187,17 +192,20 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             health = 100;
         }
 
+        public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        {}
+        
         // Draws the ship and all projectiles currently in motion
-        public virtual void Draw(int framenum, float frameTime, int FrameWidth, int FrameHeight,SpriteBatch spriteBatch, GameTime gameTime)
+        public virtual void Draw(int framenum, float frameTime,SpriteBatch spriteBatch, GameTime gameTime)
         {
-            float timeLapse = (float)(gameTime.ElapsedGameTime.TotalSeconds);
+            float timeLapse = (gameTime.ElapsedGameTime.Milliseconds/1000f);
             if (Alive)
             {
                 spriteBatch.Draw(TextureImage,
                     Position,
-                    animatedSprite(framenum, frameTime, FrameWidth, FrameHeight, TextureImage, timeLapse),
+                    animatedSprite(framenum, frameTime, frameWidth, frameHeight, TextureImage, timeLapse),
                     Microsoft.Xna.Framework.Color.White,
-                    0f,
+                    rotation,
                     SpriteOrigin,
                     Scale*2,
                     Spriteeffect,
@@ -216,10 +224,17 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
 
         #region Update Methods
         // Main update method
+        public virtual void Update(GameTime gameTime, Player player)
+        {
+
+            float timeLapse = (float)(gameTime.ElapsedGameTime.TotalSeconds);
+            position += Velocity * timeLapse;
+        }
         public virtual void Update(GameTime gameTime, List<Enemy> enemyWave)
         {
             if (Alive)
             {
+                collisionRange = new BoundingSphere(new Vector3(position.X + spriteOrigin.X, position.Y + spriteOrigin.Y, 0), 100f);
                 //Time between the frames
                 float timeLapse = (float)(gameTime.ElapsedGameTime.TotalSeconds);
 
@@ -241,7 +256,6 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             //position += Velocity * timeLapse;
         }
 
-
         // Update methods for bounds checks
         public virtual void Update(GameTime gameTime, GraphicsDevice Device, List<Enemy> enemyWave)
         {
@@ -252,7 +266,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
 
                 if (Position.X > Device.Viewport.Width + frameWidth)
                 {
-                    position.X = 0 - frameWidth;
+                    position.X = frameWidth * -1;
                 }
                 else if (Position.X < frameWidth*-1)
                 {
@@ -406,21 +420,10 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             }
             
         }
-        public virtual void Menu()
-        {
-            isMoving = false;
-            Velocity = new Vector2(0, 0);
-            Position = new Vector2(800, 250);
-        }
         public virtual void Idle()
         {
             isMoving = false;
             Velocity = Velocity * .98f;
-            if (firstMove)
-            {
-                Position = new Vector2(800, 700);
-                firstMove = false;
-            }
         }
         #endregion
 
@@ -525,13 +528,13 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         public void shootLaser(ContentManager content, GameTime gameTime)
         {
             timer += (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
-            if (hasShotPrim && timer <= 0.3f)
+            if (hasShotPrim && timer <= 0.5f)
             {
-                Velocity = new Vector2(0, 0);
+                Velocity = new Vector2(0.0f, 0.0f);
                 BasicLaser laser = new BasicLaser(content, new Vector2(position.X, position.Y - spriteOrigin.Y), 500f);
                 primary.Add(laser);
             }
-            if (timer > 0.85f)
+            if (timer > 0.8f)
             {
                 timer = 0.0f;
             }
