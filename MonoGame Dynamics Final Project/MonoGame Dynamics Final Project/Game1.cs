@@ -257,11 +257,22 @@ namespace MonoGame_Dynamics_Final_Project
             {
                 if (playerShip.CollisionSprite(Enemywave[i]))
                 {
-                    if (playerShip.IntersectsPixel(playerShip.source, playerShip.textureData, Enemywave[i].source, Enemywave[i].textureData))
-                    {
+                    //if (playerShip.IntersectsPixel(playerShip.source, playerShip.textureData, Enemywave[i].source, Enemywave[i].textureData))
+                    //{
                         playerShip.collisionDetected = true;
-                        Enemywave.RemoveAt(i);
-                    }
+                        if (playerShip.collisionDetected == true)
+                        {
+                            playerShip.Health--;
+                            Console.WriteLine("Health:" + playerShip.Health);
+                            if (playerShip.Health <= 0.0f)
+                            {
+                                playerShip.Alive = false;
+                                follower.Alive = false;
+                            }
+                        }
+                        
+                        //Enemywave.RemoveAt(i);
+                    //}
                 }
             }
 
