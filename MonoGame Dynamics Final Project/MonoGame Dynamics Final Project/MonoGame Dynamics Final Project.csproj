@@ -40,6 +40,7 @@
     <Compile Include="Sprites\Enemy.cs" />
     <Compile Include="Sprites\Follower.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="Sprites\PowerUp.cs" />
     <Compile Include="Sprites\Stingray.cs" />
     <Compile Include="Weapons\BasicLaser.cs" />
     <Compile Include="Weapons\GravityWell.cs" />
