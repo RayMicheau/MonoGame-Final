@@ -46,8 +46,10 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             setEnemy(spotinFormation, formationType);
         }
 
-        public void ChasePlayer(Vector2 playerPos)
+        public void ChasePlayer(GameTime gameTime, Vector2 playerPos)
         {
+            float timeLapse = (float)(gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
+            source = animatedSprite(frameNum, frameTime, frameWidth, frameHeight, TextureImage, timeLapse);
             distanceBetween = playerPos - position;
             distanceBetween.Normalize();
             rotation = (float)Math.Atan2(distanceBetween.Y, distanceBetween.X) - MathHelper.PiOver2;

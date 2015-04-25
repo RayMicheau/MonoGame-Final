@@ -40,7 +40,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             switch(Ai)
             {
                 case EnemyState.Chase :
-                    ChasePlayer(player.Position);
+                    ChasePlayer(gameTime, player.Position);
                     break;
                 case EnemyState.Default :
                     base.Update(gameTime, player);
