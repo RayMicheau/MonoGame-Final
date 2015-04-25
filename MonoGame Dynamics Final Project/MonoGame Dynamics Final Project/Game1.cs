@@ -227,8 +227,8 @@ namespace MonoGame_Dynamics_Final_Project
                 Thruster2.EmitterLocation = playerShip.Position + new Vector2(-15, playerShip.frameHeight - 20);
             }
 
-            Thruster1.Update(playerShip.Alive);
-            Thruster2.Update(playerShip.Alive);
+            Thruster1.Update(playerShip.Alive, playerShip.Velocity);
+            Thruster2.Update(playerShip.Alive, playerShip.Velocity);
 
             foreach (Enemy enemy in Enemywave)
             {
