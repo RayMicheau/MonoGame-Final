@@ -61,7 +61,9 @@ namespace MonoGame_Dynamics_Final_Project
         ScrollingBackground myBGtwo;
 
         //POWER UP IMGs
-
+        Texture2D AtkSpdUp;
+        Texture2D MoveSpdUp;
+        Texture2D Shield;
 
         // menu
         Texture2D startMenuScreen;
@@ -136,6 +138,9 @@ namespace MonoGame_Dynamics_Final_Project
                 windowWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
                 windowHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
                 random = new Random();
+
+                //PwrUpTextures
+                AtkSpdUp = Content.Load<Texture2D>("Images/AtkSpdUp");
 
                 // background
                 myBackground = new ScrollingBackground();
@@ -233,7 +238,6 @@ namespace MonoGame_Dynamics_Final_Project
                                 SpawnPowerUp(Enemywave[i].Position);
                             Enemywave[i].Alive = false;
                             Enemywave.RemoveAt(i);
-
                         }
                     }
                 }
@@ -634,11 +638,15 @@ namespace MonoGame_Dynamics_Final_Project
         {
             switch (random.Next(3))
             {
-                case 0: 
-                    //powerUpList.Add(new PowerUp(0, 0, ))
+                case 0:
+                    powerUpList.Add(new PowerUp(50, 50, AtkSpdUp, GraphicsDevice, 0, "null", 1.0f, 0.0f, 0.0f, PowerUps.AtkSpdUp, playerShip));
                     break;
-                case 1: break;
-                case 2: break;
+                case 1:
+                    powerUpList.Add(new PowerUp(50, 50, AtkSpdUp, GraphicsDevice, 0, "null", 1.0f, 0.0f, 0.0f, PowerUps.MoveSpdUp, playerShip));
+                    break;
+                case 2:
+                    powerUpList.Add(new PowerUp(50, 50, AtkSpdUp, GraphicsDevice, 0, "null", 1.0f, 0.0f, 0.0f, PowerUps.Shield, playerShip));
+                    break;
                 default: break;
             }
         }

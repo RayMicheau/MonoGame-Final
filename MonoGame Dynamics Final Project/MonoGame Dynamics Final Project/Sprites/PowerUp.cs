@@ -26,18 +26,20 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         float dTime;
         public bool removeFromScreen = false;
         PowerUps powerUps = PowerUps.Null;
-        public PowerUp(int width, int height, Texture2D textureImg, GraphicsDevice Device, int spotInFormation, string formationType, float scale, float damage, float health, PowerUps PowerUp)
+        public PowerUp(int width, int height, Texture2D textureImg, GraphicsDevice Device, int spotInFormation, string formationType, float scale, float damage, float health, PowerUps PowerUp, Player player)
             : base(width, height, textureImg, Device, spotInFormation, formationType, scale, damage, health)
         {
             if(powerUps != PowerUps.Null){
                 switch(powerUps){
                     case PowerUps.MoveSpdUp:
+                        player.Velocity *= 1.5f;
                         break;
 
                     case PowerUps.AtkSpdUp:
                         break;
 
                     case PowerUps.Shield:
+                        player.Health *= 2;
                         break;
 
                     default:
