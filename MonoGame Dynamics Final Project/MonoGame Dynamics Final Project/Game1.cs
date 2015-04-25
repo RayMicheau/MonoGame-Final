@@ -60,6 +60,9 @@ namespace MonoGame_Dynamics_Final_Project
         ScrollingBackground myBackground;
         ScrollingBackground myBGtwo;
 
+        //POWER UP IMGs
+
+
         // menu
         Texture2D startMenuScreen;
         Menu menuScreen;
@@ -226,10 +229,11 @@ namespace MonoGame_Dynamics_Final_Project
                         playerShip.CurrentPrimaryAmmo++;
                         if (Enemywave[i].Health == 0f)
                         {
-                            Enemywave[i].Alive = false;
-                            Enemywave.RemoveAt(i);
                             if (random.NextDouble() <= spawnChance)
                                 SpawnPowerUp(Enemywave[i].Position);
+                            Enemywave[i].Alive = false;
+                            Enemywave.RemoveAt(i);
+
                         }
                     }
                 }
@@ -243,11 +247,11 @@ namespace MonoGame_Dynamics_Final_Project
                         if (playerShip.SecondaryType != "gravityWell")
                         {
                             playerShip.Secondary.RemoveAt(collide);
-
-                            Enemywave[i].Alive = false;
-                            Enemywave.RemoveAt(i);
                             if (random.NextDouble() <= spawnChance)
                                 SpawnPowerUp(Enemywave[i].Position);
+                            Enemywave[i].Alive = false;
+                            Enemywave.RemoveAt(i);
+
                         }
                     }
                 }
@@ -630,7 +634,9 @@ namespace MonoGame_Dynamics_Final_Project
         {
             switch (random.Next(3))
             {
-                case 0: break;
+                case 0: 
+                    //powerUpList.Add(new PowerUp(0, 0, ))
+                    break;
                 case 1: break;
                 case 2: break;
                 default: break;
