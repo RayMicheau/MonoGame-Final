@@ -44,6 +44,9 @@ namespace MonoGame_Dynamics_Final_Project
     public class Game1 : Game
     {
         #region Variables
+        ParticleEngine Thruster1;
+        ParticleEngine Thruster2;
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
@@ -160,6 +163,7 @@ namespace MonoGame_Dynamics_Final_Project
                 playerLeft = Content.Load<Texture2D>("Images/Animations/Commandunit-left");
                 playerRightTurn = Content.Load<Texture2D>("Images/Animations/Commandunit-Turn");
                 playerLeftTurn = Content.Load<Texture2D>("Images/Animations/Commandunit-Turn-left");
+
                 playerShip = new Player(64,70,playerTexture,
                     new Vector2(windowWidth / 2, windowHeight - 70),
                     new Vector2(10, 10),
@@ -173,6 +177,14 @@ namespace MonoGame_Dynamics_Final_Project
 
                 LoadWaves();
                 LoadLevel(1, 1);
+
+                List<Texture2D> textures = new List<Texture2D>();
+                textures.Add(Content.Load<Texture2D>("Images/Particles/circle"));
+                textures.Add(Content.Load<Texture2D>("Images/Particles/star"));
+                textures.Add(Content.Load<Texture2D>("Images/Particles/diamond"));
+
+                Thruster1 = new ParticleEngine(textures, new Vector2(400, 240));
+                Thruster2 = new ParticleEngine(textures, new Vector2(400, 240));
             }
             catch (ContentLoadException e)
             {
@@ -197,11 +209,14 @@ namespace MonoGame_Dynamics_Final_Project
             myBGtwo.Update(gameTime, elapsed * 100);
             if (playerShip.Alive)
             {
+                Thruster1.EmitterLocation = playerShip.Position + new Vector2(-15, playerShip.frameHeight - 25);
+                Thruster2.EmitterLocation = playerShip.Position + new Vector2(15, playerShip.frameHeight - 25);
                 playerShip.Update(gameTime, GraphicsDevice, Enemywave);
                 follower.Update(playerShip, gameTime);
                 UpdateInput(gameTime);
             }
-            
+            Thruster1.Update(playerShip.Alive);
+            Thruster2.Update(playerShip.Alive);
             foreach (Enemy enemy in Enemywave)
             {
                 enemy.Update(gameTime, playerShip);
@@ -298,6 +313,8 @@ namespace MonoGame_Dynamics_Final_Project
             }
 
             base.Update(gameTime);
+
+            
         }
         private void UpdateInput(GameTime gameTime)
         {
@@ -518,6 +535,8 @@ namespace MonoGame_Dynamics_Final_Project
                     {
                         enemy.Draw(spriteBatch, gameTime);
                     }
+                    Thruster1.Draw(spriteBatch);
+                    Thruster2.Draw(spriteBatch);
                     spriteBatch.End();
                     base.Draw(gameTime);
                     break;
