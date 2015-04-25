@@ -61,7 +61,7 @@ namespace MonoGame_Dynamics_Final_Project
             MeasureMenu(Device);
         }
 
-        public void MeasureMenu(GraphicsDevice Device) 
+        public void MeasureMenu(GraphicsDevice Device)
         {
             height = 0;
             width = 0;
@@ -72,9 +72,9 @@ namespace MonoGame_Dynamics_Final_Project
                 if (size.X > width)
                     width = size.X;
                 //add all heights
-                height += spriteFont.LineSpacing + 5;
+                height += spriteFont.LineSpacing;
             }
-            position = new Vector2((Device.Viewport.Width - width) / 2, (Device.Viewport.Height - height) / 2);
+            position = new Vector2((Device.Viewport.Width - width) / 6, (Device.Viewport.Height - height) / 2);
         }
 
         private bool CheckKey(Keys theKey)
@@ -102,7 +102,7 @@ namespace MonoGame_Dynamics_Final_Project
             if (CheckKey(Keys.Up) || CheckPad(Buttons.DPadUp))
             {
                 SelIndex--;
-                if(SelIndex < 0)
+                if (SelIndex < 0)
                 {
                     SelIndex = menuItems.Length - 1;
                 }
@@ -132,7 +132,7 @@ namespace MonoGame_Dynamics_Final_Project
                 {
                     hilight = normal;
                 }
-                spriteBatch.DrawString(spriteFont, menuItems[i], location + new Vector2(460, 0), hilight, 0.0f, Vector2.Zero, 0.25f, SpriteEffects.None, 0.0f);
+                spriteBatch.DrawString(spriteFont, menuItems[i], location + new Vector2(100, 130), hilight, 0.0f, Vector2.Zero, 0.25f, SpriteEffects.None, 0.0f);
                 location.Y += spriteFont.LineSpacing + 5;
             }
         }

@@ -19,7 +19,7 @@ namespace MonoGame_Dynamics_Final_Project
         private int currentFrame;
         #endregion
 
-        public void Load(GraphicsDevice device, Texture2D[] backgroundTexture, int frames, float timeBetweenFrames)
+        public void Load(GraphicsDevice device, Texture2D[] backgroundTexture, int frames, float timeBetweenFrames, int posFlag)
         {
             textureArray = new Texture2D[frames];
 
@@ -37,11 +37,19 @@ namespace MonoGame_Dynamics_Final_Project
             // Set the origin so that we're drawing from the center of the top edge.
             origin = new Vector2(mytexture.Width / 2, 0);
 
-            // Set the screen position to the center of the screen.
-            screenpos = new Vector2(screenwidth / 2, screenheight / 2);
+            switch (posFlag)
+            {
+                case 1:
+                    // Set the screen position to the left of the screen.
+                    screenpos = new Vector2(screenwidth / 4, screenheight / 1.3f);
+                    break;
+                case 2:
+                    // Set the screen position to the right of the screen.
+                    screenpos = new Vector2(screenwidth / 1.3f, screenheight / 1.3f);
+                    break;
 
-            // Offset to draw the second texture, when necessary.
-            texturesize = new Vector2(0, mytexture.Height);
+                default: break;
+            }
         }
 
         // ScrollingBackground.Update

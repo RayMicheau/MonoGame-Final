@@ -21,7 +21,6 @@ namespace MonoGame_Dynamics_Final_Project
         Play, 
         Exit
     }
-
     public enum Level
     {
         Null,
@@ -29,7 +28,6 @@ namespace MonoGame_Dynamics_Final_Project
         Level2,
         Level3
     }
-
     public enum Wave
     {
         Null,
@@ -43,7 +41,6 @@ namespace MonoGame_Dynamics_Final_Project
         Wave8,
         Wave9
     }
-
     public class Game1 : Game
     {
         #region Variables
@@ -60,13 +57,13 @@ namespace MonoGame_Dynamics_Final_Project
         int windowWidth, windowHeight;
         Texture2D[] background; // Current Resolution 480w x 800h
         ScrollingBackground myBackground;
-
+        ScrollingBackground myBGtwo;
 
         // menu
         Texture2D startMenuScreen;
         Menu menuScreen;
         SpriteFont menuFont;
-
+        Color customColor;
 
         // player
         Texture2D playerTexture;
@@ -82,6 +79,10 @@ namespace MonoGame_Dynamics_Final_Project
         int currentWave;
         List<Enemy> Enemywave = new List<Enemy>();
         List<Enemy>[] WaveDef = new List<Enemy>[9];
+        List<PowerUp> powerUpList = new List<PowerUp>();
+
+        //PowerUps
+        double spawnChance = 0.2;
 
        // Vector2 gravityForce = new Vector2(0.0f, 150.0f);
         Vector2 offset = new Vector2(500, 500);
@@ -122,7 +123,11 @@ namespace MonoGame_Dynamics_Final_Project
 
                 menuFont = Content.Load<SpriteFont>("Fonts/titleFont");
                 menuScreen = new Menu(GraphicsDevice, menuFont, menuItems);
-                startMenuScreen = Content.Load<Texture2D>("Images/Backgrounds/Menu");
+                startMenuScreen = Content.Load<Texture2D>("Images/Backgrounds/MenuTwo");
+                customColor.A = 1;
+                customColor.R = 200;
+                customColor.G = 0;
+                customColor.B = 255;
 
                 windowWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
                 windowHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
@@ -130,13 +135,15 @@ namespace MonoGame_Dynamics_Final_Project
 
                 // background
                 myBackground = new ScrollingBackground();
+                myBGtwo = new ScrollingBackground();
                 background = new Texture2D[3];
                 for (int i = 0; i < background.Length; i++)
                 {
-                    background[i] = Content.Load<Texture2D>("Images/Backgrounds/background-level-1");
+                    background[i] = Content.Load<Texture2D>("Images/Backgrounds/universe0" + (i+1).ToString());
                 }
-                myBackground.Load(GraphicsDevice, background, background.Length, 0.5f); // change float to change animation speed           
-
+                myBackground.Load(GraphicsDevice, background, background.Length, 0.5f, 1); // change float to change animation speed           
+                myBGtwo.Load(GraphicsDevice, background, background.Length, 0.5f, 2); // change float to change animation speed 
+               
                 // player sprites
                 playerTexture = Content.Load<Texture2D>("Images/Animations/Commandunit-idle");
                 playerMove = Content.Load<Texture2D>("Images/Animations/Commandunit-move");
@@ -178,7 +185,7 @@ namespace MonoGame_Dynamics_Final_Project
             // updating scroll speed
             float elapsed = (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
             myBackground.Update(gameTime, elapsed * 100);
-
+            myBGtwo.Update(gameTime, elapsed * 100);
             if (playerShip.Alive)
             {
                 playerShip.Update(gameTime, GraphicsDevice, Enemywave);
@@ -193,6 +200,15 @@ namespace MonoGame_Dynamics_Final_Project
                 foreach (Stingray stingRay in Enemywave)
                 {
                     stingRay.Update(gameTime, playerShip);
+                }
+            }
+
+            foreach (PowerUp pUp in powerUpList)
+            {
+                pUp.Update(gameTime, GraphicsDevice);
+                if (pUp.removeFromScreen)
+                {
+                    pUp.Alive = false;
                 }
             }
 
@@ -211,6 +227,8 @@ namespace MonoGame_Dynamics_Final_Project
                         {
                             Enemywave[i].Alive = false;
                             Enemywave.RemoveAt(i);
+                            if (random.NextDouble() <= spawnChance)
+                                SpawnPowerUp(Enemywave[i].Position);
                         }
                     }
                 }
@@ -227,6 +245,8 @@ namespace MonoGame_Dynamics_Final_Project
 
                             Enemywave[i].Alive = false;
                             Enemywave.RemoveAt(i);
+                            if (random.NextDouble() <= spawnChance)
+                                SpawnPowerUp(Enemywave[i].Position);
                         }
                     }
                 }
@@ -594,6 +614,11 @@ namespace MonoGame_Dynamics_Final_Project
 
             // Wave 9
             WaveDef[8] = new List<Enemy>();
+        }
+        public void SpawnPowerUp(Vector2 Position)
+        {
+            PowerUps Powerups = PowerUps.Null;
+            //powerUps.Add();
         }
     }
 }
