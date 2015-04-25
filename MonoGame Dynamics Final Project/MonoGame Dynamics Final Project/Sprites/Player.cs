@@ -206,7 +206,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             setWeapon("gravityWell", 1);
             //setWeapon("helixMissile", 2);
             setWeapon("homingMissile", 2);
-            setWeapon("laser", 5);
+            setWeapon("laser", 1);
             //setWeapon("rail", 4);
             hasShot = false;
             hasShotPrim = false;

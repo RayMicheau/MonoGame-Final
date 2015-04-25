@@ -204,6 +204,7 @@ namespace MonoGame_Dynamics_Final_Project
                     {
                         playerShip.Primary.RemoveAt(collide);
                         Enemywave[i].Health -= 100f;
+                        playerShip.CurrentPrimaryAmmo++;
                         if (Enemywave[i].Health == 0f)
                         {
                             Enemywave[i].Alive = false;
