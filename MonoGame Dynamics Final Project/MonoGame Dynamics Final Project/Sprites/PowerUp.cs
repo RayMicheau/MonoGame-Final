@@ -40,6 +40,8 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             set { spriteOrigin = value; }
         }
 
+        public float Scale { get; set; }
+
         public bool setOrigin { get; set; }
         protected Vector2 velocity;
         public Vector2 Velocity
@@ -48,16 +50,25 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             set { velocity = value; }
         }
 
+        public virtual Rectangle CollisionRectangle
+        {
+            get
+            {
+                return new Rectangle((int)(position.X - SpriteOrigin.X * Scale),((int)(position.Y - SpriteOrigin.Y * Scale)),
+                   Convert.ToInt32(TextureImage.Width * Scale), Convert.ToInt32(TextureImage.Height * Scale));
+            }
+        }
+
         public Texture2D TextureImage { get; set; }
 
         public PowerUp(Texture2D textureImg, GraphicsDevice Device, 
-            PowerUps PowerUp, Player player, Vector2 position)
+            PowerUps PowerUp, Player player, Vector2 position, float scale)
         {
             Position = position;
             Alive = true;
             TextureImage = textureImg;
             SpriteOrigin = new Vector2(TextureImage.Width / 2, TextureImage.Height / 2);
-
+            Scale = scale;
             switch (PowerUp)
             {
                 case PowerUps.MoveSpdUp:
@@ -74,13 +85,12 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                 default:
                     break;
             }
-
         }
 
         public void Update(GameTime gameTime, GraphicsDevice graphicsDevice)
         {
             dTime = (float)gameTime.ElapsedGameTime.TotalMilliseconds /1000.0f;
-            position.Y = -2 * dTime;
+            position.Y += 200 * dTime;
             if (Position.Y >= graphicsDevice.Viewport.Height)
             {
                 Alive = false;
@@ -93,6 +103,10 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             {
                 spriteBatch.Draw(TextureImage, Position, null, Color.White, 0.0f, spriteOrigin, 1.0f, SpriteEffects.None, 0); 
             }
+        }
+        public bool CollisionSprite(Player player)
+        {
+            return CollisionRectangle.Intersects(player.CollisionRectangle);
         }
     }
 }

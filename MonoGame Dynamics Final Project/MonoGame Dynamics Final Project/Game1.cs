@@ -235,7 +235,7 @@ namespace MonoGame_Dynamics_Final_Project
                         if (Enemywave[i].Health == 0f)
                         {
                             double rand = random.NextDouble();
-                            if (rand < spawnChance)
+                            //if (rand < spawnChance)
                                     SpawnPowerUp(Enemywave[i].Position);
                             Enemywave[i].Alive = false;
                             Enemywave.RemoveAt(i);
@@ -298,7 +298,16 @@ namespace MonoGame_Dynamics_Final_Project
                 }
             }
 
-            base.Update(gameTime);
+            //CheckForPowerups();
+
+            for (int i = powerUpList.Count - 1; i >= 0; i--)
+            {
+                if (powerUpList[i].removeFromScreen)
+                {
+                    powerUpList.RemoveAt(i);
+                }
+            }
+                base.Update(gameTime);
         }
         private void UpdateInput(GameTime gameTime)
         {
@@ -646,19 +655,19 @@ namespace MonoGame_Dynamics_Final_Project
             {
                 case 0:
                     Powerups = PowerUps.AtkSpdUp;
-                    powerUpList.Add(new PowerUp(AtkSpdUp, GraphicsDevice, Powerups, playerShip, Position));
+                    powerUpList.Add(new PowerUp(AtkSpdUp, GraphicsDevice, Powerups, playerShip, Position, 1.0f));
                     break;
                 case 1:
                     Powerups = PowerUps.MoveSpdUp;
-                    powerUpList.Add(new PowerUp(AtkSpdUp, GraphicsDevice, Powerups, playerShip, Position));
+                    powerUpList.Add(new PowerUp(AtkSpdUp, GraphicsDevice, Powerups, playerShip, Position, 1.0f));
                     break;
                 case 2:
                     Powerups = PowerUps.Shield;
-                    powerUpList.Add(new PowerUp(AtkSpdUp, GraphicsDevice, Powerups, playerShip, Position));
+                    powerUpList.Add(new PowerUp(AtkSpdUp, GraphicsDevice, Powerups, playerShip, Position, 1.0f));
                     break;
                 default: break;
             }
-
         }
+        public void CheckForPowerUps();
     }
 }
