@@ -35,7 +35,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         protected Vector2 distanceBetween;
 
         public Enemy(int width, int height, Texture2D textureImage, GraphicsDevice Device, int spotinFormation, string formationType, float scale, float damage, float health)
-            : base(width,height, textureImage, new Vector2(0, 0), new Vector2(0, 0), true, scale, damage, health)
+            : base(width,height, textureImage, new Vector2(0, -100), new Vector2(0, 0), true, scale, damage, health)
         {
             mass = 5f;
 
@@ -233,7 +233,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         // grid helper method
         private Vector2 getGridPos(int x, int y)
         {
-            return new Vector2(x * tileWidth, (y * tileHeight) /*- windowHeight*/);
+            return new Vector2(x * tileWidth, (y * tileHeight) - windowHeight);
         }
     }
 }

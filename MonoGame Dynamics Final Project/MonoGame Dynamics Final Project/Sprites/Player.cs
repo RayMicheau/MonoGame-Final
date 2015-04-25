@@ -267,7 +267,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             float timeLapse = (float)(gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
             position += Velocity * timeLapse;
             source = animatedSprite(frameNum, frameTime, frameWidth, frameHeight, TextureImage, timeLapse);
-            TextureImage.GetData<Color>(0, source, textureData, 0, source.Width * source.Height);
+         //   TextureImage.GetData<Color>(0, source, textureData, 0, source.Width * source.Height);
         }
         public virtual void Update(GameTime gameTime, List<Enemy> enemyWave)
         {
@@ -277,7 +277,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                 //Time between the frames
                 float timeLapse = gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
                 source = animatedSprite(frameNum, frameTime, frameWidth, frameHeight, TextureImage, timeLapse);
-                TextureImage.GetData<Color>(0, source, textureData, 0, source.Width * source.Height);
+            //    TextureImage.GetData<Color>(0, source, textureData, 0, source.Width * source.Height);
 
                 UpdateWeapon(primary, gameTime, enemyWave);
                 UpdateWeapon(secondary, gameTime, enemyWave);
@@ -292,7 +292,11 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         {
             float timeLapse = gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
             source = animatedSprite(frameNum, frameTime, frameWidth, frameHeight, TextureImage, timeLapse);
-            TextureImage.GetData<Color>(0, source, textureData, 0, source.Width * source.Height);
+           // TextureImage.GetData<Color>(0, source, textureData, 0, source.Width * source.Height);
+            if (position.Y > 0)
+            {
+                Alive = true;
+            }
             //position.Y = player.position.Y;
             //position.X = player.position.X;
             //position += Velocity * timeLapse;
@@ -302,8 +306,8 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         public virtual void Update(GameTime gameTime, GraphicsDevice Device, List<Enemy> enemyWave)
         {
             float timeLapse = gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
-            source = animatedSprite(frameNum, frameTime, frameWidth, frameHeight, TextureImage, timeLapse);
-            TextureImage.GetData<Color>(0, source, textureData, 0, source.Width * source.Height);
+         //   source = animatedSprite(frameNum, frameTime, frameWidth, frameHeight, TextureImage, timeLapse);
+         //   TextureImage.GetData<Color>(0, source, textureData, 0, source.Width * source.Height);
             if (Alive)
             {
                 //Keep the sprite onscreen
@@ -335,7 +339,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                  */
                  
 
-                Console.WriteLine("{0}, {1}, {2}", position.Y, velocity.Y, velocity.X);
+                //Console.WriteLine("{0}, {1}, {2}", position.Y, velocity.Y, velocity.X);
             }
         }
 

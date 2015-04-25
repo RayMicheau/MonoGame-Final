@@ -561,10 +561,15 @@ namespace MonoGame_Dynamics_Final_Project
 
             // Wave 1
             WaveDef[0] = new List<Enemy>();
-            //formationSize = 10;
-            enemy = new Stingray(Content, GraphicsDevice, 6, "delta");
+            //formationSize = 10;          
 
-            WaveDef[0].Add(enemy);
+            for (int i = 0; i < 10; i++ )
+            {
+                enemy = new Stingray(Content, GraphicsDevice, i + 1, "delta");
+                WaveDef[0].Add(enemy);
+            }
+
+                
 
             // Wave 2
             WaveDef[1] = new List<Enemy>();

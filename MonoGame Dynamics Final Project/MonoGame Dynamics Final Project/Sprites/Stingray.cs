@@ -30,6 +30,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             frameTime = 0.1f;
             Ai = EnemyState.Default;
             collisionRange = new BoundingSphere(new Vector3(position.X + spriteOrigin.X, position.Y + spriteOrigin.Y, 0), 400f);
+            velocity = new Vector2(0, 10);
         }
 
         public override void Update(GameTime gameTime, Player player)
