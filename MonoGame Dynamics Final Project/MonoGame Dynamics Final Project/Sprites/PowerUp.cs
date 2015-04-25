@@ -21,40 +21,77 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         Shield
     }
 
-    class PowerUp : Enemy
+    class PowerUp
     {
         float dTime;
         public bool removeFromScreen = false;
-        PowerUps powerUps = PowerUps.Null;
-        public PowerUp(int width, int height, Texture2D textureImg, GraphicsDevice Device, int spotInFormation, string formationType, float scale, float damage, float health, PowerUps PowerUp, Player player)
-            : base(width, height, textureImg, Device, spotInFormation, formationType, scale, damage, health)
+        public bool Alive { get; set; }
+        protected Vector2 position;
+        public Vector2 Position
         {
-            if(powerUps != PowerUps.Null){
-                switch(powerUps){
-                    case PowerUps.MoveSpdUp:
-                        player.Velocity *= 1.5f;
-                        break;
+            get { return position; }
+            set { position = value; }
+        }
 
-                    case PowerUps.AtkSpdUp:
-                        break;
+        protected Vector2 spriteOrigin;
+        public Vector2 SpriteOrigin
+        {
+            get { return spriteOrigin; }
+            set { spriteOrigin = value; }
+        }
 
-                    case PowerUps.Shield:
-                        player.Health *= 2;
-                        break;
+        public bool setOrigin { get; set; }
+        protected Vector2 velocity;
+        public Vector2 Velocity
+        {
+            get { return velocity; }
+            set { velocity = value; }
+        }
 
-                    default:
-                        break;
-                }
+        public Texture2D TextureImage { get; set; }
+
+        public PowerUp(Texture2D textureImg, GraphicsDevice Device, 
+            PowerUps PowerUp, Player player, Vector2 position)
+        {
+            Position = position;
+            Alive = true;
+            TextureImage = textureImg;
+            SpriteOrigin = new Vector2(TextureImage.Width / 2, TextureImage.Height / 2);
+
+            switch (PowerUp)
+            {
+                case PowerUps.MoveSpdUp:
+                    player.Velocity *= 1.5f;
+                    break;
+
+                case PowerUps.AtkSpdUp:
+                    break;
+
+                case PowerUps.Shield:
+                    player.Health *= 2;
+                    break;
+
+                default:
+                    break;
             }
+
         }
 
         public void Update(GameTime gameTime, GraphicsDevice graphicsDevice)
         {
             dTime = (float)gameTime.ElapsedGameTime.TotalMilliseconds /1000.0f;
-            position.Y = Velocity.Y * dTime;
+            position.Y = -2 * dTime;
             if (Position.Y >= graphicsDevice.Viewport.Height)
             {
-                removeFromScreen = true;
+                Alive = false;
+            }
+        }
+        public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        {
+            float timeLapse = (gameTime.ElapsedGameTime.Milliseconds/1000f);
+            if (Alive)
+            {
+                spriteBatch.Draw(TextureImage, Position, null, Color.White, 0.0f, spriteOrigin, 1.0f, SpriteEffects.None, 0); 
             }
         }
     }

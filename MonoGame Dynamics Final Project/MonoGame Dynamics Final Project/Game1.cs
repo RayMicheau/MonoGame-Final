@@ -234,15 +234,16 @@ namespace MonoGame_Dynamics_Final_Project
                         playerShip.CurrentPrimaryAmmo++;
                         if (Enemywave[i].Health == 0f)
                         {
-                            if (random.NextDouble() <= spawnChance)
-                                SpawnPowerUp(Enemywave[i].Position);
+                            double rand = random.NextDouble();
+                            if (rand < spawnChance)
+                                    SpawnPowerUp(Enemywave[i].Position);
                             Enemywave[i].Alive = false;
                             Enemywave.RemoveAt(i);
                         }
                     }
                 }
 
-                // tests for collision of secondary shots against enemy
+                // tests for collision of secondary shots 0against enemy
                 for (int i = 0; i < Enemywave.Count; i++)
                 {
                     int collide = Enemywave[i].CollisionShot(playerShip.Secondary);
@@ -502,6 +503,7 @@ namespace MonoGame_Dynamics_Final_Project
                 case GameState.StartMenu:
                     spriteBatch.Begin();
                     myBackground.Draw(spriteBatch);
+                    myBGtwo.Draw(spriteBatch);
                     spriteBatch.Draw(startMenuScreen, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
                     spriteBatch.DrawString(menuFont, "Cataclysm", new Vector2(GraphicsDevice.Viewport.Width / 8, GraphicsDevice.Viewport.Height / 9), customColor);
                     menuScreen.Draw(spriteBatch);
@@ -517,6 +519,10 @@ namespace MonoGame_Dynamics_Final_Project
                     foreach (Enemy enemy in Enemywave)
                     {
                         enemy.Draw(spriteBatch, gameTime);
+                    }
+                    foreach (PowerUp pUp in powerUpList)
+                    {
+                        pUp.Draw(spriteBatch, gameTime);
                     }
                     spriteBatch.End();
                     base.Draw(gameTime);
@@ -639,16 +645,20 @@ namespace MonoGame_Dynamics_Final_Project
             switch (random.Next(3))
             {
                 case 0:
-                    powerUpList.Add(new PowerUp(50, 50, AtkSpdUp, GraphicsDevice, 0, "null", 1.0f, 0.0f, 0.0f, PowerUps.AtkSpdUp, playerShip));
+                    Powerups = PowerUps.AtkSpdUp;
+                    powerUpList.Add(new PowerUp(AtkSpdUp, GraphicsDevice, Powerups, playerShip, Position));
                     break;
                 case 1:
-                    powerUpList.Add(new PowerUp(50, 50, AtkSpdUp, GraphicsDevice, 0, "null", 1.0f, 0.0f, 0.0f, PowerUps.MoveSpdUp, playerShip));
+                    Powerups = PowerUps.MoveSpdUp;
+                    powerUpList.Add(new PowerUp(AtkSpdUp, GraphicsDevice, Powerups, playerShip, Position));
                     break;
                 case 2:
-                    powerUpList.Add(new PowerUp(50, 50, AtkSpdUp, GraphicsDevice, 0, "null", 1.0f, 0.0f, 0.0f, PowerUps.Shield, playerShip));
+                    Powerups = PowerUps.Shield;
+                    powerUpList.Add(new PowerUp(AtkSpdUp, GraphicsDevice, Powerups, playerShip, Position));
                     break;
                 default: break;
             }
+
         }
     }
 }
