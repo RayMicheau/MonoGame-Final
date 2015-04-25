@@ -34,10 +34,7 @@ namespace MonoGame_Dynamics_Final_Project
                     1f * (float)(random.NextDouble() * 2 - 1));
             float angle = 0;
             float angularVelocity = 0.1f * (float)(random.NextDouble() * 2 - 1);
-            Color color = new Color(
-                    (float)random.NextDouble(),
-                    (float)random.NextDouble(),
-                    (float)random.NextDouble());
+            Color color = Color.LightSlateGray;
             float size = (float)random.NextDouble();
             int ttl = 20 + random.Next(40);
 
@@ -46,7 +43,7 @@ namespace MonoGame_Dynamics_Final_Project
 
         public void Update(bool generate)
         {
-            int total = 5;
+            int total = 1;
 
             for (int i = 0; i < total; i++)
             {

@@ -98,6 +98,11 @@ namespace MonoGame_Dynamics_Final_Project
         int animationResetSwitchU;
         int animationResetSwitchL;
         int animationResetSwitchR;
+
+        //Particle Effects
+        ParticleEngine Thruster1;
+        ParticleEngine Thruster2;
+        List<Texture2D> textures;
         #endregion
 
         public Game1()
@@ -122,10 +127,21 @@ namespace MonoGame_Dynamics_Final_Project
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             string[] menuItems = { "Launch Ship","How to Play", "Exit Cockpit" };
+
             try
             {
+                //Load Particle textures
+                textures = new List<Texture2D>();
+                textures.Add(Content.Load<Texture2D>("Images/Particles/smokepoof"));
+                textures.Add(Content.Load<Texture2D>("Images/Particles/starpoof1"));
+                textures.Add(Content.Load<Texture2D>("Images/Particles/starpoof2"));
+                Thruster1 = new ParticleEngine(textures, new Vector2(400, 240));
+                Thruster2 = new ParticleEngine(textures, new Vector2(400, 240));
+
                 /*Song song = Content.Load<Song>("TellMe");
                 MediaPlayer.Play(song);*/
+
+                
 
                 menuFont = Content.Load<SpriteFont>("Fonts/titleFont");
                 menuScreen = new Menu(GraphicsDevice, menuFont, menuItems);
@@ -200,8 +216,13 @@ namespace MonoGame_Dynamics_Final_Project
                 playerShip.Update(gameTime, GraphicsDevice, Enemywave);
                 follower.Update(playerShip, gameTime);
                 UpdateInput(gameTime);
+                Thruster1.EmitterLocation = playerShip.Position + new Vector2(15, playerShip.frameHeight - 20);
+                Thruster2.EmitterLocation = playerShip.Position + new Vector2(-15, playerShip.frameHeight - 20);
             }
-            
+
+            Thruster1.Update(playerShip.Alive);
+            Thruster2.Update(playerShip.Alive);
+
             foreach (Enemy enemy in Enemywave)
             {
                 enemy.Update(gameTime, playerShip);
@@ -524,6 +545,10 @@ namespace MonoGame_Dynamics_Final_Project
                     {
                         pUp.Draw(spriteBatch, gameTime);
                     }
+
+                    Thruster1.Draw(spriteBatch);
+                    Thruster2.Draw(spriteBatch);
+
                     spriteBatch.End();
                     base.Draw(gameTime);
                     break;
