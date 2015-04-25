@@ -61,6 +61,18 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             get { return initialVelocity; }
             set { initialVelocity = value; }
         }
+        protected string secondaryType;
+        public string SecondaryType
+        {
+            get { return secondaryType; }
+            set { secondaryType = value; }
+        }
+        protected string primaryType;
+        public string PrimaryType
+        {
+            get { return primaryType; }
+            set { primaryType = value; }
+        } 
 
         public bool SetOrigin { get; set; }
         public float Scale { get; set; }
@@ -135,9 +147,6 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             get { return currentSecondaryAmmo; }
             set { currentSecondaryAmmo = value; }
         }  
-
-        protected string primaryType;
-        protected string secondaryType;
         private bool hasShot;
         public bool HasShot
         {

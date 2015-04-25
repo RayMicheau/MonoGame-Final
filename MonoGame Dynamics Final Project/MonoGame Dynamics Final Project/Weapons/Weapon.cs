@@ -69,7 +69,11 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
         }
 
         protected int weaponType;
-        public int WeaponType { get; set; }
+        public int WeaponType
+        {
+            get { return weaponType; }
+            set { weaponType = value; }
+        }
         protected float elapsedTime;
         public float ElapsedTime
         {

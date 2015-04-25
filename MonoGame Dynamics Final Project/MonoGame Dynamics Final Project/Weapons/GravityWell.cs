@@ -30,7 +30,7 @@ namespace MonoGame_Dynamics_Final_Project
             set { mass = value; }
         }
 
-        private const float G = 250.0f;
+        private const float G = 500.0f;
 
         protected Vector2 difference;
 
@@ -38,7 +38,7 @@ namespace MonoGame_Dynamics_Final_Project
             :base(content.Load<Texture2D>("Images/Animations/yellowstar"), startPosition, velocity, 2)
         {
             gravityForce = Vector2.Zero;
-            mass = 5f;
+            mass = 2f;
         }
 
         public override void forcePull(GameTime gameTime, List<Enemy> enemies)
@@ -52,16 +52,24 @@ namespace MonoGame_Dynamics_Final_Project
             foreach (Enemy enemy in enemies)
             {
                 difference = position - enemy.Position;
-                difference.Normalize();
-                gravityForce = difference;
-                radius = difference.Length();
-                magnitude = G * enemy.Mass * mass / (radius * radius);
-                gravityForce *= magnitude;
+                float differenceLength = difference.Length();
+                if (differenceLength < 50)
+                {
+                    enemy.Position = position;
+                }
+                else
+                {
+                    difference.Normalize();
+                    gravityForce = difference;
+                    radius = difference.Length();
+                    magnitude = G * enemy.Mass * mass / (radius * radius);
+                    gravityForce *= magnitude;
 
-                enemy.Acceleration = gravityForce / enemy.Mass;
-                enemy.Velocity = enemy.InitialVelocity + enemy.Acceleration * timeInterval;
-                enemy.Position += enemy.InitialVelocity * timeInterval + 0.5f * enemy.Acceleration * timeInterval * timeInterval;
-                enemy.InitialVelocity = enemy.Velocity;
+                    enemy.Acceleration = gravityForce / enemy.Mass;
+                    enemy.Velocity = enemy.InitialVelocity + enemy.Acceleration * timeInterval;
+                    enemy.Position += enemy.InitialVelocity * timeInterval + 0.5f * enemy.Acceleration * timeInterval * timeInterval;
+                    enemy.InitialVelocity = enemy.Velocity;
+                }
             }
 
         }

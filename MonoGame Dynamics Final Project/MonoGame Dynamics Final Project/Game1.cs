@@ -221,9 +221,13 @@ namespace MonoGame_Dynamics_Final_Project
                     int collide = Enemywave[i].CollisionShot(playerShip.Secondary);
                     if (collide != -1)
                     {
-                        playerShip.Secondary.RemoveAt(collide);
-                        Enemywave[i].Alive = false;
-                        Enemywave.RemoveAt(i);
+                        if (playerShip.SecondaryType != "gravityWell")
+                        {
+                            playerShip.Secondary.RemoveAt(collide);
+
+                            Enemywave[i].Alive = false;
+                            Enemywave.RemoveAt(i);
+                        }
                     }
                 }
             }
@@ -244,8 +248,9 @@ namespace MonoGame_Dynamics_Final_Project
             if (playerShip.ForcePull)
             {
                 playerShip.Secondary[0].forcePull(gameTime, Enemywave);
+                playerShip.Secondary[0].ElapsedTime += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
 
-                if ((elapsed - playerShip.Secondary[0].ElapsedTime) > 1f)
+                if (playerShip.Secondary[0].ElapsedTime > 5.0f)
                 {
                     playerShip.ForcePull = false;
                     playerShip.Secondary.RemoveAt(0);
