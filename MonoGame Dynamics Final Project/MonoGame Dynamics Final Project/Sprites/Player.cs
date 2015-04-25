@@ -117,6 +117,19 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             get { return secondaryAmmo; }
             set { secondaryAmmo = value; }
         }
+        protected int currentPrimaryAmmo;
+        public int CurrentPrimaryAmmo
+        {
+            get { return currentPrimaryAmmo; }
+            set { currentPrimaryAmmo = value; }
+        }
+
+        protected int currentSecondaryAmmo;
+        public int CurrentSecondaryAmmo
+        {
+            get { return currentSecondaryAmmo; }
+            set { currentSecondaryAmmo = value; }
+        }  
 
         protected string primaryType;
         protected string secondaryType;
@@ -139,11 +152,17 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             set { forcePull = value; }
         }
 
-        protected int health;
-        public int Health
+        protected float health;
+        public float Health
         {
             get { return health; }
             set { health = value; }
+        }
+        protected float damage;
+        public float Damage
+        {
+            get { return damage; }
+            set { damage = value; }
         }
 
         public float timer;
@@ -154,7 +173,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
 
         #endregion
 
-        public Player(int FrameWidth, int FrameHeight, Texture2D textureImage, Vector2 position, Vector2 velocity, bool setOrig, float scale)
+        public Player(int FrameWidth, int FrameHeight, Texture2D textureImage, Vector2 position, Vector2 velocity, bool setOrig, float scale, float damage, float health)
         {
             frameWidth = FrameWidth;
             frameHeight = FrameHeight;
@@ -164,6 +183,9 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             Velocity = velocity;
             SetOrigin = setOrig;
             Acceleration = acceleration;
+            Health = health;
+            Damage = damage;
+      
             if (SetOrigin)
             {
                 SpriteOrigin = new Vector2(FrameWidth / 2, FrameHeight / 2);
@@ -184,7 +206,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             setWeapon("gravityWell", 1);
             //setWeapon("helixMissile", 2);
             setWeapon("homingMissile", 2);
-            setWeapon("laser", 3);
+            setWeapon("laser", 5);
             //setWeapon("rail", 4);
             hasShot = false;
             hasShotPrim = false;
@@ -328,11 +350,11 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                     // updates ammo count
                     if (weapon[i].WeaponType == 1)
                     {
-                        primaryAmmo--;
+                        currentPrimaryAmmo++;
                     }
                     else if (weapon[i].WeaponType == 2)
                     {
-                        secondaryAmmo--;
+                        currentSecondaryAmmo++;
                     }
 
                     weapon.RemoveAt(i);
@@ -379,6 +401,10 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             for (int i = 0; i < shots.Count; i++)
             {
                 if (IntersectsPixel(CollisionRectangle, textureData, shots[i].CollisionRectangle, shots[i].textureData))
+                {
+                    return i;
+                }
+                if (CollisionRectangle.Intersects(shots[i].CollisionRectangle))
                 {
                     return i;
                 }
@@ -435,12 +461,14 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             {
                 primaryType = weaponType;
                 primaryAmmo = ammoCapacity;
+                currentPrimaryAmmo = ammoCapacity;
             }
 
             if (weaponType == "rail")
             {
                 primaryType = weaponType;
                 primaryAmmo = ammoCapacity;
+                currentPrimaryAmmo = ammoCapacity;
             }
 
             // List of Secondary Weapons
@@ -448,18 +476,21 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             {
                 secondaryType = weaponType;
                 secondaryAmmo = ammoCapacity;
+                currentSecondaryAmmo = ammoCapacity;
             }
 
             if (weaponType == "helixMissile")
             {
                 secondaryType = weaponType;
                 secondaryAmmo = ammoCapacity;
+                currentSecondaryAmmo = ammoCapacity;
             }
 
             if (weaponType == "homingMissile")
             {
                 secondaryType = weaponType;
                 secondaryAmmo = ammoCapacity;
+                currentSecondaryAmmo = ammoCapacity; 
             }
 
            
@@ -468,30 +499,36 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         // Chooses which primary weapon to shoot
         public virtual void shootPrimary(ContentManager content, GameTime gameTime)
         {
-            if (primaryType == "laser")
+            if (currentPrimaryAmmo != 0)
             {
-                shootLaser(content, gameTime);
-            }
-            if (primaryType == "rail")
-            {
-                shootRail(content, gameTime);
+                if (primaryType == "laser")
+                {
+                    shootLaser(content, gameTime);
+                }
+                if (primaryType == "rail")
+                {
+                    shootRail(content, gameTime);
+                }
             }
         }
 
         // Chooses which secondary weapon to shoot
         public virtual void shootSecondary(ContentManager content)
         {
-            if (secondaryType == "gravityWell")
+            if (currentSecondaryAmmo != 0)
             {
-                shootGravityWell(content);
-            }
-            if (secondaryType == "helixMissile")
-            {
-                shootHelixMissile(content);
-            }
-            if (secondaryType == "homingMissile")
-            {
-                shootHomingMissile(content);
+                if (secondaryType == "gravityWell")
+                {
+                    shootGravityWell(content);
+                }
+                if (secondaryType == "helixMissile")
+                {
+                    shootHelixMissile(content);
+                }
+                if (secondaryType == "homingMissile")
+                {
+                    shootHomingMissile(content);
+                }
             }
         }
         #endregion
@@ -531,8 +568,10 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             if (hasShotPrim && timer <= 0.5f)
             {
                 Velocity = new Vector2(0.0f, 0.0f);
+                timer = 0.0f;
                 BasicLaser laser = new BasicLaser(content, new Vector2(position.X, position.Y - spriteOrigin.Y), 500f);
                 primary.Add(laser);
+                currentPrimaryAmmo--;
             }
             if (timer > 0.8f)
             {

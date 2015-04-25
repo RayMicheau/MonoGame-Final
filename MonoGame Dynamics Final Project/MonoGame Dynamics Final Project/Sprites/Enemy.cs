@@ -34,8 +34,8 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
 
         protected Vector2 distanceBetween;
 
-        public Enemy(int width, int height, Texture2D textureImage, GraphicsDevice Device, int spotinFormation, string formationType, float scale)
-            : base(width,height, textureImage, new Vector2(0, 0), new Vector2(0, 0), true, scale)
+        public Enemy(int width, int height, Texture2D textureImage, GraphicsDevice Device, int spotinFormation, string formationType, float scale, float damage, float health)
+            : base(width,height, textureImage, new Vector2(0, 0), new Vector2(0, 0), true, scale, damage, health)
         {
             mass = 5f;
 
@@ -51,7 +51,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             distanceBetween = playerPos - position;
             distanceBetween.Normalize();
             rotation = (float)Math.Atan2(distanceBetween.Y, distanceBetween.X) - MathHelper.PiOver2;
-            position += distanceBetween * 5.0f; // set speed here
+            position += distanceBetween * 1.0f; // set speed here
         }
 
         // This method sets the enemy position depending on it's spot in the formation            

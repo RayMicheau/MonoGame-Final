@@ -148,7 +148,9 @@ namespace MonoGame_Dynamics_Final_Project
                     new Vector2(windowWidth / 2, windowHeight - 70),
                     new Vector2(10, 10),
                     true,
-                    1.0f
+                    1.0f,
+                    100.0f,
+                    1000.0f
                     );
 
                 follower = new Follower(32,32,Content, playerShip,new Vector2(0, playerShip.frameHeight+20),1.0f, true);
@@ -193,28 +195,35 @@ namespace MonoGame_Dynamics_Final_Project
             }
 
             // tests for collision of primary shots against enemy
-            for (int i = 0; i < Enemywave.Count; i++)
+            if (Enemywave.Count > 0)
             {
-                int collide = Enemywave[i].CollisionShot(playerShip.Primary);
-                if (collide != -1)
+                for (int i = 0; i < Enemywave.Count; i++)
                 {
-                    playerShip.Primary.RemoveAt(collide);
-                    Enemywave[i].Alive = false;
-                    Enemywave.RemoveAt(i);
+                    int collide = Enemywave[i].CollisionShot(playerShip.Primary);
+                    if (collide != -1)
+                    {
+                        playerShip.Primary.RemoveAt(collide);
+                        Enemywave[i].Health -= 100f;
+                        if (Enemywave[i].Health == 0f)
+                        {
+                            Enemywave[i].Alive = false;
+                            Enemywave.RemoveAt(i);
+                        }
+                    }
                 }
-            }
-            // tests for collision of secondary shots against enemy
-            for (int i = 0; i < Enemywave.Count; i++)
-            {
-                int collide = Enemywave[i].CollisionShot(playerShip.Secondary);
-                if (collide != -1)
-                {
-                    playerShip.Secondary.RemoveAt(collide);
-                    Enemywave[i].Alive = false;
-                    Enemywave.RemoveAt(i);
-                }
-            }
 
+                // tests for collision of secondary shots against enemy
+                for (int i = 0; i < Enemywave.Count; i++)
+                {
+                    int collide = Enemywave[i].CollisionShot(playerShip.Secondary);
+                    if (collide != -1)
+                    {
+                        playerShip.Secondary.RemoveAt(collide);
+                        Enemywave[i].Alive = false;
+                        Enemywave.RemoveAt(i);
+                    }
+                }
+            }
             // testing collision of playership with enemy
             for (int i = 0; i < Enemywave.Count; i++)
             {
@@ -397,7 +406,7 @@ namespace MonoGame_Dynamics_Final_Project
 
                 }
                 // Primary Weapon
-                if (keyState.IsKeyDown(Keys.Space))
+                if (oldState.IsKeyUp(Keys.Space) && keyState.IsKeyDown(Keys.Space))
                 {
                     playerShip.HasShotPrim = true;
                     if (playerShip.HasShotPrim)

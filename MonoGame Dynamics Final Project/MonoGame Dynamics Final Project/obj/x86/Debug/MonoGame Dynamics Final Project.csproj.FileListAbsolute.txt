@@ -166,11 +166,8 @@ C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Fin
 C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Backgrounds\universe0.png
 C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Backgrounds\universe1.png
 C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Backgrounds\universe2.png
-C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\TellMe.xnb
-C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\TellMe.wma
 C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\MonoGame Dynamics Final Project.exe
 C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\MonoGame Dynamics Final Project.pdb
-C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\IgnoreMe.dll
 C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\MonoGame.Framework.dll
 C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\SharpDX.MediaFoundation.dll
 C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\SharpDX.dll
@@ -178,7 +175,6 @@ C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Fin
 C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\SharpDX.Direct3D11.dll
 C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\SharpDX.DXGI.dll
 C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\SharpDX.Direct2D1.dll
-C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Lidgren.Network.dll
 C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\SharpDX.XInput.dll
 C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\SharpDX.RawInput.dll
 C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\SharpDX.Direct3D9.dll
@@ -444,3 +440,12 @@ C:\Users\Kai\Desktop\MonoGame Dynamics Final Project\MonoGame Dynamics Final Pro
 C:\Users\Kai\Desktop\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\SharpDX.XInput.xml
 C:\Users\Kai\Desktop\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\SharpDX.RawInput.xml
 C:\Users\Kai\Desktop\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\SharpDX.Direct3D9.xml
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\Commandunit-idle.png
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\crossHair.png
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\rocket.png
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\Sting-ray.png
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\synth-unit.png
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Backgrounds\background-level-1.png
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Backgrounds\Menu.png
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Fonts\titleFont.xnb
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\MonoGame.Framework.xml
