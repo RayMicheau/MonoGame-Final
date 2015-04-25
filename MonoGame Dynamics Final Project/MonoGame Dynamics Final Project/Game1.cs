@@ -71,6 +71,7 @@ namespace MonoGame_Dynamics_Final_Project
         Menu menuScreen;
         SpriteFont menuFont;
         Color customColor;
+        int score = 0;
 
         // player
         Texture2D playerTexture;
@@ -261,6 +262,7 @@ namespace MonoGame_Dynamics_Final_Project
                         playerShip.CurrentPrimaryAmmo++;
                         if (Enemywave[i].Health == 0f)
                         {
+                            score += 100;
                             double rand = random.NextDouble();
                             //if (rand < spawnChance)
                                     SpawnPowerUp(Enemywave[i].Position);
@@ -557,6 +559,7 @@ namespace MonoGame_Dynamics_Final_Project
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
                     myBackground.Draw(spriteBatch);
                     spriteBatch.Draw(health, healthRect, Color.White);
+                    spriteBatch.DrawString(menuFont, "Score:" + score, new Vector2(0.0f,25.0f), Color.White, 0.0f,Vector2.Zero,0.4f,SpriteEffects.None,0.0f);
                     playerShip.Draw(spriteBatch, gameTime);
                     follower.Draw(spriteBatch, gameTime);
                     foreach (Enemy enemy in Enemywave)
