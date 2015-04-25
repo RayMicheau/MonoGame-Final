@@ -595,7 +595,6 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             timer += (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
             if (hasShotPrim && timer <= 0.5f)
             {
-                Velocity = new Vector2(0.0f, 0.0f);
                 timer = 0.0f;
                 BasicLaser laser = new BasicLaser(content, new Vector2(position.X, position.Y - spriteOrigin.Y), 500f);
                 primary.Add(laser);

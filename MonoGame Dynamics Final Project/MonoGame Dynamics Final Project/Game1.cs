@@ -50,6 +50,7 @@ namespace MonoGame_Dynamics_Final_Project
         GameState gameState = GameState.StartMenu;
         Wave wave = Wave.Null;
         Level level = Level.Null;
+        PowerUps Powerups = PowerUps.Null;
 
         public static Random random;
 
@@ -482,7 +483,8 @@ namespace MonoGame_Dynamics_Final_Project
                 case GameState.StartMenu:
                     spriteBatch.Begin();
                     myBackground.Draw(spriteBatch);
-                    spriteBatch.Draw(startMenuScreen, new Rectangle(Window.ClientBounds.Width / 2 - startMenuScreen.Width / 2, 20, startMenuScreen.Width, startMenuScreen.Height), Color.White);
+                    spriteBatch.Draw(startMenuScreen, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
+                    spriteBatch.DrawString(menuFont, "Cataclysm", new Vector2(GraphicsDevice.Viewport.Width / 8, GraphicsDevice.Viewport.Height / 9), customColor);
                     menuScreen.Draw(spriteBatch);
                     spriteBatch.End();
                     break;
@@ -589,8 +591,6 @@ namespace MonoGame_Dynamics_Final_Project
                 WaveDef[0].Add(enemy);
             }
 
-                
-
             // Wave 2
             WaveDef[1] = new List<Enemy>();
 
@@ -617,8 +617,13 @@ namespace MonoGame_Dynamics_Final_Project
         }
         public void SpawnPowerUp(Vector2 Position)
         {
-            PowerUps Powerups = PowerUps.Null;
-            //powerUps.Add();
+            switch (random.Next(3))
+            {
+                case 0: break;
+                case 1: break;
+                case 2: break;
+                default: break;
+            }
         }
     }
 }

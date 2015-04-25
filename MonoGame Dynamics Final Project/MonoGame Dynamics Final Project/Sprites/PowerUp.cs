@@ -31,6 +31,14 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         {
             if(powerUps != PowerUps.Null){
                 switch(powerUps){
+                    case PowerUps.MoveSpdUp:
+                        break;
+
+                    case PowerUps.AtkSpdUp:
+                        break;
+
+                    case PowerUps.Shield:
+                        break;
 
                     default:
                         break;
