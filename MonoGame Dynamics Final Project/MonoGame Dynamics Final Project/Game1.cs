@@ -280,6 +280,7 @@ namespace MonoGame_Dynamics_Final_Project
                     {
                         if (playerShip.SecondaryType != "gravityWell")
                         {
+                            playerShip.CurrentSecondaryAmmo++;
                             playerShip.Secondary.RemoveAt(collide);
                             if (random.NextDouble() <= spawnChance)
                                 SpawnPowerUp(Enemywave[i].Position);

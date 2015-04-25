@@ -507,3 +507,8 @@ C:\GameDev\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Fina
 C:\GameDev\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\obj\x86\Debug\MonoGame Dynamics Final Project.exe
 C:\GameDev\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\obj\x86\Debug\MonoGame Dynamics Final Project.pdb
 C:\GameDev\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\MoveSpdUp.png
+C:\Users\hau5t_000\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\AtkSpdUp.png
+C:\Users\hau5t_000\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\MoveSpdUp.png
+C:\Users\hau5t_000\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Particles\smokepoof.png
+C:\Users\hau5t_000\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Particles\starpoof1.png
+C:\Users\hau5t_000\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Particles\starpoof2.png

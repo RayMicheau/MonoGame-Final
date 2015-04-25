@@ -221,8 +221,8 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             // Set Primary Weapons
 
             // Set Secondary Weapons
-            setWeapon("gravityWell", 1);
-            //setWeapon("helixMissile", 2);
+            //setWeapon("gravityWell", 1);
+            setWeapon("helixMissile", 2);
             //setWeapon("homingMissile", 2);
             setWeapon("laser", 5);
             //setWeapon("rail", 4);
@@ -575,11 +575,10 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         public void shootHelixMissile(ContentManager content)
         {
             if (primary.Count + 1 <= primaryAmmo)
-            {
-                //Weapon shot = new Weapon(weaponTexture, new Vector2(position.X, position.Y - spriteOrigin.Y), 600f); 
-                Weapon left = new HelixMissile(content, new Vector2(position.X, position.Y + 50f - spriteOrigin.Y), 10f, -1);
+            { 
+                Weapon left = new HelixMissile(content, new Vector2(position.X, position.Y + 50f - spriteOrigin.Y), 2f, -1);
                 primary.Add(left);
-                Weapon right = new HelixMissile(content, new Vector2(position.X, position.Y + 50f - spriteOrigin.Y), 10f, 1);
+                Weapon right = new HelixMissile(content, new Vector2(position.X, position.Y + 50f - spriteOrigin.Y), 2f, 1);
                 primary.Add(right);
             }
         }
