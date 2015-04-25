@@ -19,6 +19,7 @@ namespace MonoGame_Dynamics_Final_Project
         SplashScreen, 
         StartMenu,
         Play, 
+        GameOver,
         Exit
     }
     public enum Level
@@ -78,6 +79,8 @@ namespace MonoGame_Dynamics_Final_Project
         Texture2D playerLeft;
         Texture2D playerRightTurn;
         Texture2D playerLeftTurn;
+        Texture2D health;
+        Rectangle healthRect;
         Player playerShip;
         Player follower;
 
@@ -98,6 +101,11 @@ namespace MonoGame_Dynamics_Final_Project
         int animationResetSwitchU;
         int animationResetSwitchL;
         int animationResetSwitchR;
+
+        //Particle Effects
+        ParticleEngine Thruster1;
+        ParticleEngine Thruster2;
+        List<Texture2D> textures;
         #endregion
 
         public Game1()
@@ -122,10 +130,21 @@ namespace MonoGame_Dynamics_Final_Project
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             string[] menuItems = { "Launch Ship","How to Play", "Exit Cockpit" };
+
             try
             {
+                //Load Particle textures
+                textures = new List<Texture2D>();
+                textures.Add(Content.Load<Texture2D>("Images/Particles/smokepoof"));
+                textures.Add(Content.Load<Texture2D>("Images/Particles/starpoof1"));
+                textures.Add(Content.Load<Texture2D>("Images/Particles/starpoof2"));
+                Thruster1 = new ParticleEngine(textures, new Vector2(400, 240));
+                Thruster2 = new ParticleEngine(textures, new Vector2(400, 240));
+
                 /*Song song = Content.Load<Song>("TellMe");
                 MediaPlayer.Play(song);*/
+
+                
 
                 menuFont = Content.Load<SpriteFont>("Fonts/titleFont");
                 menuScreen = new Menu(GraphicsDevice, menuFont, menuItems);
@@ -160,6 +179,7 @@ namespace MonoGame_Dynamics_Final_Project
                 playerLeft = Content.Load<Texture2D>("Images/Animations/Commandunit-left");
                 playerRightTurn = Content.Load<Texture2D>("Images/Animations/Commandunit-Turn");
                 playerLeftTurn = Content.Load<Texture2D>("Images/Animations/Commandunit-Turn-left");
+                health = Content.Load<Texture2D>("Images/playerhealth"); 
                 playerShip = new Player(64,70,playerTexture,
                     new Vector2(windowWidth / 2, windowHeight - 70),
                     new Vector2(10, 10),
@@ -190,7 +210,8 @@ namespace MonoGame_Dynamics_Final_Project
         {
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
+                healthRect = new Rectangle(100, GraphicsDevice.Viewport.Height - 50, (int)playerShip.Health, health.Height);
+            
             // updating scroll speed
             float elapsed = (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
             myBackground.Update(gameTime, elapsed * 100);
@@ -200,8 +221,13 @@ namespace MonoGame_Dynamics_Final_Project
                 playerShip.Update(gameTime, GraphicsDevice, Enemywave);
                 follower.Update(playerShip, gameTime);
                 UpdateInput(gameTime);
+                Thruster1.EmitterLocation = playerShip.Position + new Vector2(15, playerShip.frameHeight - 20);
+                Thruster2.EmitterLocation = playerShip.Position + new Vector2(-15, playerShip.frameHeight - 20);
             }
-            
+
+            Thruster1.Update(playerShip.Alive);
+            Thruster2.Update(playerShip.Alive);
+
             foreach (Enemy enemy in Enemywave)
             {
                 enemy.Update(gameTime, playerShip);
@@ -275,6 +301,7 @@ namespace MonoGame_Dynamics_Final_Project
                             Console.WriteLine("Health:" + playerShip.Health);
                             if (playerShip.Health <= 0.0f)
                             {
+                                gameState = GameState.GameOver;
                                 playerShip.Alive = false;
                                 follower.Alive = false;
                             }
@@ -500,7 +527,12 @@ namespace MonoGame_Dynamics_Final_Project
                 oldState = keyState;
             }
         }
-
+        private void drawRect(Rectangle coords, Color color)
+        {
+            var rect = new Texture2D(GraphicsDevice, 1, 1);
+            rect.SetData(new[] { color });
+        }
+  
         protected override void Draw(GameTime gameTime)
         {
             switch (gameState)
@@ -523,6 +555,7 @@ namespace MonoGame_Dynamics_Final_Project
                     GraphicsDevice.Clear(Color.Black);
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
                     myBackground.Draw(spriteBatch);
+                    spriteBatch.Draw(health, healthRect, Color.White);
                     playerShip.Draw(spriteBatch, gameTime);
                     follower.Draw(spriteBatch, gameTime);
                     foreach (Enemy enemy in Enemywave)
@@ -533,10 +566,20 @@ namespace MonoGame_Dynamics_Final_Project
                     {
                         pUp.Draw(spriteBatch, gameTime);
                     }
+
+                    Thruster1.Draw(spriteBatch);
+                    Thruster2.Draw(spriteBatch);
+
                     spriteBatch.End();
                     base.Draw(gameTime);
                     break;
-
+                case GameState.GameOver:
+                    GraphicsDevice.Clear(Color.Black);
+                    spriteBatch.Begin();
+                    drawRect(new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.Black);
+                    spriteBatch.DrawString(menuFont, "Game Over", new Vector2(GraphicsDevice.Viewport.Width / 8, GraphicsDevice.Viewport.Height / 9), customColor);
+                    spriteBatch.End();
+                    break;
                 case GameState.Exit:
 
                     break;
