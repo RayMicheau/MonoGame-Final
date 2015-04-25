@@ -63,7 +63,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
         {
             get
             {
-                return new Rectangle((int)(position.X - SpriteOrigin.X), (int)(position.Y - SpriteOrigin.Y),
+                return new Rectangle((int)(position.X), (int)(position.Y),
                    Convert.ToInt32(TextureImage.Width), Convert.ToInt32(TextureImage.Height));
             }
         }

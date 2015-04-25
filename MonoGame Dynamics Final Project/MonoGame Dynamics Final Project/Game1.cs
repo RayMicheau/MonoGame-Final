@@ -176,14 +176,16 @@ namespace MonoGame_Dynamics_Final_Project
                 Exit();
 
             // updating scroll speed
-            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            float elapsed = (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
             myBackground.Update(gameTime, elapsed * 100);
 
-            UpdateInput(gameTime);
-
-            playerShip.Update(gameTime, GraphicsDevice, Enemywave);
-            follower.Update(playerShip, gameTime);
-
+            if (playerShip.Alive)
+            {
+                playerShip.Update(gameTime, GraphicsDevice, Enemywave);
+                follower.Update(playerShip, gameTime);
+                UpdateInput(gameTime);
+            }
+            
             foreach (Enemy enemy in Enemywave)
             {
                 enemy.Update(gameTime, playerShip);
@@ -230,7 +232,7 @@ namespace MonoGame_Dynamics_Final_Project
             {
                 if (playerShip.CollisionSprite(Enemywave[i]))
                 {
-                    if (playerShip.IntersectsPixel(playerShip.CollisionRectangle, playerShip.textureData, Enemywave[i].CollisionRectangle, Enemywave[i].textureData))
+                    if (playerShip.IntersectsPixel(playerShip.source, playerShip.textureData, Enemywave[i].source, Enemywave[i].textureData))
                     {
                         playerShip.collisionDetected = true;
                         Enemywave.RemoveAt(i);
@@ -464,8 +466,8 @@ namespace MonoGame_Dynamics_Final_Project
                     GraphicsDevice.Clear(Color.Black);
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
                     myBackground.Draw(spriteBatch);
-                    playerShip.Draw(4, 0.2f, spriteBatch, gameTime);
-                    follower.Draw(4, 0.1f, spriteBatch, gameTime);
+                    playerShip.Draw(spriteBatch, gameTime);
+                    follower.Draw(spriteBatch, gameTime);
                     foreach (Enemy enemy in Enemywave)
                     {
                         enemy.Draw(spriteBatch, gameTime);

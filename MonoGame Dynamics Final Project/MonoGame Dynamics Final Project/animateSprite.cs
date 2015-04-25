@@ -62,6 +62,7 @@ namespace MonoGame_Dynamics_Final_Project
             }
 
             Rectangle source = new Rectangle(x * frameWidth, y * frameHeight, frameWidth, frameHeight);
+
             time += timeLapse;
             while (time > frameTime)
             {
@@ -74,6 +75,5 @@ namespace MonoGame_Dynamics_Final_Project
             }
             return source;
         }
-
     }
 }

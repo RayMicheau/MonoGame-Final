@@ -72,9 +72,14 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         //public float mass;
         public bool Alive { get; set; }
 
+        // animation
+        public int frameNum;
+        public float frameTime;
+
         // pixel collision
-        public Color[] textureData;
         public bool collisionDetected;
+        public Rectangle source;
+        public Color[] textureData;
 
         //Texture object and a collision rectangle
         public Texture2D TextureImage { get; set; }
@@ -177,6 +182,12 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         {
             frameWidth = FrameWidth;
             frameHeight = FrameHeight;
+            source = new Rectangle(0, 0, frameWidth, frameHeight);
+            frameNum = 4;
+            frameTime = 0.2f;
+            textureData = new Color[source.Width * source.Height];
+            textureImage.GetData<Color>(0, source, textureData, 0, source.Width * source.Height);
+
             Position = position;
             TextureImage = textureImage;
             InitialVelocity = velocity;
@@ -195,8 +206,6 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             rotation = 0f;
             Alive = true;
             isMoving = false;
-            textureData = new Color[TextureImage.Width * TextureImage.Height];
-            textureImage.GetData(textureData);
             primary =  new List<Weapon>();
             secondary = new List<Weapon>();
             
@@ -205,27 +214,24 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             // Set Secondary Weapons
             setWeapon("gravityWell", 1);
             //setWeapon("helixMissile", 2);
-            setWeapon("homingMissile", 2);
-            setWeapon("laser", 1);
+            //setWeapon("homingMissile", 2);
+            setWeapon("laser", 5);
             //setWeapon("rail", 4);
             hasShot = false;
             hasShotPrim = false;
             forcePull = false;
             health = 100;
         }
-
-        public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime)
-        {}
         
         // Draws the ship and all projectiles currently in motion
-        public virtual void Draw(int framenum, float frameTime,SpriteBatch spriteBatch, GameTime gameTime)
+        public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             float timeLapse = (gameTime.ElapsedGameTime.Milliseconds/1000f);
             if (Alive)
             {
                 spriteBatch.Draw(TextureImage,
                     Position,
-                    animatedSprite(framenum, frameTime, frameWidth, frameHeight, TextureImage, timeLapse),
+                    source,
                     Microsoft.Xna.Framework.Color.White,
                     rotation,
                     SpriteOrigin,
@@ -249,8 +255,10 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         public virtual void Update(GameTime gameTime, Player player)
         {
 
-            float timeLapse = (float)(gameTime.ElapsedGameTime.TotalSeconds);
+            float timeLapse = (float)(gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
             position += Velocity * timeLapse;
+            source = animatedSprite(frameNum, frameTime, frameWidth, frameHeight, TextureImage, timeLapse);
+            TextureImage.GetData<Color>(0, source, textureData, 0, source.Width * source.Height);
         }
         public virtual void Update(GameTime gameTime, List<Enemy> enemyWave)
         {
@@ -258,7 +266,9 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             {
                 collisionRange = new BoundingSphere(new Vector3(position.X + spriteOrigin.X, position.Y + spriteOrigin.Y, 0), 100f);
                 //Time between the frames
-                float timeLapse = (float)(gameTime.ElapsedGameTime.TotalSeconds);
+                float timeLapse = gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+                source = animatedSprite(frameNum, frameTime, frameWidth, frameHeight, TextureImage, timeLapse);
+                TextureImage.GetData<Color>(0, source, textureData, 0, source.Width * source.Height);
 
                 UpdateWeapon(primary, gameTime, enemyWave);
                 UpdateWeapon(secondary, gameTime, enemyWave);
@@ -271,8 +281,9 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         // Follower Update. Confirmed. 
         public virtual void Update(Player player, GameTime gameTime)
         {
-            //float timeLapse = (float)(gameTime.ElapsedGameTime.TotalSeconds);
-
+            float timeLapse = gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+            source = animatedSprite(frameNum, frameTime, frameWidth, frameHeight, TextureImage, timeLapse);
+            TextureImage.GetData<Color>(0, source, textureData, 0, source.Width * source.Height);
             //position.Y = player.position.Y;
             //position.X = player.position.X;
             //position += Velocity * timeLapse;
@@ -281,6 +292,9 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         // Update methods for bounds checks
         public virtual void Update(GameTime gameTime, GraphicsDevice Device, List<Enemy> enemyWave)
         {
+            float timeLapse = gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+            source = animatedSprite(frameNum, frameTime, frameWidth, frameHeight, TextureImage, timeLapse);
+            TextureImage.GetData<Color>(0, source, textureData, 0, source.Width * source.Height);
             if (Alive)
             {
                 //Keep the sprite onscreen
@@ -394,17 +408,18 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             }
             return collision;
         }
-
+        
         // Parses shot list for collisions
         public int CollisionShot(List<Weapon> shots)
         {
             for (int i = 0; i < shots.Count; i++)
             {
-                if (IntersectsPixel(CollisionRectangle, textureData, shots[i].CollisionRectangle, shots[i].textureData))
+                /*if (IntersectsPixel(source, textureData, shots[i].CollisionRectangle, shots[i].textureData))
                 {
                     return i;
-                }
-                if (CollisionRectangle.Intersects(shots[i].CollisionRectangle))
+                }*/
+
+                if(shots[i].CollisionRectangle.Intersects(CollisionRectangle))
                 {
                     return i;
                 }
