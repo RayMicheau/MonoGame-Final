@@ -77,7 +77,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         public bool SetOrigin { get; set; }
         public float Scale { get; set; }
 
-        protected float rotation;
+        public float rotation;
 
         protected SpriteEffects Spriteeffect { get; set; }
         

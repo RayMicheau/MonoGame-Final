@@ -109,7 +109,12 @@ namespace MonoGame_Dynamics_Final_Project
         //Particle Effects
         ParticleEngine Thruster1;
         ParticleEngine Thruster2;
-        List<Texture2D> textures;
+        List<Texture2D> Thrustertextures;
+
+        List<ParticleEngine> StingrayParticles = new List<ParticleEngine>();
+        List<Texture2D> StingrayTextures;
+
+        int EnemyParticleCounter = 0;
         #endregion
 
         public Game1()
@@ -138,13 +143,19 @@ namespace MonoGame_Dynamics_Final_Project
             try
             {
                 //Load Particle textures
-                textures = new List<Texture2D>();
-                textures.Add(Content.Load<Texture2D>("Images/Particles/smokepoof"));
-                textures.Add(Content.Load<Texture2D>("Images/Particles/starpoof1"));
-                textures.Add(Content.Load<Texture2D>("Images/Particles/starpoof2"));
-                textures.Add(Content.Load<Texture2D>("Images/Particles/poofparticle"));
-                Thruster1 = new ParticleEngine(textures, new Vector2(400, 240));
-                Thruster2 = new ParticleEngine(textures, new Vector2(400, 240));
+                Thrustertextures = new List<Texture2D>();
+                Thrustertextures.Add(Content.Load<Texture2D>("Images/Particles/smokepoof"));
+                //textures.Add(Content.Load<Texture2D>("Images/Particles/starpoof1"));
+                //textures.Add(Content.Load<Texture2D>("Images/Particles/starpoof2"));
+                Thrustertextures.Add(Content.Load<Texture2D>("Images/Particles/poofparticle"));
+                Thruster1 = new ParticleEngine(Thrustertextures, new Vector2(400, 240));
+                Thruster2 = new ParticleEngine(Thrustertextures, new Vector2(400, 240));
+
+                StingrayTextures = new List<Texture2D>();
+                StingrayTextures.Add(Content.Load<Texture2D>("Images/Particles/starpoof1"));
+                StingrayTextures.Add(Content.Load<Texture2D>("Images/Particles/starpoof2"));
+
+                
 
                 /*Song song = Content.Load<Song>("TellMe");
                 MediaPlayer.Play(song);*/
@@ -205,6 +216,14 @@ namespace MonoGame_Dynamics_Final_Project
 
                 LoadWaves();
                 LoadLevel(1, 1);
+
+                foreach (Enemy enemy in Enemywave)
+                {
+                    if (enemy.enemyType == "stingRay")
+                    {
+                        StingrayParticles.Add(new ParticleEngine(StingrayTextures, new Vector2(400, 240)));
+                    }
+                }
             }
             catch (ContentLoadException e)
             {
@@ -238,8 +257,8 @@ namespace MonoGame_Dynamics_Final_Project
                 Thruster2.EmitterLocation = playerShip.Position + new Vector2(-15, playerShip.frameHeight - 30);
             }
 
-            Thruster1.Update(playerShip.Alive, playerShip.Velocity);
-            Thruster2.Update(playerShip.Alive, playerShip.Velocity);
+            Thruster1.Update(playerShip.Alive, playerShip.Velocity, 100f, Color.SlateGray);
+            Thruster2.Update(playerShip.Alive, playerShip.Velocity, 100f, Color.SlateGray);
 
             foreach (Enemy enemy in Enemywave)
             {
@@ -247,6 +266,18 @@ namespace MonoGame_Dynamics_Final_Project
                 if (enemy.enemyType == "stingRay")
                 {
                         enemy.Update(gameTime, playerShip);
+                    
+                    //Stingray Particles
+                    if (EnemyParticleCounter < StingrayParticles.Count)
+                        {
+                            StingrayParticles[EnemyParticleCounter].EmitterLocation = enemy.Position + new Vector2(Convert.ToSingle(Math.Cos(enemy.rotation) * enemy.frameWidth/4), Convert.ToSingle(Math.Sin(enemy.rotation) * enemy.frameWidth/4));
+                            StingrayParticles[EnemyParticleCounter].Update(enemy.Alive, enemy.Velocity, 9f, Color.Plum);   
+                        EnemyParticleCounter++;
+                        }
+                        else
+                        {
+                            EnemyParticleCounter = 0;
+                        }
                 }
                 if (enemy.enemyType == "voidVulture")
                 {     
@@ -597,6 +628,7 @@ namespace MonoGame_Dynamics_Final_Project
 
                     Thruster1.Draw(spriteBatch);
                     Thruster2.Draw(spriteBatch);
+                    foreach (ParticleEngine particle in StingrayParticles) { particle.Draw(spriteBatch); }
                     playerShip.Draw(spriteBatch, gameTime);
                     spriteBatch.End();
                     base.Draw(gameTime);

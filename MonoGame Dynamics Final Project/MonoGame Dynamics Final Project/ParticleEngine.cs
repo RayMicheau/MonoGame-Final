@@ -25,7 +25,7 @@ namespace MonoGame_Dynamics_Final_Project
             random = new Random();
         }
 
-        private Particle GenerateNewParticle()
+        private Particle GenerateNewParticle(Color color)
         {
             Texture2D texture = textures[random.Next(textures.Count)];
             Vector2 position = EmitterLocation;
@@ -34,22 +34,21 @@ namespace MonoGame_Dynamics_Final_Project
                     1f * (float)(random.NextDouble() * 2 - 1));
             float angle = 0;
             float angularVelocity = 0.1f * (float)(random.NextDouble() * 2 - 1);
-            Color color = Color.LightSlateGray;
             float size = (float)random.NextDouble();
             int ttl = 20 + random.Next(40);
 
             return new Particle(texture, position, velocity, angle, angularVelocity, color, size, ttl);
         }
 
-        public void Update(bool generate, Vector2 velocity)
+        public void Update(bool generate, Vector2 velocity, float velocityActivator, Color color)
         {
             int total = 1;
 
             for (int i = 0; i < total; i++)
             {
-                if (generate && Math.Sqrt(velocity.X * velocity.X + velocity.Y * velocity.Y) > 100f)
+                if (generate && Math.Sqrt(velocity.X * velocity.X + velocity.Y * velocity.Y) > velocityActivator)
                 {
-                    particles.Add(GenerateNewParticle());
+                    particles.Add(GenerateNewParticle(color));
                 }
             }
 

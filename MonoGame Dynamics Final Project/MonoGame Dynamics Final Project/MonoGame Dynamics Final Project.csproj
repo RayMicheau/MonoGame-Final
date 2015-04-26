@@ -44,6 +44,7 @@
     <Compile Include="Game1.cs" />
     <Compile Include="Sprites\PowerUp.cs" />
     <Compile Include="Sprites\Stingray.cs" />
+    <Compile Include="Sprites\VoidVulture.cs" />
     <Compile Include="Weapons\BasicLaser.cs" />
     <Compile Include="Weapons\GravityWell.cs" />
     <Compile Include="Sprites\Player.cs" />
@@ -81,6 +82,15 @@
     <Content Include="Content\Images\Animations\synth-unit.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Images\Animations\void-vulture-expel.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\Animations\voidVulture.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\Animations\voidVultureImpale.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Images\Animations\yellowstar.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -112,6 +122,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\Backgrounds\universe2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\Particles\poofparticle.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\Particles\smokepoof.png">
