@@ -268,6 +268,7 @@ namespace MonoGame_Dynamics_Final_Project
                         enemy.Update(gameTime, playerShip);
                     
                     //Stingray Particles
+                    
                     if (EnemyParticleCounter < StingrayParticles.Count)
                         {
                             StingrayParticles[EnemyParticleCounter].EmitterLocation = enemy.Position + new Vector2(Convert.ToSingle(Math.Cos(enemy.rotation) * enemy.frameWidth/4), Convert.ToSingle(Math.Sin(enemy.rotation) * enemy.frameWidth/4));
@@ -307,11 +308,16 @@ namespace MonoGame_Dynamics_Final_Project
                         playerShip.CurrentPrimaryAmmo++;
                         if (Enemywave[i].Health == 0f)
                         {
-                            score += 100;
-                            if (Enemywave[i].Health == 0f && Enemywave[i].enemyType == "voidVulture")
+                            if (Enemywave[i].enemyType == "stingRay")
+                            {
+                                score += 100;
+                                StingrayParticles.RemoveAt(StingrayParticles.Count-1);
+                            }
+                            if (Enemywave[i].enemyType == "voidVulture")
                             {
                                 score += 1000;
                             }
+
                             double rand = random.NextDouble();
                             if (rand < spawnChance)
                                     SpawnPowerUp(Enemywave[i].Position);
