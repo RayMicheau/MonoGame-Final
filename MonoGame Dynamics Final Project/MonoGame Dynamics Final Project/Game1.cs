@@ -161,6 +161,7 @@ namespace MonoGame_Dynamics_Final_Project
                 //PwrUpTextures
                 AtkSpdUp = Content.Load<Texture2D>("Images/AtkSpdUp");
                 MoveSpdUp = Content.Load<Texture2D>("Images/MoveSpdUp");
+                Shield = Content.Load<Texture2D>("Images/HPUp");
 
                 // background
                 myBackground = new ScrollingBackground();
@@ -326,12 +327,15 @@ namespace MonoGame_Dynamics_Final_Project
                 }
             }
 
-            //CheckForPowerups();
-
             for (int i = powerUpList.Count - 1; i >= 0; i--)
             {
-                if (powerUpList[i].removeFromScreen || CheckForPowerUps(playerShip.CollisionRectangle, powerUpList[i].CollisionRectangle))
+                if (powerUpList[i].removeFromScreen )
                 {
+                    powerUpList.RemoveAt(i);
+                }
+                else if (CheckForPowerUps(playerShip.CollisionRectangle, powerUpList[i].CollisionRectangle))
+                {
+                    powerUpList[i].ActivatePowerUp(Powerups, playerShip);
                     powerUpList.RemoveAt(i);
                 }
             }
@@ -707,7 +711,7 @@ namespace MonoGame_Dynamics_Final_Project
                     break;
                 case 2:
                     Powerups = PowerUps.Shield;
-                    powerUpList.Add(new PowerUp(AtkSpdUp, GraphicsDevice, Powerups, playerShip, Position, 1.0f));
+                    powerUpList.Add(new PowerUp(Shield, GraphicsDevice, Powerups, playerShip, Position, 1.0f));
                     break;
                 default: break;
             }
@@ -716,5 +720,6 @@ namespace MonoGame_Dynamics_Final_Project
         {
             return player.Intersects(pwerUp);
         }
+
     }
 }

@@ -14,7 +14,8 @@ using MonoGame_Dynamics_Final_Project;
 
 namespace MonoGame_Dynamics_Final_Project.Sprites
 {
-    public enum PowerUps{
+    public enum PowerUps
+    {
         Null,
         AtkSpdUp,
         MoveSpdUp,
@@ -54,22 +55,47 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         {
             get
             {
-                return new Rectangle((int)(position.X - SpriteOrigin.X * Scale),((int)(position.Y - SpriteOrigin.Y * Scale)),
+                return new Rectangle((int)(position.X - SpriteOrigin.X * Scale), ((int)(position.Y - SpriteOrigin.Y * Scale)),
                    Convert.ToInt32(TextureImage.Width * Scale), Convert.ToInt32(TextureImage.Height * Scale));
             }
         }
+        public bool collide { get; set; }
 
         public Texture2D TextureImage { get; set; }
 
-        public PowerUp(Texture2D textureImg, GraphicsDevice Device, 
+        public PowerUp(Texture2D textureImg, GraphicsDevice Device,
             PowerUps PowerUp, Player player, Vector2 position, float scale)
         {
             Position = position;
             Alive = true;
+            collide = false;
             TextureImage = textureImg;
             SpriteOrigin = new Vector2(TextureImage.Width / 2, TextureImage.Height / 2);
             Scale = scale;
-            switch (PowerUp)
+
+
+        }
+
+        public void Update(GameTime gameTime, GraphicsDevice graphicsDevice)
+        {
+            dTime = (float)gameTime.ElapsedGameTime.TotalMilliseconds / 1000.0f;
+            position.Y += 200 * dTime;
+            if (Position.Y >= graphicsDevice.Viewport.Height)
+            {
+                Alive = false;
+            }
+        }
+        public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        {
+            float timeLapse = (gameTime.ElapsedGameTime.Milliseconds / 1000f);
+            if (Alive)
+            {
+                spriteBatch.Draw(TextureImage, Position, null, Color.White, 0.0f, spriteOrigin, 1.0f, SpriteEffects.None, 0);
+            }
+        }
+        public void ActivatePowerUp(PowerUps pwerUp, Player player)
+        {
+            switch (pwerUp)
             {
                 case PowerUps.MoveSpdUp:
                     player.Velocity *= 1.5f;
@@ -79,34 +105,12 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                     break;
 
                 case PowerUps.Shield:
-                    player.Health *= 2;
+                    player.Health *= 1.25f;
                     break;
 
                 default:
                     break;
             }
-        }
-
-        public void Update(GameTime gameTime, GraphicsDevice graphicsDevice)
-        {
-            dTime = (float)gameTime.ElapsedGameTime.TotalMilliseconds /1000.0f;
-            position.Y += 200 * dTime;
-            if (Position.Y >= graphicsDevice.Viewport.Height)
-            {
-                Alive = false;
-            }
-        }
-        public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
-        {
-            float timeLapse = (gameTime.ElapsedGameTime.Milliseconds/1000f);
-            if (Alive)
-            {
-                spriteBatch.Draw(TextureImage, Position, null, Color.White, 0.0f, spriteOrigin, 1.0f, SpriteEffects.None, 0); 
-            }
-        }
-        public bool CollisionSprite(Player player)
-        {
-            return CollisionRectangle.Intersects(player.CollisionRectangle);
         }
     }
 }
