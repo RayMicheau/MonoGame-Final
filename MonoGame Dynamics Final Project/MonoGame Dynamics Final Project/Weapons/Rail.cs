@@ -32,7 +32,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
             shotRectangle = new Rectangle(0, 0, shotFrameWidth, shotFrameHeight);
             shotFrames = 4;
             angle = 0;
-
+            damage = 500;
             if(orientation == -1)
             {
                 spriteEffect = SpriteEffects.FlipHorizontally;

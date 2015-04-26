@@ -106,6 +106,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
             textureData = new Color[TextureImage.Width * TextureImage.Height];
             textureImage.GetData(textureData);
             angle = 0f;
+            Damage = damage;
         }
 
         public virtual void Update(GameTime gameTime)

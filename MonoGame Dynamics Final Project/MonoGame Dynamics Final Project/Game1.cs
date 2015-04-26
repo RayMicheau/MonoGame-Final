@@ -74,7 +74,7 @@ namespace MonoGame_Dynamics_Final_Project
         Menu menuScreen;
         SpriteFont menuFont;
         Color customColor;
-        int score = 0;
+        float score = 0;
 
         // player
         Texture2D playerTexture;
@@ -89,6 +89,7 @@ namespace MonoGame_Dynamics_Final_Project
         Player follower;
         // rail turret
         RailTurret railLeft, railRight;
+        Weapon weapon;
 
         // enemies
         int currentWave;
@@ -223,8 +224,7 @@ namespace MonoGame_Dynamics_Final_Project
                     new Vector2(10, 10),
                     true,
                     1.0f,
-                    100.0f,
-                    1000.0f
+                    5000.0f
                     );
 
                 //rail turret
@@ -306,6 +306,7 @@ namespace MonoGame_Dynamics_Final_Project
                 }
                 if (enemy.enemyType == "voidAngel")
                 {
+                    
                     enemy.Update(gameTime, playerShip);
                 }
             }
@@ -327,8 +328,9 @@ namespace MonoGame_Dynamics_Final_Project
                     int collide = Enemywave[i].CollisionShot(playerShip.Primary);
                     if (collide != -1)
                     {
+                        Enemywave[i].Health -= playerShip.Primary[collide].Damage; 
                         playerShip.Primary.RemoveAt(collide);
-                        Enemywave[i].Health -= 100f;
+                        
                         playerShip.CurrentPrimaryAmmo++;
                         if (Enemywave[i].Health == 0f)
                         {
@@ -399,7 +401,7 @@ namespace MonoGame_Dynamics_Final_Project
                         playerShip.collisionDetected = true;
                         if (playerShip.collisionDetected == true)
                         {
-                            playerShip.Health--;
+                            playerShip.Health -= Enemywave[i].Damage;
                             Console.WriteLine("Health:" + playerShip.Health);
                             if (playerShip.Health <= 0.0f)
                             {
@@ -661,7 +663,6 @@ namespace MonoGame_Dynamics_Final_Project
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
                     myBackground.Draw(spriteBatch);
                     spriteBatch.Draw(health, healthRect, Color.White);
-
                     spriteBatch.DrawString(menuFont, "Score:" + score, new Vector2(GraphicsDevice.Viewport.Width / 8, GraphicsDevice.Viewport.Height / 9), Color.White, 0.0f,Vector2.Zero,0.4f,SpriteEffects.None,0.0f);
                     playerShip.Draw(spriteBatch, gameTime);
                     railLeft.Draw(spriteBatch, gameTime);

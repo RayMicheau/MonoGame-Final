@@ -18,7 +18,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
         public BasicLaser(ContentManager content, Vector2 startPosition, float velocity)
             : base(content.Load<Texture2D>("Images/Animations/laser"), startPosition, velocity, 1)
         {
-            
+            damage = 100;
         }
     }
 }

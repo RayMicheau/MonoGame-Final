@@ -10,6 +10,8 @@ using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
 using MonoGame_Dynamics_Final_Project;
+using MonoGame_Dynamics_Final_Project.Weapons;
+
 
 namespace MonoGame_Dynamics_Final_Project.Sprites
 {
@@ -32,6 +34,9 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             collisionRange = new BoundingSphere(new Vector3(position.X + spriteOrigin.X, position.Y + spriteOrigin.Y, 0), 400f);
             velocity = new Vector2(0, 10);
             enemyType = "stingRay";
+            //EnemyShot = content.Load<Texture2D>("Images/Animations/Sting-Ray-shot");
+            VectorSpeed = 2.0f;
+            damage = 2;
         }
 
         public override void Update(GameTime gameTime, Player player)
@@ -41,14 +46,20 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             switch(Ai)
             {
                 case EnemyState.Chase :
-                    ChasePlayer(gameTime, player.Position);
+                    ChasePlayer(gameTime, player);
                     break;
                 case EnemyState.Default :
+
                     base.Update(gameTime, player);
                     break;
             }
         }
-
+        public override void UpdateWeapon(GameTime gameTime, Player player, Vector2 directionShot, ContentManager content)
+        {
+            base.UpdateWeapon(gameTime, player, directionShot, content);
+            StingRayWeapon weapon = new StingRayWeapon(content, player.Position);
+            primary.Add(weapon);
+        }
         public void setAi(Player player)
         {
             if (collisionRange.Intersects(player.collisionRange))
@@ -58,6 +69,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             else
             {
                 Ai = EnemyState.Default;
+               
                 
             }
         }

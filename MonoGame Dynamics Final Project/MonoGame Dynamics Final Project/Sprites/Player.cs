@@ -192,7 +192,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         
         #endregion
 
-        public Player(int FrameWidth, int FrameHeight, Texture2D textureImage, Vector2 position, Vector2 velocity, bool setOrig, float scale, float damage, float health)
+        public Player(int FrameWidth, int FrameHeight, Texture2D textureImage, Vector2 position, Vector2 velocity, bool setOrig, float scale, float health)
         {
             frameWidth = FrameWidth;
             frameHeight = FrameHeight;
@@ -234,7 +234,6 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             hasShot = false;
             hasShotPrim = false;
             forcePull = false;
-            health = 100;
         }
         
         // Draws the ship and all projectiles currently in motion
@@ -265,15 +264,8 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         }
 
         #region Update Methods
-        // Main update method
-        public virtual void Update(GameTime gameTime, Player player)
-        {
 
-            float timeLapse = (float)(gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
-            position += Velocity * timeLapse;
-            source = animatedSprite(frameNum, frameTime, frameWidth, frameHeight, TextureImage, timeLapse);
-         //   TextureImage.GetData<Color>(0, source, textureData, 0, source.Width * source.Height);
-        }
+    
         public virtual void Update(GameTime gameTime, List<Enemy> enemyWave)
         {
             if (Alive)
