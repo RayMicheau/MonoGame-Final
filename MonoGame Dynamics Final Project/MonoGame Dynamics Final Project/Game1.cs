@@ -74,7 +74,7 @@ namespace MonoGame_Dynamics_Final_Project
         Menu menuScreen;
         SpriteFont menuFont;
         Color customColor;
-        int score = 0;
+        float score = 0;
 
         // player
         Texture2D playerTexture;
@@ -89,6 +89,7 @@ namespace MonoGame_Dynamics_Final_Project
         Player follower;
         // rail turret
         RailTurret railLeft, railRight;
+        Weapon weapon;
 
         // enemies
         int currentWave;
@@ -118,7 +119,15 @@ namespace MonoGame_Dynamics_Final_Project
 
         int EnemyParticleCounter = 0;
 
-        
+        List<ParticleEngine> DestructionParticles = new List<ParticleEngine>();
+        List<Texture2D> DestructionTextures= new List<Texture2D>();
+        List<int> DestructionRadiusCounters = new List<int>();
+        List<int> DestructionAngleCounters = new List<int>();
+        List<Vector2> DestructionEmmision = new List<Vector2>();
+
+        Random randomnumber = new Random();
+
+
         #endregion
 
         public Game1()
@@ -144,8 +153,8 @@ namespace MonoGame_Dynamics_Final_Project
 
             string[] menuItems = { "Launch Ship","How to Play", "Exit Cockpit" };
 
-            try
-            {
+           // try
+            //{
                 //Load Particle textures
                 Thrustertextures = new List<Texture2D>();
                 Thrustertextures.Add(Content.Load<Texture2D>("Images/Particles/smokepoof"));
@@ -159,7 +168,12 @@ namespace MonoGame_Dynamics_Final_Project
                 StingrayTextures.Add(Content.Load<Texture2D>("Images/Particles/starpoof1"));
                 StingrayTextures.Add(Content.Load<Texture2D>("Images/Particles/starpoof2"));
 
-                
+                //Destruction Particles
+                DestructionTextures.Add(Content.Load<Texture2D>("Images/Particles/meow"));
+                DestructionTextures.Add(Content.Load<Texture2D>("Images/Particles/meow1"));
+                DestructionTextures.Add(Content.Load<Texture2D>("Images/Particles/meow2"));
+                DestructionTextures.Add(Content.Load<Texture2D>("Images/Particles/meow3"));
+                DestructionTextures.Add(Content.Load<Texture2D>("Images/Particles/meow4"));
 
                 /*Song song = Content.Load<Song>("TellMe");
                 MediaPlayer.Play(song);*/
@@ -212,8 +226,7 @@ namespace MonoGame_Dynamics_Final_Project
                     new Vector2(10, 10),
                     true,
                     1.0f,
-                    100.0f,
-                    1000.0f
+                    5000.0f
                     );
 
                 //rail turret
@@ -232,13 +245,13 @@ namespace MonoGame_Dynamics_Final_Project
                         StingrayParticles.Add(new ParticleEngine(StingrayTextures, new Vector2(400, 240)));
                     }
                 }
-            }
-            catch (ContentLoadException e)
-            {
+            //}
+            //catch (ContentLoadException e)
+            //{
                 //Will properly display error messages soon
-                Console.WriteLine("Could not load " + e.Source);
-                Console.ReadLine();
-            }
+                //Console.WriteLine("Could not load " + e.Source);
+                //Console.ReadLine();
+            //}
             
         }
 
@@ -267,8 +280,8 @@ namespace MonoGame_Dynamics_Final_Project
                 Thruster2.EmitterLocation = playerShip.Position + new Vector2(-15, playerShip.frameHeight - 30);
             }
 
-            Thruster1.Update(playerShip.Alive, playerShip.Velocity, 100f, Color.SlateGray);
-            Thruster2.Update(playerShip.Alive, playerShip.Velocity, 100f, Color.SlateGray);
+            Thruster1.Update(playerShip.Alive, playerShip.Velocity, 100f, Color.SlateGray, 1);
+            Thruster2.Update(playerShip.Alive, playerShip.Velocity, 100f, Color.SlateGray, 1);
 
             foreach (Enemy enemy in Enemywave)
             {
@@ -282,7 +295,7 @@ namespace MonoGame_Dynamics_Final_Project
                     if (EnemyParticleCounter < StingrayParticles.Count)
                         {
                             StingrayParticles[EnemyParticleCounter].EmitterLocation = enemy.Position + new Vector2(Convert.ToSingle(Math.Cos(enemy.rotation) * enemy.frameWidth/4), Convert.ToSingle(Math.Sin(enemy.rotation) * enemy.frameWidth/4));
-                            StingrayParticles[EnemyParticleCounter].Update(enemy.Alive, enemy.Velocity, 9f, Color.Plum);   
+                            StingrayParticles[EnemyParticleCounter].Update(enemy.Alive, enemy.Velocity, 9f, Color.Plum, 1);   
                         EnemyParticleCounter++;
                         }
                         else
@@ -296,6 +309,7 @@ namespace MonoGame_Dynamics_Final_Project
                 }
                 if (enemy.enemyType == "voidAngel")
                 {
+                    
                     enemy.Update(gameTime, playerShip);
                 }
             }
@@ -317,8 +331,9 @@ namespace MonoGame_Dynamics_Final_Project
                     int collide = Enemywave[i].CollisionShot(playerShip.Primary);
                     if (collide != -1)
                     {
+                        Enemywave[i].Health -= playerShip.Primary[collide].Damage; 
                         playerShip.Primary.RemoveAt(collide);
-                        Enemywave[i].Health -= 100f;
+                        
                         playerShip.CurrentPrimaryAmmo++;
                         if (Enemywave[i].Health == 0f)
                         {
@@ -330,6 +345,11 @@ namespace MonoGame_Dynamics_Final_Project
                             if (Enemywave[i].enemyType == "voidVulture")
                             {
                                 score += 1000;
+
+                                DestructionParticles.Add(new ParticleEngine(DestructionTextures, new Vector2(400, 240)));
+                                DestructionRadiusCounters.Add(10);
+                                DestructionAngleCounters.Add(0);
+                                DestructionEmmision.Add(Enemywave[i].Position);
                             }
                             if (Enemywave[i].enemyType == "voidAngel")
                             {
@@ -345,7 +365,7 @@ namespace MonoGame_Dynamics_Final_Project
                     }
                 }
 
-                // tests for collision of secondary shots 0against enemy
+                // tests for collision of secondary shots against enemy
                 for (int i = 0; i < Enemywave.Count; i++)
                 {
                     int collide = Enemywave[i].CollisionShot(playerShip.Secondary);
@@ -364,6 +384,17 @@ namespace MonoGame_Dynamics_Final_Project
                     }
                 }
             }
+
+            //Destrcution Update
+            for (int i = 0; i < DestructionParticles.Count; i ++ )
+            {
+                DestructionParticles[i].EmitterLocation = DestructionEmmision[i];
+                DestructionEmmision[i]+=new Vector2(Convert.ToSingle(Math.Cos(DestructionAngleCounters[i])*DestructionRadiusCounters[i]),Convert.ToSingle(Math.Sin(DestructionAngleCounters[i])*DestructionRadiusCounters[i]));
+                DestructionRadiusCounters[i]+=10;
+                DestructionAngleCounters[i]+=10;
+                DestructionParticles[i].Update((DestructionRadiusCounters[i] < 1000), new Vector2(10,10), 0f, new Color(random.Next(0,255),random.Next(0,50),random.Next(0,100)), 10);
+                
+            }
             // testing collision of playership with enemy
             for (int i = 0; i < Enemywave.Count; i++)
             {
@@ -374,7 +405,7 @@ namespace MonoGame_Dynamics_Final_Project
                         playerShip.collisionDetected = true;
                         if (playerShip.collisionDetected == true)
                         {
-                            playerShip.Health--;
+                            playerShip.Health -= Enemywave[i].Damage;
                             Console.WriteLine("Health:" + playerShip.Health);
                             if (playerShip.Health <= 0.0f)
                             {
@@ -636,7 +667,6 @@ namespace MonoGame_Dynamics_Final_Project
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
                     myBackground.Draw(spriteBatch);
                     spriteBatch.Draw(health, healthRect, Color.White);
-
                     spriteBatch.DrawString(menuFont, "Score:" + score, new Vector2(GraphicsDevice.Viewport.Width / 8, GraphicsDevice.Viewport.Height / 9), Color.White, 0.0f,Vector2.Zero,0.4f,SpriteEffects.None,0.0f);
                     
                     follower.Draw(spriteBatch, gameTime);
@@ -649,12 +679,31 @@ namespace MonoGame_Dynamics_Final_Project
                         pUp.Draw(spriteBatch, gameTime);
                     }
 
+                    foreach (ParticleEngine explosion in DestructionParticles)
+                    {
+                        explosion.Draw(spriteBatch);
+                    }
+
                     Thruster1.Draw(spriteBatch);
                     Thruster2.Draw(spriteBatch);
                     foreach (ParticleEngine particle in StingrayParticles) { particle.Draw(spriteBatch); }
-                    
+              
                     railLeft.Draw(spriteBatch, gameTime);
                     railRight.Draw(spriteBatch, gameTime);
+
+                    //Draw Explosion
+                    for(int i = 0; i < DestructionParticles.Count; i++)
+                    {
+                        DestructionParticles[i].Draw(spriteBatch);
+                        if (DestructionParticles[i].particles.Count == 0)
+                        {
+                            DestructionRadiusCounters.RemoveAt(i);
+                            DestructionAngleCounters.RemoveAt(i);
+                            DestructionEmmision.RemoveAt(i);
+                            DestructionParticles.RemoveAt(i);
+                        }
+                    }
+
                     playerShip.Draw(spriteBatch, gameTime);
                     spriteBatch.End();
                  //   base.Draw(gameTime);

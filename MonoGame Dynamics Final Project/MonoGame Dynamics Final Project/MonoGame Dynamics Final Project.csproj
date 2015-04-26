@@ -47,6 +47,7 @@
     <Compile Include="Sprites\VoidAngel.cs" />
     <Compile Include="Sprites\VoidVulture.cs" />
     <Compile Include="Weapons\BasicLaser.cs" />
+    <Compile Include="Weapons\EnemyWeapon.cs" />
     <Compile Include="Weapons\GravityWell.cs" />
     <Compile Include="Sprites\Player.cs" />
     <Compile Include="Program.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="Weapons\HomingMissile.cs" />
     <Compile Include="Weapons\Rail.cs" />
     <Compile Include="Weapons\RailTurret.cs" />
+    <Compile Include="Weapons\StingRayWeapon.cs" />
     <Compile Include="Weapons\Weapon.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -82,6 +84,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\Animations\rocket.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\Animations\Sting-Ray-shot.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\Animations\Sting-ray.png">
@@ -139,6 +144,21 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\Backgrounds\universe2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\Particles\meow.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\Particles\meow1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\Particles\meow2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\Particles\meow3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\Particles\meow4.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\Particles\poofparticle.png">

@@ -32,6 +32,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
             crossHair = content.Load<Texture2D>("Images/Animations/crossHair");
             homingSpeed = velocity;
             angle = 0f;
+            damage = 1200;
         } 
 
         // Helper method: cycles through enemy list and finds the closest one, returns false if no enemies on screen

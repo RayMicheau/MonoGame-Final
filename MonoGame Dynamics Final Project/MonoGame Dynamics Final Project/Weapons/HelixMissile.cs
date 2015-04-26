@@ -36,6 +36,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
             this.orientation = orientation;
             offsetX = 100f;
             spriteOrigin = new Vector2(0f, textureImage.Height / 2);
+            damage = 500;
         }
 
         // Update method that curves the missile

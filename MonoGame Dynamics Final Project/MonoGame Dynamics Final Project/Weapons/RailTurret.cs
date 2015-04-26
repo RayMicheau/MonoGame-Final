@@ -46,7 +46,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         #endregion
     
         public RailTurret(ContentManager content, Vector2 position, Vector2 velocity, int Orientation)
-            :base(32, 64, content.Load<Texture2D>("Images/Animations/Plasma-Repeater"), position, velocity, false, 1f, 100, 100)
+            :base(32, 64, content.Load<Texture2D>("Images/Animations/Plasma-Repeater"), position, velocity, false, 1f, 100)
         {
            // spriteOrigin = new Vector2(0, 0);
             turretTime = 0f;

@@ -14,7 +14,7 @@ namespace MonoGame_Dynamics_Final_Project
     {
         private Random random;
         public Vector2 EmitterLocation { get; set; }
-        private List<Particle> particles;
+        public List<Particle> particles;
         private List<Texture2D> textures;
 
         public ParticleEngine(List<Texture2D> textures, Vector2 location)
@@ -40,9 +40,9 @@ namespace MonoGame_Dynamics_Final_Project
             return new Particle(texture, position, velocity, angle, angularVelocity, color, size, ttl);
         }
 
-        public void Update(bool generate, Vector2 velocity, float velocityActivator, Color color)
+        public void Update(bool generate, Vector2 velocity, float velocityActivator, Color color, int frequency)
         {
-            int total = 1;
+            int total = frequency;
 
             for (int i = 0; i < total; i++)
             {
