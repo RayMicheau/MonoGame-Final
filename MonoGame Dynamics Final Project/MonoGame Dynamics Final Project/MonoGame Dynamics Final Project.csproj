@@ -54,6 +54,7 @@
     <Compile Include="Weapons\HelixMissile.cs" />
     <Compile Include="Weapons\HomingMissile.cs" />
     <Compile Include="Weapons\Rail.cs" />
+    <Compile Include="Weapons\RailTurret.cs" />
     <Compile Include="Weapons\Weapon.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -71,6 +72,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\Animations\laser.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\Animations\Plasma-Repeater-Shot.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\Animations\Plasma-Repeater.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\Animations\rocket.png">

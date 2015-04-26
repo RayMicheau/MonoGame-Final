@@ -188,6 +188,8 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
 
         public bool isMoving;
 
+        //rail
+        
         #endregion
 
         public Player(int FrameWidth, int FrameHeight, Texture2D textureImage, Vector2 position, Vector2 velocity, bool setOrig, float scale, float damage, float health)
@@ -222,13 +224,13 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             secondary = new List<Weapon>();
             
             // Set Primary Weapons
-
+            
             // Set Secondary Weapons
             //setWeapon("gravityWell", 1);
             setWeapon("helixMissile", 2);
             //setWeapon("homingMissile", 2);
-            setWeapon("laser", 5);
-            //setWeapon("rail", 4);
+            //setWeapon("laser", 5);
+            setWeapon("rail", 4);
             hasShot = false;
             hasShotPrim = false;
             forcePull = false;
@@ -309,7 +311,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         public virtual void Update(GameTime gameTime, GraphicsDevice Device, List<Enemy> enemyWave)
         {
             float timeLapse = gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
-         //   source = animatedSprite(frameNum, frameTime, frameWidth, frameHeight, TextureImage, timeLapse);
+
          //   TextureImage.GetData<Color>(0, source, textureData, 0, source.Width * source.Height);
             if (Alive)
             {
@@ -391,6 +393,11 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                     weapon.RemoveAt(i);
                 }
             }
+        }
+
+        public virtual void Update(GameTime gameTime, Vector2 playerPosition)
+        {
+
         }
         #endregion
 
@@ -537,7 +544,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                 }
                 if (primaryType == "rail")
                 {
-                    shootRail(content, gameTime);
+                    shootRail(content);
                 }
                 timer = 0;
             }
@@ -600,19 +607,26 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                 currentPrimaryAmmo--;
         }
 
-        public void shootRail(ContentManager content, GameTime gameTime)
+        //public void shootRail(ContentManager content, GameTime gameTime)
+        //{
+        //    timer += (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+        //    if (hasShotPrim && timer <= 0.1f)
+        //    {
+        //        Rail rail = new Rail(content, new Vector2(position.X, position.Y - spriteOrigin.Y), 3000f);
+        //        primary.Add(rail);
+        //        Velocity = new Vector2(0.0f, 0.0f);
+        //    }
+        //    if (timer > 2.0f)
+        //    {
+        //        timer = 0.0f;
+        //    }
+        //}
+
+        public void shootRail(ContentManager content)
         {
-            timer += (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
-            if (hasShotPrim && timer <= 0.1f)
-            {
-                Rail rail = new Rail(content, new Vector2(position.X, position.Y - spriteOrigin.Y), 3000f);
-                primary.Add(rail);
-                Velocity = new Vector2(0.0f, 0.0f);
-            }
-            if (timer > 2.0f)
-            {
-                timer = 0.0f;
-            }
+            Rail rail1 = new Rail(content, new Vector2(position.X, position.Y), 500f, 1);
+            primary.Add(rail1);
+            currentPrimaryAmmo--;
         }
         #endregion
 

@@ -24,7 +24,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         public EnemyState Ai;
 
         public Stingray(ContentManager content, GraphicsDevice Device, int spotinFormation, string formationType) :
-            base(80, 80, content.Load<Texture2D>("Images/Animations/Sting-Ray"), Device, spotinFormation, formationType, 0.5f, 100f, 300f)
+            base(content, 80, 80, content.Load<Texture2D>("Images/Animations/Sting-Ray"), Device, spotinFormation, formationType, 0.5f, 100f, 300f)
         {
             frameNum = 12;
             frameTime = 0.1f;

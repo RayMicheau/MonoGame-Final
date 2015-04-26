@@ -87,6 +87,14 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
             get { return damage; }
             set { damage = value; }
         }
+
+        //rail
+        protected SpriteEffects spriteEffect;
+        public SpriteEffects SpriteEffect
+        {
+            get { return spriteEffect; }
+            set { spriteEffect = value; }
+        }
         #endregion
 
         public Weapon(Texture2D textureImage, Vector2 startPosition, float velocity, int weaponType)
@@ -112,6 +120,11 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
             {
                 offScreen = true;
             }
+        }
+
+        public virtual void Update(GameTime gameTime, Player player)
+        {
+
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)

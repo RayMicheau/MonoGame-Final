@@ -35,8 +35,8 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
 
         protected Vector2 distanceBetween;
 
-        public Enemy(int width, int height, Texture2D textureImage, GraphicsDevice Device, int spotinFormation, string formationType, float scale, float damage, float health)
-            : base(width,height, textureImage, new Vector2(0, -100), new Vector2(0, 0), true, scale, damage, health)
+        public Enemy(ContentManager content, int width, int height, Texture2D textureImage, GraphicsDevice Device, int spotinFormation, string formationType, float scale, float damage, float health)
+            : base(width, height, textureImage, new Vector2(0, -100), new Vector2(0, 0), true, scale, damage, health)
         {
             mass = 5f;
 

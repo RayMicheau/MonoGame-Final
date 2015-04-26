@@ -87,6 +87,8 @@ namespace MonoGame_Dynamics_Final_Project
         Rectangle healthRect;
         Player playerShip;
         Player follower;
+        // rail turret
+        RailTurret railLeft, railRight;
 
         // enemies
         int currentWave;
@@ -115,6 +117,8 @@ namespace MonoGame_Dynamics_Final_Project
         List<Texture2D> StingrayTextures;
 
         int EnemyParticleCounter = 0;
+
+        
         #endregion
 
         public Game1()
@@ -212,6 +216,10 @@ namespace MonoGame_Dynamics_Final_Project
                     1000.0f
                     );
 
+                //rail turret
+                railLeft = new RailTurret(Content, playerShip.Position, playerShip.Velocity, 1);
+                railRight = new RailTurret(Content, playerShip.Position, playerShip.Velocity, -1);
+
                 follower = new Follower(32,32,Content, playerShip,new Vector2(0, playerShip.frameHeight+20),1.0f, true);
 
                 LoadWaves();
@@ -251,6 +259,7 @@ namespace MonoGame_Dynamics_Final_Project
             if (playerShip.Alive)
             {
                 playerShip.Update(gameTime, GraphicsDevice, Enemywave);
+                railLeft.Update(gameTime, playerShip.Position);
                 follower.Update(playerShip, gameTime);
                 UpdateInput(gameTime);
                 Thruster1.EmitterLocation = playerShip.Position + new Vector2(15, playerShip.frameHeight - 30);
@@ -621,6 +630,8 @@ namespace MonoGame_Dynamics_Final_Project
 
                     spriteBatch.DrawString(menuFont, "Score:" + score, new Vector2(GraphicsDevice.Viewport.Width / 8, GraphicsDevice.Viewport.Height / 9), Color.White, 0.0f,Vector2.Zero,0.4f,SpriteEffects.None,0.0f);
                     playerShip.Draw(spriteBatch, gameTime);
+                    railLeft.Draw(spriteBatch, gameTime);
+                    
 
                     follower.Draw(spriteBatch, gameTime);
                     foreach (Enemy enemy in Enemywave)
