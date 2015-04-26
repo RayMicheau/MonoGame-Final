@@ -22,6 +22,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
         protected Texture2D crossHair;
         protected Enemy targetEnemy;
         protected float homingSpeed;
+        protected float angle;
 
         public HomingMissile(ContentManager content, Vector2 startPosition, float velocity)
             : base(content.Load<Texture2D>("Images/Animations/rocket"), startPosition, velocity, 2)
@@ -30,6 +31,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
             targeted = false;            
             crossHair = content.Load<Texture2D>("Images/Animations/crossHair");
             homingSpeed = velocity;
+            angle = 0f;
         } 
 
         // Helper method: cycles through enemy list and finds the closest one, returns false if no enemies on screen
@@ -39,13 +41,13 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
 
             if (enemyWave.Count != 0)
             {
-                targetEnemy = enemyWave[0];
-                closestEnemy = enemyWave[0].Position - startPosition;
                 foreach (Enemy enemy in enemyWave)
                 {
                     Vector2 length = enemy.Position - startPosition;
-                    if (length.Length() < closestEnemy.Length())
+                    if (length.Length() < closestEnemy.Length() || targetEnemy == null)
                     {
+                        angle = getAngle(angle);
+                        base.angle = MathHelper.PiOver2 + (float)Math.Atan2(length.Y, length.X);
                         closestEnemy = length;
                         targetEnemy = enemy;
                         targeted = true;
@@ -66,7 +68,8 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
                 Vector2 newVelocity = targetEnemy.Position - position;
                 newVelocity /= newVelocity.Length();
                 velocity = newVelocity * homingSpeed;
-            }
+            }            
+
             if(targeted && !targetEnemy.Alive)
             {
                 targeted = false;
@@ -79,11 +82,11 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
             base.Draw(spriteBatch);
             if(targeted)
             {
-                spriteBatch.Draw(crossHair, 
-                                 targetEnemy.Position, 
+                spriteBatch.Draw(crossHair,
+                                 (targetEnemy.Position + (targetEnemy.SpriteOrigin * targetEnemy.Scale * targetEnemy.Scale * targetEnemy.Scale)), 
                                  null, 
                                  Color.White, 
-                                 0f, 
+                                 base.angle, 
                                  spriteOrigin, 
                                  1f, 
                                  SpriteEffects.None, 

@@ -205,13 +205,13 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             Acceleration = acceleration;
             Health = health;
             Damage = damage;
-      
-            if (SetOrigin)
-            {
-                SpriteOrigin = new Vector2(FrameWidth / 2, FrameHeight / 2);
-            }
-            collisionRange = new BoundingSphere(new Vector3(position.X + spriteOrigin.X, position.Y + spriteOrigin.Y, 0), frameWidth / 2);
             Scale = scale;
+            //if (SetOrigin)
+            //{
+                SpriteOrigin = new Vector2(FrameWidth * scale/ 2, FrameHeight * scale / 2);
+            //}
+            collisionRange = new BoundingSphere(new Vector3(position.X + spriteOrigin.X, position.Y + spriteOrigin.Y, 0), frameWidth / 2);
+            
             rotation = 0f;
             Alive = true;
             isMoving = false;
@@ -246,7 +246,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                     SpriteOrigin,
                     Scale*2,
                     Spriteeffect,
-                    0);
+                    0.0f);
 
                 foreach (Weapon shot in primary)
                 {

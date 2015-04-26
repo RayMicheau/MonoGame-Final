@@ -124,7 +124,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
                 SpriteOrigin,
                 1f, // scale
                 SpriteEffects.None,
-                0);
+                1f);
         }
 
         public bool CollisionSprite(Player sprite)
@@ -158,10 +158,15 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
         }
 
         // Helper method for rotating projectiles
-        public float getAngle(Vector2 pos)
+        //public float getAngle(Vector2 pos)
+        //{
+        //    float angle = (float)Math.Atan2(pos.Y, pos.X);
+        //    return angle;
+        //}
+
+        public float getAngle(float angle)
         {
-            float angle = (float)Math.Atan2(pos.Y, pos.X);
-            return angle;
+            return angle * MathHelper.Pi / 180.0f;
         }
 
         #region Abstract Classes

@@ -561,7 +561,7 @@ namespace MonoGame_Dynamics_Final_Project
                     myBackground.Draw(spriteBatch);
                     spriteBatch.Draw(health, healthRect, Color.White);
                     spriteBatch.DrawString(menuFont, "Score:" + score, new Vector2(0.0f,25.0f), Color.White, 0.0f,Vector2.Zero,0.4f,SpriteEffects.None,0.0f);
-                    playerShip.Draw(spriteBatch, gameTime);
+                    
                     follower.Draw(spriteBatch, gameTime);
                     foreach (Enemy enemy in Enemywave)
                     {
@@ -574,7 +574,7 @@ namespace MonoGame_Dynamics_Final_Project
 
                     Thruster1.Draw(spriteBatch);
                     Thruster2.Draw(spriteBatch);
-
+                    playerShip.Draw(spriteBatch, gameTime);
                     spriteBatch.End();
                     base.Draw(gameTime);
                     break;

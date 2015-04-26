@@ -66,10 +66,5 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
 
             base.angle = -MathHelper.PiOver2 * orientation + (theta * orientation);
         }
-
-        public float getAngle(float angle)
-        {
-            return angle * MathHelper.Pi / 180.0f;
-        }
     }
 }
