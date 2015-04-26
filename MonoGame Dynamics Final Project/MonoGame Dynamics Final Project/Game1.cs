@@ -190,7 +190,8 @@ namespace MonoGame_Dynamics_Final_Project
                 playerLeft = Content.Load<Texture2D>("Images/Animations/Commandunit-left");
                 playerRightTurn = Content.Load<Texture2D>("Images/Animations/Commandunit-Turn");
                 playerLeftTurn = Content.Load<Texture2D>("Images/Animations/Commandunit-Turn-left");
-                health = Content.Load<Texture2D>("Images/playerhealth"); 
+                health = Content.Load<Texture2D>("Images/playerhealth");
+ 
                 playerShip = new Player(64,70,playerTexture,
                     new Vector2(windowWidth / 2, windowHeight - 70),
                     new Vector2(10, 10),
@@ -243,10 +244,13 @@ namespace MonoGame_Dynamics_Final_Project
             foreach (Enemy enemy in Enemywave)
             {
                 enemy.Update(gameTime, playerShip);
-
-                foreach (Stingray stingRay in Enemywave)
+                if (enemy.enemyType == "stingRay")
                 {
-                    stingRay.Update(gameTime, playerShip);
+                        enemy.Update(gameTime, playerShip);
+                }
+                if (enemy.enemyType == "voidVulture")
+                {     
+                        enemy.Update(gameTime, playerShip);
                 }
             }
 
@@ -273,6 +277,10 @@ namespace MonoGame_Dynamics_Final_Project
                         if (Enemywave[i].Health == 0f)
                         {
                             score += 100;
+                            if (Enemywave[i].Health == 0f && Enemywave[i].enemyType == "voidVulture")
+                            {
+                                score += 1000;
+                            }
                             double rand = random.NextDouble();
                             if (rand < spawnChance)
                                     SpawnPowerUp(Enemywave[i].Position);
@@ -685,6 +693,8 @@ namespace MonoGame_Dynamics_Final_Project
                 enemy = new Stingray(Content, GraphicsDevice, i + 1, "delta");
                 WaveDef[0].Add(enemy);
             }
+            VoidVulture voidVulture = new VoidVulture(Content, GraphicsDevice, 3, "line");
+            WaveDef[0].Add(voidVulture);
 
             // Wave 2
             WaveDef[1] = new List<Enemy>();

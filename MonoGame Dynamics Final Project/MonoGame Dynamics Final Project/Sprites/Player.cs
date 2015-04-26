@@ -198,7 +198,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             frameNum = 4;
             frameTime = 0.2f;
             textureData = new Color[source.Width * source.Height];
-            textureImage.GetData<Color>(0, source, textureData, 0, source.Width * source.Height);
+            //textureImage.GetData<Color>(0, source, textureData, 0, source.Width * source.Height);
 
             Position = position;
             TextureImage = textureImage;
