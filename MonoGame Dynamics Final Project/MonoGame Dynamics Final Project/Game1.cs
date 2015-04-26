@@ -64,7 +64,10 @@ namespace MonoGame_Dynamics_Final_Project
         //POWER UP IMGs
         Texture2D AtkSpdUp;
         Texture2D MoveSpdUp;
-        Texture2D Shield;
+        Texture2D HPUp;
+        Texture2D AtkSpdDown;
+        Texture2D MoveSpdDown;
+        Texture2D HPDown;
 
         // menu
         Texture2D startMenuScreen;
@@ -160,9 +163,13 @@ namespace MonoGame_Dynamics_Final_Project
                 random = new Random();
 
                 //PwrUpTextures
-                AtkSpdUp = Content.Load<Texture2D>("Images/AtkSpdUp");
-                MoveSpdUp = Content.Load<Texture2D>("Images/MoveSpdUp");
-                Shield = Content.Load<Texture2D>("Images/HPUp");
+                AtkSpdUp = Content.Load<Texture2D>("Images/PowerUps/AtkSpdUp");
+                MoveSpdUp = Content.Load<Texture2D>("Images/PowerUps/MoveSpdUp");
+                HPUp = Content.Load<Texture2D>("Images/PowerUps/HPUp");
+                AtkSpdDown = Content.Load<Texture2D>("Images/PowerUps/AtkSpdDown");
+                MoveSpdDown = Content.Load<Texture2D>("Images/PowerUps/MoveSpdDown");
+                HPDown = Content.Load<Texture2D>("Images/PowerUps/HPDown");
+
 
                 // background
                 myBackground = new ScrollingBackground();
@@ -200,7 +207,8 @@ namespace MonoGame_Dynamics_Final_Project
             catch (ContentLoadException e)
             {
                 //Will properly display error messages soon
-                Console.WriteLine("Could not load " + e.Message + " at" + e.Source);
+                Console.WriteLine("Could not load " + e.Source);
+                Console.ReadLine();
             }
             
         }
@@ -265,7 +273,7 @@ namespace MonoGame_Dynamics_Final_Project
                         {
                             score += 100;
                             double rand = random.NextDouble();
-                            //if (rand < spawnChance)
+                            if (rand < spawnChance)
                                     SpawnPowerUp(Enemywave[i].Position);
                             Enemywave[i].Alive = false;
                             Enemywave.RemoveAt(i);
@@ -564,7 +572,7 @@ namespace MonoGame_Dynamics_Final_Project
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
                     myBackground.Draw(spriteBatch);
                     spriteBatch.Draw(health, healthRect, Color.White);
-                    spriteBatch.DrawString(menuFont, "Score:" + score, new Vector2(0.0f,25.0f), Color.White, 0.0f,Vector2.Zero,0.4f,SpriteEffects.None,0.0f);
+                    spriteBatch.DrawString(menuFont, "Score:" + score, new Vector2(GraphicsDevice.Viewport.Width / 8, GraphicsDevice.Viewport.Height / 9), Color.White, 0.0f,Vector2.Zero,0.4f,SpriteEffects.None,0.0f);
                     playerShip.Draw(spriteBatch, gameTime);
                     follower.Draw(spriteBatch, gameTime);
                     foreach (Enemy enemy in Enemywave)
@@ -586,7 +594,7 @@ namespace MonoGame_Dynamics_Final_Project
                     GraphicsDevice.Clear(Color.Black);
                     spriteBatch.Begin();
                     drawRect(new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.Black);
-                    spriteBatch.DrawString(menuFont, "Game Over", new Vector2(GraphicsDevice.Viewport.Width / 8, GraphicsDevice.Viewport.Height / 9), customColor);
+                    spriteBatch.DrawString(menuFont, "Game Over", new Vector2(GraphicsDevice.Viewport.Width / 5, GraphicsDevice.Viewport.Height / 9), customColor);
                     spriteBatch.End();
                     break;
                 case GameState.Exit:
@@ -703,7 +711,7 @@ namespace MonoGame_Dynamics_Final_Project
         }
         public void SpawnPowerUp(Vector2 Position)
         {
-            switch (random.Next(3))
+            switch (random.Next(6))
             {
                 case 0:
                     Powerups = PowerUps.AtkSpdUp;
@@ -714,9 +722,22 @@ namespace MonoGame_Dynamics_Final_Project
                     powerUpList.Add(new PowerUp(MoveSpdUp, GraphicsDevice, Powerups, playerShip, Position, 1.0f));
                     break;
                 case 2:
-                    Powerups = PowerUps.Shield;
-                    powerUpList.Add(new PowerUp(Shield, GraphicsDevice, Powerups, playerShip, Position, 1.0f));
+                    Powerups = PowerUps.HealthUp;
+                    powerUpList.Add(new PowerUp(HPUp, GraphicsDevice, Powerups, playerShip, Position, 1.0f));
                     break;
+                case 3:
+                    Powerups = PowerUps.AtkSpdDown;
+                    powerUpList.Add(new PowerUp(AtkSpdDown, GraphicsDevice, Powerups, playerShip, Position, 2.0f));
+                    break;
+                case 4:
+                    Powerups = PowerUps.MoveSpdDown;
+                    powerUpList.Add(new PowerUp(MoveSpdDown, GraphicsDevice, Powerups, playerShip, Position, 2.0f));
+                    break;
+                case 5:
+                    Powerups = PowerUps.HealthDown;
+                    powerUpList.Add(new PowerUp(HPDown, GraphicsDevice, Powerups, playerShip, Position, 2.0f));
+                    break;
+
                 default: break;
             }
         }

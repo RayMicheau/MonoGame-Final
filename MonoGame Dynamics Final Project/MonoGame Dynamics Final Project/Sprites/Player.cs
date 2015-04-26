@@ -96,6 +96,9 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         //Texture object and a collision rectangle
         public Texture2D TextureImage { get; set; }
 
+        public float AtkSpeed = .7f;
+        public float MoveSpeed = 1000.0f;
+
         public virtual Rectangle CollisionRectangle
         {
             get
@@ -346,6 +349,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         // Update helper: updates weapons, ammo counts and removes weapons that are off screen
         public virtual void UpdateWeapon(List<Weapon> weapon, GameTime gameTime, List<Enemy> enemyWave)
         {
+            timer += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
             for (int i = 0; i < weapon.Count; i++)
             {
                 if (secondaryType == "homingMissile")
@@ -459,7 +463,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         public virtual void Right() 
         {
             isMoving = true;
-            if (velocity.X <= 1000)
+            if (velocity.X <= MoveSpeed)
             {
                 velocity.X += InitialVelocity.X;
             }
@@ -468,7 +472,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         public virtual void Left()
         {
             isMoving = true;
-            if (velocity.X >= -1000)
+            if (velocity.X >= -MoveSpeed)
             {
                 velocity.X -= InitialVelocity.X;
             }
@@ -520,14 +524,12 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                 secondaryAmmo = ammoCapacity;
                 currentSecondaryAmmo = ammoCapacity; 
             }
-
-           
         }
 
         // Chooses which primary weapon to shoot
         public virtual void shootPrimary(ContentManager content, GameTime gameTime)
         {
-            if (currentPrimaryAmmo != 0)
+            if (currentPrimaryAmmo != 0 && timer >= AtkSpeed)
             {
                 if (primaryType == "laser")
                 {
@@ -537,13 +539,14 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                 {
                     shootRail(content, gameTime);
                 }
+                timer = 0;
             }
         }
 
         // Chooses which secondary weapon to shoot
         public virtual void shootSecondary(ContentManager content)
         {
-            if (currentSecondaryAmmo != 0)
+            if (currentSecondaryAmmo != 0 && timer >= AtkSpeed)
             {
                 if (secondaryType == "gravityWell")
                 {
@@ -557,6 +560,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                 {
                     shootHomingMissile(content);
                 }
+                timer = 0;
             }
         }
         #endregion
@@ -591,18 +595,9 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
 
         public void shootLaser(ContentManager content, GameTime gameTime)
         {
-            timer += (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
-            if (hasShotPrim && timer <= 0.5f)
-            {
-                timer = 0.0f;
                 BasicLaser laser = new BasicLaser(content, new Vector2(position.X, position.Y - spriteOrigin.Y), 500f);
                 primary.Add(laser);
                 currentPrimaryAmmo--;
-            }
-            if (timer > 0.8f)
-            {
-                timer = 0.0f;
-            }
         }
 
         public void shootRail(ContentManager content, GameTime gameTime)

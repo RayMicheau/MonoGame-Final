@@ -19,7 +19,10 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         Null,
         AtkSpdUp,
         MoveSpdUp,
-        Shield
+        HealthUp,
+        HealthDown,
+        MoveSpdDown,
+        AtkSpdDown,
     }
 
     class PowerUp
@@ -72,8 +75,6 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             TextureImage = textureImg;
             SpriteOrigin = new Vector2(TextureImage.Width / 2, TextureImage.Height / 2);
             Scale = scale;
-
-
         }
 
         public void Update(GameTime gameTime, GraphicsDevice graphicsDevice)
@@ -98,14 +99,27 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             switch (pwerUp)
             {
                 case PowerUps.MoveSpdUp:
-                    player.Velocity *= 1.5f;
+                    player.MoveSpeed *= 1.2f;
                     break;
 
                 case PowerUps.AtkSpdUp:
+                    player.AtkSpeed *= 0.5f;
                     break;
 
-                case PowerUps.Shield:
+                case PowerUps.HealthUp:
                     player.Health *= 1.25f;
+                    break;
+
+                case PowerUps.AtkSpdDown:
+                    player.AtkSpeed *= 1.5f;
+                    break;
+
+                case PowerUps.HealthDown:
+                    player.Health *= 0.9f;
+                    break;
+
+                case PowerUps.MoveSpdDown:
+                    player.MoveSpeed *= 1.2f;
                     break;
 
                 default:
