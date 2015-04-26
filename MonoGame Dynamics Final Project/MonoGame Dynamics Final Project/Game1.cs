@@ -139,6 +139,7 @@ namespace MonoGame_Dynamics_Final_Project
                 textures.Add(Content.Load<Texture2D>("Images/Particles/smokepoof"));
                 textures.Add(Content.Load<Texture2D>("Images/Particles/starpoof1"));
                 textures.Add(Content.Load<Texture2D>("Images/Particles/starpoof2"));
+                textures.Add(Content.Load<Texture2D>("Images/Particles/poofparticle"));
                 Thruster1 = new ParticleEngine(textures, new Vector2(400, 240));
                 Thruster2 = new ParticleEngine(textures, new Vector2(400, 240));
 
@@ -224,8 +225,8 @@ namespace MonoGame_Dynamics_Final_Project
                 playerShip.Update(gameTime, GraphicsDevice, Enemywave);
                 follower.Update(playerShip, gameTime);
                 UpdateInput(gameTime);
-                Thruster1.EmitterLocation = playerShip.Position + new Vector2(15, playerShip.frameHeight - 20);
-                Thruster2.EmitterLocation = playerShip.Position + new Vector2(-15, playerShip.frameHeight - 20);
+                Thruster1.EmitterLocation = playerShip.Position + new Vector2(15, playerShip.frameHeight - 30);
+                Thruster2.EmitterLocation = playerShip.Position + new Vector2(-15, playerShip.frameHeight - 30);
             }
 
             Thruster1.Update(playerShip.Alive, playerShip.Velocity);
