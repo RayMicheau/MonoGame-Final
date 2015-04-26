@@ -48,7 +48,7 @@ namespace MonoGame_Dynamics_Final_Project
             Rectangle sourceRectangle = new Rectangle(0, 0, Texture.Width, Texture.Height);
             Vector2 origin = new Vector2(Texture.Width / 2, Texture.Height / 2);
 
-            spriteBatch.Draw(Texture, Position, sourceRectangle, Color,
+            spriteBatch.Draw(Texture, Position, sourceRectangle, Color*(0.1f*TTL/3f),
                 Angle, origin, Size, SpriteEffects.None, 0f);
         }
     }
