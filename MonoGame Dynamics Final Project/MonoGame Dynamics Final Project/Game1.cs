@@ -260,6 +260,7 @@ namespace MonoGame_Dynamics_Final_Project
             {
                 playerShip.Update(gameTime, GraphicsDevice, Enemywave);
                 railLeft.Update(gameTime, playerShip.Position);
+                railRight.Update(gameTime, playerShip.Position);
                 follower.Update(playerShip, gameTime);
                 UpdateInput(gameTime);
                 Thruster1.EmitterLocation = playerShip.Position + new Vector2(15, playerShip.frameHeight - 30);
@@ -637,10 +638,7 @@ namespace MonoGame_Dynamics_Final_Project
                     spriteBatch.Draw(health, healthRect, Color.White);
 
                     spriteBatch.DrawString(menuFont, "Score:" + score, new Vector2(GraphicsDevice.Viewport.Width / 8, GraphicsDevice.Viewport.Height / 9), Color.White, 0.0f,Vector2.Zero,0.4f,SpriteEffects.None,0.0f);
-                    playerShip.Draw(spriteBatch, gameTime);
-                    railLeft.Draw(spriteBatch, gameTime);
                     
-
                     follower.Draw(spriteBatch, gameTime);
                     foreach (Enemy enemy in Enemywave)
                     {
@@ -654,9 +652,12 @@ namespace MonoGame_Dynamics_Final_Project
                     Thruster1.Draw(spriteBatch);
                     Thruster2.Draw(spriteBatch);
                     foreach (ParticleEngine particle in StingrayParticles) { particle.Draw(spriteBatch); }
+                    
+                    railLeft.Draw(spriteBatch, gameTime);
+                    railRight.Draw(spriteBatch, gameTime);
                     playerShip.Draw(spriteBatch, gameTime);
                     spriteBatch.End();
-                    base.Draw(gameTime);
+                 //   base.Draw(gameTime);
                     break;
                 case GameState.GameOver:
                     GraphicsDevice.Clear(Color.Black);

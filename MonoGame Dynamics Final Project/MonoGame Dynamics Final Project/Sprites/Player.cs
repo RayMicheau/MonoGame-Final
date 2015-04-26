@@ -394,8 +394,8 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                 }
             }
         }
-
-        public virtual void Update(GameTime gameTime, Vector2 playerPosition)
+        // turret update
+        public virtual void Update(GameTime gameTime, Vector2 playerPos)
         {
 
         }
@@ -624,8 +624,15 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
 
         public void shootRail(ContentManager content)
         {
-            Rail rail1 = new Rail(content, new Vector2(position.X, position.Y), 500f, 1);
-            primary.Add(rail1);
+            Vector2 offset = new Vector2(15, -35);
+            Vector2 shotPos = position; // change in railturret as well!
+            Rail rail = new Rail(content, shotPos, 500f, 1);
+            primary.Add(rail);
+
+            offset.X += offset.X;
+            shotPos = position - (offset);
+            rail = new Rail(content, shotPos, 500f, 1);
+            primary.Add(rail);
             currentPrimaryAmmo--;
         }
         #endregion
