@@ -15,6 +15,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
     public enum AngelState
     {
         Idle,
+        Chase,
         Attack
     }
     class VoidAngel : Enemy 
@@ -23,28 +24,47 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         public AngelState angelState;
         protected Vector2 distanceBetween;
         public VoidAngel(ContentManager content, GraphicsDevice Device, int spotinFormation, string formationType) :
-            base(100, 100, content.Load<Texture2D>("Images/Animations/Void-Angel"), Device, spotinFormation, formationType, 0.5f, 100f, 500f)
+            base(content,100, 100, content.Load<Texture2D>("Images/Animations/Void-Angel"), Device, spotinFormation, formationType, 0.5f, 100f, 500f)
         {
             frameNum = 7;
             frameTime = 0.1f;
             Content = content;
             enemyType = "voidAngel";
             angelState = AngelState.Idle;
-            velocity = new Vector2(0.0f, 5.0f);
+            velocity = new Vector2(0.0f, 20.0f);
+            collisionRange = new BoundingSphere(new Vector3(position.X + spriteOrigin.X, position.Y + spriteOrigin.Y, 0), 300f); 
 
         }
         public override void Update(GameTime gameTime, Player player)
         {
-            //collisionRange = new BoundingSphere(new Vector3(position.X + spriteOrigin.X, position.Y + spriteOrigin.Y, 0), 400f);
-            setAi(player);
-            switch (Ai)
+            collisionRange = new BoundingSphere(new Vector3(position.X + spriteOrigin.X, position.Y + spriteOrigin.Y, 0), 300f);
+            setAngel(player);
+            switch (angelState)
             {
                 case AngelState.Idle:
+                    base.Update(gameTime, player);
+                    TextureImage = Content.Load<Texture2D>("Images/Animations/Void-Angel");
+                    break;
+                case AngelState.Chase:
                     ChasePlayer(gameTime, player.Position);
                     break;
                 case AngelState.Attack:
                     base.Update(gameTime, player);
+                    TextureImage = Content.Load<Texture2D>("Images/Animations/void-angel-Attack");
                     break;
+            }
+        }
+        public void setAngel(Player player)
+        {
+            distanceBetween = player.Position - position;
+            float distanceLength = distanceBetween.Length();
+            if (collisionRange.Intersects(player.collisionRange))
+            {
+                angelState = AngelState.Chase;
+            }
+            else
+            {
+                angelState = AngelState.Idle;
             }
         }
              

@@ -293,6 +293,10 @@ namespace MonoGame_Dynamics_Final_Project
                 {     
                         enemy.Update(gameTime, playerShip);
                 }
+                if (enemy.enemyType == "voidAngel")
+                {
+                    enemy.Update(gameTime, playerShip);
+                }
             }
 
             foreach (PowerUp pUp in powerUpList)
@@ -326,6 +330,10 @@ namespace MonoGame_Dynamics_Final_Project
                             {
                                 score += 1000;
                             }
+                            if (Enemywave[i].enemyType == "voidAngel")
+                            {
+                                score += 500;
+                            } 
 
                             double rand = random.NextDouble();
                             if (rand < spawnChance)
@@ -746,7 +754,8 @@ namespace MonoGame_Dynamics_Final_Project
             }
             VoidVulture voidVulture = new VoidVulture(Content, GraphicsDevice, 3, "line");
             WaveDef[0].Add(voidVulture);
-
+            VoidAngel voidAngel = new VoidAngel(Content, GraphicsDevice, 3, "line");
+            WaveDef[0].Add(voidAngel); 
             // Wave 2
             WaveDef[1] = new List<Enemy>();
 

@@ -44,6 +44,7 @@
     <Compile Include="Game1.cs" />
     <Compile Include="Sprites\PowerUp.cs" />
     <Compile Include="Sprites\Stingray.cs" />
+    <Compile Include="Sprites\VoidAngel.cs" />
     <Compile Include="Sprites\VoidVulture.cs" />
     <Compile Include="Weapons\BasicLaser.cs" />
     <Compile Include="Weapons\GravityWell.cs" />
@@ -87,6 +88,15 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\Animations\synth-unit.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\Animations\Void-Angel-Attack.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\Animations\Void-angel-shot.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\Animations\Void-Angel.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\Animations\void-vulture-expel.png">
