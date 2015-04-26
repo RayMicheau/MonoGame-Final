@@ -31,6 +31,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         protected float tileWidth;
         protected float tileHeight;
         protected float windowHeight;
+        public string enemyType;
 
         protected Vector2 distanceBetween;
 

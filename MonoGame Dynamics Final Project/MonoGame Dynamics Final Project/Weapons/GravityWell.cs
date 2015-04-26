@@ -38,7 +38,7 @@ namespace MonoGame_Dynamics_Final_Project
             :base(content.Load<Texture2D>("Images/Animations/yellowstar"), startPosition, velocity, 2)
         {
             gravityForce = Vector2.Zero;
-            mass = 1.0f;
+            mass = 5.0f;
         }
 
         public override void forcePull(GameTime gameTime, List<Enemy> enemies)

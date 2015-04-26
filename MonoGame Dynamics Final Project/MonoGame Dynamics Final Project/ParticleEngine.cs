@@ -41,13 +41,13 @@ namespace MonoGame_Dynamics_Final_Project
             return new Particle(texture, position, velocity, angle, angularVelocity, color, size, ttl);
         }
 
-        public void Update(bool generate)
+        public void Update(bool generate, Vector2 velocity)
         {
             int total = 1;
 
             for (int i = 0; i < total; i++)
             {
-                if (generate)
+                if (generate && Math.Sqrt(velocity.X * velocity.X + velocity.Y * velocity.Y) > 100f)
                 {
                     particles.Add(GenerateNewParticle());
                 }

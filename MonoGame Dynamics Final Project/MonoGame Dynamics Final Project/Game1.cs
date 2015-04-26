@@ -64,7 +64,10 @@ namespace MonoGame_Dynamics_Final_Project
         //POWER UP IMGs
         Texture2D AtkSpdUp;
         Texture2D MoveSpdUp;
-        Texture2D Shield;
+        Texture2D HPUp;
+        Texture2D AtkSpdDown;
+        Texture2D MoveSpdDown;
+        Texture2D HPDown;
 
         // menu
         Texture2D startMenuScreen;
@@ -139,6 +142,7 @@ namespace MonoGame_Dynamics_Final_Project
                 textures.Add(Content.Load<Texture2D>("Images/Particles/smokepoof"));
                 textures.Add(Content.Load<Texture2D>("Images/Particles/starpoof1"));
                 textures.Add(Content.Load<Texture2D>("Images/Particles/starpoof2"));
+                textures.Add(Content.Load<Texture2D>("Images/Particles/poofparticle"));
                 Thruster1 = new ParticleEngine(textures, new Vector2(400, 240));
                 Thruster2 = new ParticleEngine(textures, new Vector2(400, 240));
 
@@ -160,8 +164,13 @@ namespace MonoGame_Dynamics_Final_Project
                 random = new Random();
 
                 //PwrUpTextures
-                AtkSpdUp = Content.Load<Texture2D>("Images/AtkSpdUp");
-                MoveSpdUp = Content.Load<Texture2D>("Images/MoveSpdUp");
+                AtkSpdUp = Content.Load<Texture2D>("Images/PowerUps/AtkSpdUp");
+                MoveSpdUp = Content.Load<Texture2D>("Images/PowerUps/MoveSpdUp");
+                HPUp = Content.Load<Texture2D>("Images/PowerUps/HPUp");
+                AtkSpdDown = Content.Load<Texture2D>("Images/PowerUps/AtkSpdDown");
+                MoveSpdDown = Content.Load<Texture2D>("Images/PowerUps/MoveSpdDown");
+                HPDown = Content.Load<Texture2D>("Images/PowerUps/HPDown");
+
 
                 // background
                 myBackground = new ScrollingBackground();
@@ -181,7 +190,8 @@ namespace MonoGame_Dynamics_Final_Project
                 playerLeft = Content.Load<Texture2D>("Images/Animations/Commandunit-left");
                 playerRightTurn = Content.Load<Texture2D>("Images/Animations/Commandunit-Turn");
                 playerLeftTurn = Content.Load<Texture2D>("Images/Animations/Commandunit-Turn-left");
-                health = Content.Load<Texture2D>("Images/playerhealth"); 
+                health = Content.Load<Texture2D>("Images/playerhealth");
+ 
                 playerShip = new Player(64,70,playerTexture,
                     new Vector2(windowWidth / 2, windowHeight - 70),
                     new Vector2(10, 10),
@@ -199,7 +209,8 @@ namespace MonoGame_Dynamics_Final_Project
             catch (ContentLoadException e)
             {
                 //Will properly display error messages soon
-                Console.WriteLine("Could not load " + e.Message + " at" + e.Source);
+                Console.WriteLine("Could not load " + e.Source);
+                Console.ReadLine();
             }
             
         }
@@ -223,20 +234,23 @@ namespace MonoGame_Dynamics_Final_Project
                 playerShip.Update(gameTime, GraphicsDevice, Enemywave);
                 follower.Update(playerShip, gameTime);
                 UpdateInput(gameTime);
-                Thruster1.EmitterLocation = playerShip.Position + new Vector2(15, playerShip.frameHeight - 20);
-                Thruster2.EmitterLocation = playerShip.Position + new Vector2(-15, playerShip.frameHeight - 20);
+                Thruster1.EmitterLocation = playerShip.Position + new Vector2(15, playerShip.frameHeight - 30);
+                Thruster2.EmitterLocation = playerShip.Position + new Vector2(-15, playerShip.frameHeight - 30);
             }
 
-            Thruster1.Update(playerShip.Alive);
-            Thruster2.Update(playerShip.Alive);
+            Thruster1.Update(playerShip.Alive, playerShip.Velocity);
+            Thruster2.Update(playerShip.Alive, playerShip.Velocity);
 
             foreach (Enemy enemy in Enemywave)
             {
                 enemy.Update(gameTime, playerShip);
-
-                foreach (Stingray stingRay in Enemywave)
+                if (enemy.enemyType == "stingRay")
                 {
-                    stingRay.Update(gameTime, playerShip);
+                        enemy.Update(gameTime, playerShip);
+                }
+                if (enemy.enemyType == "voidVulture")
+                {     
+                        enemy.Update(gameTime, playerShip);
                 }
             }
 
@@ -263,8 +277,12 @@ namespace MonoGame_Dynamics_Final_Project
                         if (Enemywave[i].Health == 0f)
                         {
                             score += 100;
+                            if (Enemywave[i].Health == 0f && Enemywave[i].enemyType == "voidVulture")
+                            {
+                                score += 1000;
+                            }
                             double rand = random.NextDouble();
-                            //if (rand < spawnChance)
+                            if (rand < spawnChance)
                                     SpawnPowerUp(Enemywave[i].Position);
                             Enemywave[i].Alive = false;
                             Enemywave.RemoveAt(i);
@@ -329,12 +347,15 @@ namespace MonoGame_Dynamics_Final_Project
                 }
             }
 
-            //CheckForPowerups();
-
             for (int i = powerUpList.Count - 1; i >= 0; i--)
             {
-                if (powerUpList[i].removeFromScreen || CheckForPowerUps(playerShip.CollisionRectangle, powerUpList[i].CollisionRectangle))
+                if (powerUpList[i].removeFromScreen )
                 {
+                    powerUpList.RemoveAt(i);
+                }
+                else if (CheckForPowerUps(playerShip.CollisionRectangle, powerUpList[i].CollisionRectangle))
+                {
+                    powerUpList[i].ActivatePowerUp(Powerups, playerShip);
                     powerUpList.RemoveAt(i);
                 }
             }
@@ -560,8 +581,10 @@ namespace MonoGame_Dynamics_Final_Project
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
                     myBackground.Draw(spriteBatch);
                     spriteBatch.Draw(health, healthRect, Color.White);
-                    spriteBatch.DrawString(menuFont, "Score:" + score, new Vector2(0.0f,25.0f), Color.White, 0.0f,Vector2.Zero,0.4f,SpriteEffects.None,0.0f);
-                    
+
+                    spriteBatch.DrawString(menuFont, "Score:" + score, new Vector2(GraphicsDevice.Viewport.Width / 8, GraphicsDevice.Viewport.Height / 9), Color.White, 0.0f,Vector2.Zero,0.4f,SpriteEffects.None,0.0f);
+                    playerShip.Draw(spriteBatch, gameTime);
+
                     follower.Draw(spriteBatch, gameTime);
                     foreach (Enemy enemy in Enemywave)
                     {
@@ -582,7 +605,7 @@ namespace MonoGame_Dynamics_Final_Project
                     GraphicsDevice.Clear(Color.Black);
                     spriteBatch.Begin();
                     drawRect(new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.Black);
-                    spriteBatch.DrawString(menuFont, "Game Over", new Vector2(GraphicsDevice.Viewport.Width / 8, GraphicsDevice.Viewport.Height / 9), customColor);
+                    spriteBatch.DrawString(menuFont, "Game Over", new Vector2(GraphicsDevice.Viewport.Width / 5, GraphicsDevice.Viewport.Height / 9), customColor);
                     spriteBatch.End();
                     break;
                 case GameState.Exit:
@@ -672,6 +695,8 @@ namespace MonoGame_Dynamics_Final_Project
                 enemy = new Stingray(Content, GraphicsDevice, i + 1, "delta");
                 WaveDef[0].Add(enemy);
             }
+            VoidVulture voidVulture = new VoidVulture(Content, GraphicsDevice, 3, "line");
+            WaveDef[0].Add(voidVulture);
 
             // Wave 2
             WaveDef[1] = new List<Enemy>();
@@ -699,7 +724,7 @@ namespace MonoGame_Dynamics_Final_Project
         }
         public void SpawnPowerUp(Vector2 Position)
         {
-            switch (random.Next(3))
+            switch (random.Next(6))
             {
                 case 0:
                     Powerups = PowerUps.AtkSpdUp;
@@ -710,9 +735,22 @@ namespace MonoGame_Dynamics_Final_Project
                     powerUpList.Add(new PowerUp(MoveSpdUp, GraphicsDevice, Powerups, playerShip, Position, 1.0f));
                     break;
                 case 2:
-                    Powerups = PowerUps.Shield;
-                    powerUpList.Add(new PowerUp(AtkSpdUp, GraphicsDevice, Powerups, playerShip, Position, 1.0f));
+                    Powerups = PowerUps.HealthUp;
+                    powerUpList.Add(new PowerUp(HPUp, GraphicsDevice, Powerups, playerShip, Position, 1.0f));
                     break;
+                case 3:
+                    Powerups = PowerUps.AtkSpdDown;
+                    powerUpList.Add(new PowerUp(AtkSpdDown, GraphicsDevice, Powerups, playerShip, Position, 2.0f));
+                    break;
+                case 4:
+                    Powerups = PowerUps.MoveSpdDown;
+                    powerUpList.Add(new PowerUp(MoveSpdDown, GraphicsDevice, Powerups, playerShip, Position, 2.0f));
+                    break;
+                case 5:
+                    Powerups = PowerUps.HealthDown;
+                    powerUpList.Add(new PowerUp(HPDown, GraphicsDevice, Powerups, playerShip, Position, 2.0f));
+                    break;
+
                 default: break;
             }
         }
@@ -720,5 +758,6 @@ namespace MonoGame_Dynamics_Final_Project
         {
             return player.Intersects(pwerUp);
         }
+
     }
 }

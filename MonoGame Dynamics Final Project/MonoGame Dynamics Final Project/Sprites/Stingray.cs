@@ -24,13 +24,14 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         public EnemyState Ai;
 
         public Stingray(ContentManager content, GraphicsDevice Device, int spotinFormation, string formationType) :
-            base(80, 80, content.Load<Texture2D>("Images/Animations/Sting-Ray"), Device, spotinFormation, formationType, 0.5f, 100f, 100f)
+            base(80, 80, content.Load<Texture2D>("Images/Animations/Sting-Ray"), Device, spotinFormation, formationType, 0.5f, 100f, 300f)
         {
             frameNum = 12;
             frameTime = 0.1f;
             Ai = EnemyState.Default;
             collisionRange = new BoundingSphere(new Vector3(position.X + spriteOrigin.X, position.Y + spriteOrigin.Y, 0), 400f);
             velocity = new Vector2(0, 10);
+            enemyType = "stingRay";
         }
 
         public override void Update(GameTime gameTime, Player player)
