@@ -469,9 +469,14 @@ C:\GameDev\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Fina
 C:\Users\Kai\Desktop\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\Commandunit-idle.png
 C:\Users\Kai\Desktop\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\crossHair.png
 C:\Users\Kai\Desktop\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\laser.png
+C:\Users\Kai\Desktop\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\Plasma-Repeater-Shot.png
+C:\Users\Kai\Desktop\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\Plasma-Repeater.png
 C:\Users\Kai\Desktop\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\rocket.png
 C:\Users\Kai\Desktop\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\Sting-ray.png
 C:\Users\Kai\Desktop\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\synth-unit.png
+C:\Users\Kai\Desktop\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\Void-Angel-Attack.png
+C:\Users\Kai\Desktop\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\Void-angel-shot.png
+C:\Users\Kai\Desktop\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\Void-Angel.png
 C:\Users\Kai\Desktop\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\void-vulture-expel.png
 C:\Users\Kai\Desktop\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\voidVulture.png
 C:\Users\Kai\Desktop\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\voidVultureImpale.png
@@ -486,6 +491,11 @@ C:\Users\Kai\Desktop\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dyn
 C:\Users\Kai\Desktop\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Backgrounds\universe0.png
 C:\Users\Kai\Desktop\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Backgrounds\universe1.png
 C:\Users\Kai\Desktop\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Backgrounds\universe2.png
+C:\Users\Kai\Desktop\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Particles\meow.png
+C:\Users\Kai\Desktop\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Particles\meow1.png
+C:\Users\Kai\Desktop\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Particles\meow2.png
+C:\Users\Kai\Desktop\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Particles\meow3.png
+C:\Users\Kai\Desktop\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Particles\meow4.png
 C:\Users\Kai\Desktop\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Particles\poofparticle.png
 C:\Users\Kai\Desktop\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Particles\smokepoof.png
 C:\Users\Kai\Desktop\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Particles\starpoof1.png

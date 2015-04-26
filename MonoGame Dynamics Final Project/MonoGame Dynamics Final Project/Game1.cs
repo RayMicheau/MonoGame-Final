@@ -118,7 +118,13 @@ namespace MonoGame_Dynamics_Final_Project
 
         int EnemyParticleCounter = 0;
 
-        
+        List<ParticleEngine> DestructionParticles = new List<ParticleEngine>();
+        List<Texture2D> DestructionTextures= new List<Texture2D>();
+        List<int> DestructionRadiusCounters = new List<int>();
+        List<int> DestructionAngleCounters = new List<int>();
+        List<Vector2> DestructionEmmision = new List<Vector2>();
+
+
         #endregion
 
         public Game1()
@@ -144,8 +150,8 @@ namespace MonoGame_Dynamics_Final_Project
 
             string[] menuItems = { "Launch Ship","How to Play", "Exit Cockpit" };
 
-            try
-            {
+           // try
+            //{
                 //Load Particle textures
                 Thrustertextures = new List<Texture2D>();
                 Thrustertextures.Add(Content.Load<Texture2D>("Images/Particles/smokepoof"));
@@ -159,7 +165,12 @@ namespace MonoGame_Dynamics_Final_Project
                 StingrayTextures.Add(Content.Load<Texture2D>("Images/Particles/starpoof1"));
                 StingrayTextures.Add(Content.Load<Texture2D>("Images/Particles/starpoof2"));
 
-                
+                //Destruction Particles
+                DestructionTextures.Add(Content.Load<Texture2D>("Images/Particles/meow"));
+                DestructionTextures.Add(Content.Load<Texture2D>("Images/Particles/meow1"));
+                DestructionTextures.Add(Content.Load<Texture2D>("Images/Particles/meow2"));
+                DestructionTextures.Add(Content.Load<Texture2D>("Images/Particles/meow3"));
+                DestructionTextures.Add(Content.Load<Texture2D>("Images/Particles/meow4"));
 
                 /*Song song = Content.Load<Song>("TellMe");
                 MediaPlayer.Play(song);*/
@@ -232,13 +243,13 @@ namespace MonoGame_Dynamics_Final_Project
                         StingrayParticles.Add(new ParticleEngine(StingrayTextures, new Vector2(400, 240)));
                     }
                 }
-            }
-            catch (ContentLoadException e)
-            {
+            //}
+            //catch (ContentLoadException e)
+            //{
                 //Will properly display error messages soon
-                Console.WriteLine("Could not load " + e.Source);
-                Console.ReadLine();
-            }
+                //Console.WriteLine("Could not load " + e.Source);
+                //Console.ReadLine();
+            //}
             
         }
 
@@ -266,8 +277,8 @@ namespace MonoGame_Dynamics_Final_Project
                 Thruster2.EmitterLocation = playerShip.Position + new Vector2(-15, playerShip.frameHeight - 30);
             }
 
-            Thruster1.Update(playerShip.Alive, playerShip.Velocity, 100f, Color.SlateGray);
-            Thruster2.Update(playerShip.Alive, playerShip.Velocity, 100f, Color.SlateGray);
+            Thruster1.Update(playerShip.Alive, playerShip.Velocity, 100f, Color.SlateGray, 1);
+            Thruster2.Update(playerShip.Alive, playerShip.Velocity, 100f, Color.SlateGray, 1);
 
             foreach (Enemy enemy in Enemywave)
             {
@@ -281,7 +292,7 @@ namespace MonoGame_Dynamics_Final_Project
                     if (EnemyParticleCounter < StingrayParticles.Count)
                         {
                             StingrayParticles[EnemyParticleCounter].EmitterLocation = enemy.Position + new Vector2(Convert.ToSingle(Math.Cos(enemy.rotation) * enemy.frameWidth/4), Convert.ToSingle(Math.Sin(enemy.rotation) * enemy.frameWidth/4));
-                            StingrayParticles[EnemyParticleCounter].Update(enemy.Alive, enemy.Velocity, 9f, Color.Plum);   
+                            StingrayParticles[EnemyParticleCounter].Update(enemy.Alive, enemy.Velocity, 9f, Color.Plum, 1);   
                         EnemyParticleCounter++;
                         }
                         else
@@ -329,6 +340,11 @@ namespace MonoGame_Dynamics_Final_Project
                             if (Enemywave[i].enemyType == "voidVulture")
                             {
                                 score += 1000;
+
+                                DestructionParticles.Add(new ParticleEngine(DestructionTextures, new Vector2(400, 240)));
+                                DestructionRadiusCounters.Add(10);
+                                DestructionAngleCounters.Add(0);
+                                DestructionEmmision.Add(Enemywave[i].Position);
                             }
                             if (Enemywave[i].enemyType == "voidAngel")
                             {
@@ -362,6 +378,16 @@ namespace MonoGame_Dynamics_Final_Project
                         }
                     }
                 }
+            }
+
+            //Destrcution Update
+            for (int i = 0; i < DestructionParticles.Count; i ++ )
+            {
+                DestructionParticles[i].EmitterLocation = DestructionEmmision[i];
+                DestructionEmmision[i]+=new Vector2(Convert.ToSingle(Math.Cos(DestructionAngleCounters[i])*DestructionRadiusCounters[i]),Convert.ToSingle(Math.Sin(DestructionAngleCounters[i])*DestructionRadiusCounters[i]));
+                DestructionRadiusCounters[i]+=10;
+                DestructionAngleCounters[i]+=10;
+                DestructionParticles[i].Update((DestructionRadiusCounters[i] < 1000), new Vector2(10,10), 0f, Color.Purple, 10);
             }
             // testing collision of playership with enemy
             for (int i = 0; i < Enemywave.Count; i++)
@@ -651,9 +677,21 @@ namespace MonoGame_Dynamics_Final_Project
                         pUp.Draw(spriteBatch, gameTime);
                     }
 
+                    foreach (ParticleEngine explosion in DestructionParticles)
+                    {
+                        explosion.Draw(spriteBatch);
+                    }
+
                     Thruster1.Draw(spriteBatch);
                     Thruster2.Draw(spriteBatch);
                     foreach (ParticleEngine particle in StingrayParticles) { particle.Draw(spriteBatch); }
+
+                    //Draw Explosion
+                    foreach (ParticleEngine explosion in DestructionParticles)
+                    {
+                        explosion.Draw(spriteBatch);
+                    }
+
                     playerShip.Draw(spriteBatch, gameTime);
                     spriteBatch.End();
                     base.Draw(gameTime);
