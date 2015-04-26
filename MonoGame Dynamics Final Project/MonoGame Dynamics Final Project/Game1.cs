@@ -125,6 +125,8 @@ namespace MonoGame_Dynamics_Final_Project
         List<int> DestructionAngleCounters = new List<int>();
         List<Vector2> DestructionEmmision = new List<Vector2>();
 
+        Random randomnumber = new Random();
+
 
         #endregion
 
@@ -362,7 +364,7 @@ namespace MonoGame_Dynamics_Final_Project
                     }
                 }
 
-                // tests for collision of secondary shots 0against enemy
+                // tests for collision of secondary shots against enemy
                 for (int i = 0; i < Enemywave.Count; i++)
                 {
                     int collide = Enemywave[i].CollisionShot(playerShip.Secondary);
@@ -389,7 +391,8 @@ namespace MonoGame_Dynamics_Final_Project
                 DestructionEmmision[i]+=new Vector2(Convert.ToSingle(Math.Cos(DestructionAngleCounters[i])*DestructionRadiusCounters[i]),Convert.ToSingle(Math.Sin(DestructionAngleCounters[i])*DestructionRadiusCounters[i]));
                 DestructionRadiusCounters[i]+=10;
                 DestructionAngleCounters[i]+=10;
-                DestructionParticles[i].Update((DestructionRadiusCounters[i] < 1000), new Vector2(10,10), 0f, Color.Purple, 10);
+                DestructionParticles[i].Update((DestructionRadiusCounters[i] < 1000), new Vector2(10,10), 0f, new Color(random.Next(0,255),random.Next(0,50),random.Next(0,100)), 10);
+                
             }
             // testing collision of playership with enemy
             for (int i = 0; i < Enemywave.Count; i++)
@@ -688,9 +691,16 @@ namespace MonoGame_Dynamics_Final_Project
                     foreach (ParticleEngine particle in StingrayParticles) { particle.Draw(spriteBatch); }
 
                     //Draw Explosion
-                    foreach (ParticleEngine explosion in DestructionParticles)
+                    for(int i = 0; i < DestructionParticles.Count; i++)
                     {
-                        explosion.Draw(spriteBatch);
+                        DestructionParticles[i].Draw(spriteBatch);
+                        if (DestructionParticles[i].particles.Count == 0)
+                        {
+                            DestructionRadiusCounters.RemoveAt(i);
+                            DestructionAngleCounters.RemoveAt(i);
+                            DestructionEmmision.RemoveAt(i);
+                            DestructionParticles.RemoveAt(i);
+                        }
                     }
 
                     playerShip.Draw(spriteBatch, gameTime);

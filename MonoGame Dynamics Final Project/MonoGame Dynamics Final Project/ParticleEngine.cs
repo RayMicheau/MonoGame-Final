@@ -14,7 +14,7 @@ namespace MonoGame_Dynamics_Final_Project
     {
         private Random random;
         public Vector2 EmitterLocation { get; set; }
-        private List<Particle> particles;
+        public List<Particle> particles;
         private List<Texture2D> textures;
 
         public ParticleEngine(List<Texture2D> textures, Vector2 location)
