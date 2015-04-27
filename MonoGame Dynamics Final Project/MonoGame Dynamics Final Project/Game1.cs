@@ -350,7 +350,9 @@ namespace MonoGame_Dynamics_Final_Project
                         Enemywave[i].flashCounter = 0;
                         Enemywave[i].Health -= playerShip.Primary[collide].Damage; 
                         playerShip.Primary.RemoveAt(collide);
-                        
+
+                        Enemywave[i].Position += Vector2.Normalize(Enemywave[i].Position - playerShip.Position) * 2000 / Enemywave[i].frameHeight;
+
                         playerShip.CurrentPrimaryAmmo++;
 
                         if (Enemywave[i].Health <= 0f)
