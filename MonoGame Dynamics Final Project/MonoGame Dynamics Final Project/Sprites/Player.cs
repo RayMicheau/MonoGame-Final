@@ -191,6 +191,19 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         public int flashCounter = 0;
         public Color hurtFlash = Color.White;
         public bool painSwitch = false;
+        protected RailTurret railLeft, railRight;
+        public RailTurret RailLeft
+        {
+            get { return railLeft; }
+            set { railLeft = value; }
+        }
+
+        public RailTurret RailRight
+        {
+            get { return railRight; }
+            set { railRight = value; }
+        }
+        protected Texture2D railTurretImage;
         //rail
         
         #endregion
@@ -204,6 +217,8 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             frameTime = 0.2f;
             textureData = new Color[source.Width * source.Height];
             //textureImage.GetData<Color>(0, source, textureData, 0, source.Width * source.Height);
+
+            
 
             Position = position;
             TextureImage = textureImage;
@@ -238,6 +253,14 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             hasShotPrim = false;
             forcePull = false;
         }
+
+        public Player(int FrameWidth, int FrameHeight, Texture2D textureImage, Texture2D turretImage, Vector2 position, Vector2 velocity, bool setOrig, float scale, float health)
+            : this(FrameWidth, FrameHeight, textureImage, position, velocity, setOrig, scale, health)
+        {
+            railTurretImage = turretImage;
+            railLeft = new RailTurret(railTurretImage, position, velocity, 1);
+            railRight = new RailTurret(railTurretImage, position, velocity, -1);
+        }
         
         // Draws the ship and all projectiles currently in motion
         public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime, Color color)
@@ -245,13 +268,24 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             float timeLapse = (gameTime.ElapsedGameTime.Milliseconds/1000f);
             if (Alive)
             {
-                foreach (Weapon shot in primary)
-                {
-                    shot.Draw(spriteBatch);
-                }
                 foreach (Weapon shot in secondary)
                 {
                     shot.Draw(spriteBatch);
+                }
+
+                if (railLeft != null && railRight != null)
+                {
+                    foreach (Weapon shot in railLeft.primary)
+                    {
+                        shot.Draw(spriteBatch);
+                    }
+                    foreach(Weapon shot in railRight.primary)
+                    {
+                        shot.Draw(spriteBatch);
+                    }
+
+                    railLeft.Draw(spriteBatch, gameTime, Color.White);
+                    railRight.Draw(spriteBatch, gameTime, Color.White);
                 }
 
                 spriteBatch.Draw(TextureImage,
@@ -279,11 +313,15 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                 source = animatedSprite(frameNum, frameTime, frameWidth, frameHeight, TextureImage, timeLapse);
             //    TextureImage.GetData<Color>(0, source, textureData, 0, source.Width * source.Height);
 
-                UpdateWeapon(primary, gameTime, enemyWave);
+                //update weapons
+                railRight.UpdateWeapon(railRight.primary, gameTime, enemyWave);
+                railLeft.UpdateWeapon(railLeft.primary, gameTime, enemyWave);
                 UpdateWeapon(secondary, gameTime, enemyWave);
 
                 //Move the sprite
                 position += Velocity * timeLapse;
+                railLeft.Update(gameTime, position);
+                railRight.Update(gameTime, position);
             }
         }
 
@@ -619,16 +657,20 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
 
         public void shootRail(ContentManager content)
         {
-            Vector2 offset = new Vector2(15, -35);
-            Vector2 shotPos = position; // change in railturret as well!
-            Rail rail = new Rail(content, shotPos, 500f, 1);
-            primary.Add(rail);
+        //    Vector2 offset = new Vector2(15, -35); // change in railturret as well!
+        //    Vector2 shotPos = position; 
+        //    Rail rail = new Rail(content, shotPos, 500f, 1);
+        //    //primary.Add(rail);
 
-            offset.X += offset.X;
-            shotPos = position - (offset);
-            rail = new Rail(content, shotPos, 500f, 1);
-            primary.Add(rail);
-            currentPrimaryAmmo--;
+        //    offset.X += offset.X;
+        //    shotPos = position - (offset);
+        //    rail = new Rail(content, shotPos, 500f, 1);
+        //    primary.Add(rail);
+        //    currentPrimaryAmmo--;
+            Rail rail = new Rail(content, railLeft.position, 500f, 1);
+            railLeft.primary.Add(rail);
+            rail = new Rail(content, railRight.position, 500f, -1);
+            railRight.primary.Add(rail);
         }
         #endregion
 
