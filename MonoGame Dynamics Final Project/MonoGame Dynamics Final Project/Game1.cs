@@ -155,7 +155,7 @@ namespace MonoGame_Dynamics_Final_Project
             //set virtual screen resolution
             _irr = new ResolutionRenderer(this, VIRTUAL_RESOLUTION_WIDTH, VIRTUAL_RESOLUTION_HEIGHT, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
 
-            _camera = new Camera2D(_irr) { MaxZoom = 10f, MinZoom = .4f, Zoom = 1f };
+            _camera = new Camera2D(_irr) { MaxZoom = 10f, MinZoom = .4f, Zoom = 1.5f};
             _camera.SetPosition(new Vector2(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 2, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height/2));
             _camera.RecalculateTransformationMatrices();
 
@@ -803,7 +803,7 @@ namespace MonoGame_Dynamics_Final_Project
                 case GameState.GameOver:
                     GraphicsDevice.Clear(Color.Black);
                     _irr.Draw();
-                    spriteBatch.BeginCamera(_camera, BlendState.NonPremultiplied);
+                    spriteBatch.BeginCamera(_camera, BlendState.AlphaBlend);
                     //spriteBatch.Begin();
                     drawRect(new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.Black);
                     spriteBatch.DrawString(menuFont, "Game Over\n", new Vector2(GraphicsDevice.Viewport.Width / 4, 100.0f), customColor,0f,Vector2.Zero,0.5f,SpriteEffects.None,0f);
