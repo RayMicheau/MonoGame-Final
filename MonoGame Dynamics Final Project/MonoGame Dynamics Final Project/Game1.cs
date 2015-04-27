@@ -19,6 +19,7 @@ namespace MonoGame_Dynamics_Final_Project
         SplashScreen, 
         StartMenu,
         Play, 
+        Pause,
         GameOver,
         Exit
     }
@@ -85,6 +86,7 @@ namespace MonoGame_Dynamics_Final_Project
         float timer = 0.0f;
         float damage = 0.0f; 
         bool playGame;
+        //Buttons;
 
         // player
         Texture2D playerTexture;
@@ -275,7 +277,7 @@ namespace MonoGame_Dynamics_Final_Project
         protected override void UnloadContent()
         {
         }
-
+        
         protected override void Update(GameTime gameTime)
         {
 
@@ -289,12 +291,13 @@ namespace MonoGame_Dynamics_Final_Project
             //If Game is Running
             if (gameState == GameState.Play)
             {
+                playGame = true;
                 healthRect = new Rectangle(100, GraphicsDevice.Viewport.Height - 50, (int)playerShip.Health / 5, health.Height);
 
                 // updating scroll speed
                 float elapsed = (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f; 
                 timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                if (playerShip.Alive)
+                if (playerShip.Alive && playGame == true)
                 {
                     playerShip.Update(gameTime, GraphicsDevice, Enemywave);
                     
@@ -310,7 +313,7 @@ namespace MonoGame_Dynamics_Final_Project
                 foreach (Enemy enemy in Enemywave)
                 {
                     enemy.Update(gameTime, playerShip);
-                    if (enemy.enemyType == "stingRay")
+                    if (enemy.enemyType == "stingRay" && playGame == true)
                     {
                         enemy.Update(gameTime, playerShip);
 
@@ -332,11 +335,11 @@ namespace MonoGame_Dynamics_Final_Project
                             EnemyParticleCounter = 0;
                         }
                     }
-                    if (enemy.enemyType == "voidVulture")
+                    if (enemy.enemyType == "voidVulture" && playGame == true)
                     {
                         enemy.Update(gameTime, playerShip);
                     }
-                    if (enemy.enemyType == "voidAngel")
+                    if (enemy.enemyType == "voidAngel" && playGame == true)
                     {
                         enemy.Update(gameTime, playerShip);
                     }
@@ -449,6 +452,8 @@ namespace MonoGame_Dynamics_Final_Project
                 
             }
         }
+        
+        
         //public void ResetGame
         public void UpdateInput(GameTime gameTime)
         {
@@ -458,6 +463,7 @@ namespace MonoGame_Dynamics_Final_Project
 
             if (gameState == GameState.StartMenu)
             {
+                playGame = false;
                 Rectangle exit = new Rectangle(572, 384, 100, 50);
                 Rectangle start = new Rectangle(572, 274, 200, 50);
                 Rectangle instr = new Rectangle(572, 344, 150, 50);
@@ -474,6 +480,7 @@ namespace MonoGame_Dynamics_Final_Project
             }
             if (gameState == GameState.GameOver)
             {
+                playGame = false;
                 if (keyState.IsKeyDown(Keys.Enter))
                 {
                     gameState = GameState.StartMenu;
@@ -481,6 +488,7 @@ namespace MonoGame_Dynamics_Final_Project
             }
             if (gameState == GameState.Play)
             {
+                playGame = true;
                 if (keyState.IsKeyDown(Keys.Up)
                || keyState.IsKeyDown(Keys.W)
                || gamePadState.DPad.Up == ButtonState.Pressed
@@ -640,6 +648,26 @@ namespace MonoGame_Dynamics_Final_Project
                         playerShip.shootSecondary(Content);
                     }
                 }
+                if (keyState.IsKeyDown(Keys.P))
+                {
+                    gameState = GameState.Pause;
+                    playGame = false;
+                    if (oldState.IsKeyUp(Keys.P) && keyState.IsKeyDown(Keys.P))
+                    {
+                        Update(gameTime);
+                        gameState = GameState.Play;
+                        playGame = true;
+                    }
+                }
+                /*if (gameState == GameState.Pause && keyState.IsKeyDown(Keys.P))
+                {
+                    //if (keyState.IsKeyDown(Keys.P))
+                    //{
+                        Update(gameTime);
+                        gameState = GameState.Play;
+                    //}
+
+                }*/
                 if (!keyPressed)
                 {
                     playerShip.Idle();
@@ -740,7 +768,11 @@ namespace MonoGame_Dynamics_Final_Project
                     _irr.SetupVirtualScreenViewport();
                  //   base.Draw(gameTime);
                     break;
-
+                case GameState.Pause:
+                    spriteBatch.Begin();
+                    spriteBatch.DrawString(menuFont, "Paused", new Vector2(GraphicsDevice.Viewport.Width / 4, 100.0f), customColor, 0.0f,Vector2.Zero,0.5f,SpriteEffects.None,0.0f);
+                    spriteBatch.End();
+                    break;
                 case GameState.GameOver:
                     GraphicsDevice.Clear(Color.Black);
                     _irr.Draw();
