@@ -61,6 +61,15 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             
         }
 
+        public Vector2 getDirectionVector()
+        {
+            if (distanceBetween != null)
+            {
+                return distanceBetween;
+            }
+            return new Vector2(0, 100);
+        }
+
        
         public virtual void UpdateWeapon(GameTime gameTime, Player player, Vector2 directionShot, ContentManager content)
         {
@@ -68,6 +77,8 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             
            
         }
+
+        public virtual void Update(ContentManager content, GameTime gameTime, Player player) { }
         public virtual void Update(GameTime gameTime, Player player)
         {
 

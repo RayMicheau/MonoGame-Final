@@ -287,7 +287,7 @@ namespace MonoGame_Dynamics_Final_Project
                 enemy.Update(gameTime, playerShip);
                 if (enemy.enemyType == "stingRay")
                 {
-                        enemy.Update(gameTime, playerShip);
+                        enemy.Update(Content, gameTime, playerShip);
                     
                     //Stingray Particles
                     
