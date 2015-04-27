@@ -1,54 +1,54 @@
-﻿using System;
+﻿#region Using Statements
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Storage;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Media;
-using MonoGame_Dynamics_Final_Project;
 using MonoGame_Dynamics_Final_Project.Weapons;
-
+using MonoGame_Dynamics_Final_Project;
+#endregion
 
 namespace MonoGame_Dynamics_Final_Project.Sprites
 {
-    public enum EnemyState
+
+    public enum RayState
     {
         Default,
         Chase
     }
 
-    class Stingray : Enemy
+    class Stingray2 : Enemy
     {
-        public EnemyState Ai;
+        public RayState Ai;
 
-        public Stingray(ContentManager content, GraphicsDevice Device, int spotinFormation, string formationType) :
-            base(content, 80, 80, content.Load<Texture2D>("Images/Animations/Sting-Ray"), Device, spotinFormation, formationType, 0.5f, 100f, 300f)
+        public Stingray2(ContentManager content, GraphicsDevice Device, int spotinFormation, string formationType) :
+            base(content, 80, 80, content.Load<Texture2D>("Images/Animations/Sting-Ray-2"), Device, spotinFormation, formationType, 0.5f, 100f, 500f)
         {
             frameNum = 12;
             frameTime = 0.1f;
-            Ai = EnemyState.Default;
+            Ai = RayState.Default;
             collisionRange = new BoundingSphere(new Vector3(position.X + spriteOrigin.X, position.Y + spriteOrigin.Y, 0), 400f);
-            velocity = new Vector2(0, 10);
+            velocity = new Vector2(0, 20);
             enemyType = "stingRay";
             //EnemyShot = content.Load<Texture2D>("Images/Animations/Sting-Ray-shot");
-            VectorSpeed = 2.0f;
-            damage = 1;
+            VectorSpeed = 3.0f;
+            damage = 3;
         }
 
         public override void Update(GameTime gameTime, Player player)
         {
             collisionRange = new BoundingSphere(new Vector3(position.X + spriteOrigin.X, position.Y + spriteOrigin.Y, 0), 400f);
             setAi(player);
-            switch(Ai)
+            switch (Ai)
             {
-                case EnemyState.Chase :
+                case RayState.Chase:
                     ChasePlayer(gameTime, player);
                     break;
-                case EnemyState.Default :
+                case RayState.Default:
 
                     base.Update(gameTime, player);
                     break;
@@ -64,13 +64,12 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         {
             if (collisionRange.Intersects(player.collisionRange))
             {
-                Ai = EnemyState.Chase;
+                Ai = RayState.Chase;
             }
             else
             {
-                Ai = EnemyState.Default;
-               
-                
+                Ai = RayState.Default;
+
             }
         }
 
@@ -79,3 +78,5 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         //}
     }
 }
+
+

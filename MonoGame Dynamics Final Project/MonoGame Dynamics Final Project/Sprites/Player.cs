@@ -229,8 +229,8 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             // Set Primary Weapons
             
             // Set Secondary Weapons
-            //setWeapon("gravityWell", 1);
-            setWeapon("helixMissile", 2);
+            setWeapon("gravityWell", 1);
+            //setWeapon("helixMissile", 2);
             //setWeapon("homingMissile", 2);
             //setWeapon("laser", 5);
             setWeapon("rail", 4);

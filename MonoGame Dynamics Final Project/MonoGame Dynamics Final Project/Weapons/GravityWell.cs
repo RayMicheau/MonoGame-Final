@@ -39,12 +39,13 @@ namespace MonoGame_Dynamics_Final_Project
         {
             gravityForce = Vector2.Zero;
             mass = 5.0f;
+            angle = 0f;
         }
 
         public override void forcePull(GameTime gameTime, List<Enemy> enemies)
         {
             velocity = Vector2.Zero;
-
+            angle += 0.1f;
             float timeInterval = gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
 
             float magnitude, radius;

@@ -75,6 +75,9 @@ namespace MonoGame_Dynamics_Final_Project
         SpriteFont menuFont;
         Color customColor;
         float score = 0;
+        float timer = 0.0f;
+        float damage = 0.0f; 
+        bool playGame;
 
         // player
         Texture2D playerTexture;
@@ -190,6 +193,7 @@ namespace MonoGame_Dynamics_Final_Project
                 windowWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
                 windowHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
                 random = new Random();
+                playGame = false;
 
                 //PwrUpTextures
                 AtkSpdUp = Content.Load<Texture2D>("Images/PowerUps/AtkSpdUp");
@@ -260,219 +264,236 @@ namespace MonoGame_Dynamics_Final_Project
 
         protected override void Update(GameTime gameTime)
         {
+
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-                healthRect = new Rectangle(100, GraphicsDevice.Viewport.Height - 50, (int)playerShip.Health, health.Height);
-            
-            // updating scroll speed
-            float elapsed = (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+            float elapsed = (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f; 
             myBackground.Update(gameTime, elapsed * 100);
             myBGtwo.Update(gameTime, elapsed * 100);
-            if (playerShip.Alive)
+            UpdateInput(gameTime); 
+            if (gameState == GameState.Play)
             {
-                playerShip.Update(gameTime, GraphicsDevice, Enemywave);
-                railLeft.Update(gameTime, playerShip.Position);
-                railRight.Update(gameTime, playerShip.Position);
-                follower.Update(playerShip, gameTime);
-                UpdateInput(gameTime);
-                Thruster1.EmitterLocation = playerShip.Position + new Vector2(15, playerShip.frameHeight - 30);
-                Thruster2.EmitterLocation = playerShip.Position + new Vector2(-15, playerShip.frameHeight - 30);
-            }
 
-            Thruster1.Update(playerShip.Alive, playerShip.Velocity, 100f, Color.SlateGray, 1);
-            Thruster2.Update(playerShip.Alive, playerShip.Velocity, 100f, Color.SlateGray, 1);
+                healthRect = new Rectangle(100, GraphicsDevice.Viewport.Height - 50, (int)playerShip.Health, health.Height);
 
-            foreach (Enemy enemy in Enemywave)
-            {
-                enemy.Update(gameTime, playerShip);
-                if (enemy.enemyType == "stingRay")
+                // updating scroll speed
+               
+                timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if (playerShip.Alive)
                 {
+                    playerShip.Update(gameTime, GraphicsDevice, Enemywave);
+                    railLeft.Update(gameTime, playerShip.Position);
+                    railRight.Update(gameTime, playerShip.Position);
+                    follower.Update(playerShip, gameTime);
+                   
+                    Thruster1.EmitterLocation = playerShip.Position + new Vector2(15, playerShip.frameHeight - 30);
+                    Thruster2.EmitterLocation = playerShip.Position + new Vector2(-15, playerShip.frameHeight - 30);
+                }
+
+                Thruster1.Update(playerShip.Alive, playerShip.Velocity, 100f, Color.SlateGray, 1);
+                Thruster2.Update(playerShip.Alive, playerShip.Velocity, 100f, Color.SlateGray, 1);
+
+                foreach (Enemy enemy in Enemywave)
+                {
+                    enemy.Update(gameTime, playerShip);
+                    if (enemy.enemyType == "stingRay")
+                    {
                         enemy.Update(gameTime, playerShip);
-                    
-                    //Stingray Particles
-                    
-                    if (EnemyParticleCounter < StingrayParticles.Count)
+
+                        //Stingray Particles
+
+                        if (EnemyParticleCounter < StingrayParticles.Count)
                         {
-                            StingrayParticles[EnemyParticleCounter].EmitterLocation = enemy.Position + new Vector2(Convert.ToSingle(Math.Cos(enemy.rotation) * enemy.frameWidth/4), Convert.ToSingle(Math.Sin(enemy.rotation) * enemy.frameWidth/4));
-                            StingrayParticles[EnemyParticleCounter].Update(enemy.Alive, enemy.Velocity, 9f, Color.Plum, 1);   
-                        EnemyParticleCounter++;
+                            StingrayParticles[EnemyParticleCounter].EmitterLocation = enemy.Position + new Vector2(Convert.ToSingle(Math.Cos(enemy.rotation) * enemy.frameWidth / 4), Convert.ToSingle(Math.Sin(enemy.rotation) * enemy.frameWidth / 4));
+                            StingrayParticles[EnemyParticleCounter].Update(enemy.Alive, enemy.Velocity, 9f, Color.Plum, 1);
+                            EnemyParticleCounter++;
                         }
                         else
                         {
                             EnemyParticleCounter = 0;
                         }
-                }
-                if (enemy.enemyType == "voidVulture")
-                {     
+                    }
+                    if (enemy.enemyType == "voidVulture")
+                    {
                         enemy.Update(gameTime, playerShip);
-                }
-                if (enemy.enemyType == "voidAngel")
-                {
-                    
-                    enemy.Update(gameTime, playerShip);
-                }
-            }
-
-            foreach (PowerUp pUp in powerUpList)
-            {
-                pUp.Update(gameTime, GraphicsDevice);
-                if (pUp.removeFromScreen)
-                {
-                    pUp.Alive = false;
-                }
-            }
-
-            // tests for collision of primary shots against enemy
-            if (Enemywave.Count > 0)
-            {
-                for (int i = 0; i < Enemywave.Count; i++)
-                {
-
-                    if (Enemywave[i].painSwitch == true)
+                    }
+                    if (enemy.enemyType == "voidAngel")
                     {
-                        Enemywave[i].flashCounter++;
-                        Enemywave[i].hurtFlash = new Color(random.Next(0, 255), random.Next(0, 10), random.Next(0, 100));
-                        if (Enemywave[i].flashCounter >= 100)
+
+                        enemy.Update(gameTime, playerShip);
+                    }
+                }
+
+                foreach (PowerUp pUp in powerUpList)
+                {
+                    pUp.Update(gameTime, GraphicsDevice);
+                    if (pUp.removeFromScreen)
+                    {
+                        pUp.Alive = false;
+                    }
+                }
+
+                // tests for collision of primary shots against enemy
+                if (Enemywave.Count > 0)
+                {
+                    for (int i = 0; i < Enemywave.Count; i++)
+                    {
+
+                        if (Enemywave[i].painSwitch == true)
                         {
+                            Enemywave[i].flashCounter++;
+                            Enemywave[i].hurtFlash = new Color(random.Next(0, 255), random.Next(0, 10), random.Next(0, 100));
+                            if (Enemywave[i].flashCounter >= 100)
+                            {
+                                Enemywave[i].flashCounter = 0;
+                                Enemywave[i].painSwitch = false;
+                            }
+                        }
+                        else
+                        {
+                            Enemywave[i].hurtFlash = Color.White;
+                        }
+
+                        int collide = Enemywave[i].CollisionShot(playerShip.Primary);
+                        if (collide != -1)
+                        {
+                            Enemywave[i].painSwitch = true;
                             Enemywave[i].flashCounter = 0;
-                            Enemywave[i].painSwitch = false;
+                            Enemywave[i].Health -= playerShip.Primary[collide].Damage;
+                            playerShip.Primary.RemoveAt(collide);
+
+                            Enemywave[i].Position += Vector2.Normalize(Enemywave[i].Position - playerShip.Position) * 2000 / Enemywave[i].frameHeight;
+
+                            playerShip.CurrentPrimaryAmmo++;
+
+                            if (Enemywave[i].Health <= 0f)
+                            {
+                                if (Enemywave[i].enemyType == "stingRay")
+                                {
+                                    score += 100;
+                                    StingrayParticles.RemoveAt(StingrayParticles.Count - 1);
+                                }
+                                if (Enemywave[i].enemyType == "voidVulture")
+                                {
+                                    score += 1000;
+
+                                    DestructionParticles.Add(new ParticleEngine(DestructionTextures, new Vector2(400, 240)));
+                                    DestructionRadiusCounters.Add(10);
+                                    DestructionAngleCounters.Add(0);
+                                    DestructionEmmision.Add(Enemywave[i].Position);
+                                }
+                                if (Enemywave[i].enemyType == "voidAngel")
+                                {
+                                    score += 500;
+                                }
+
+                                double rand = random.NextDouble();
+                                if (rand < spawnChance)
+                                    SpawnPowerUp(Enemywave[i].Position);
+                                Enemywave[i].Alive = false;
+                                Enemywave.RemoveAt(i);
+                            }
                         }
                     }
-                    else
+
+
+                    // tests for collision of secondary shots against enemy
+                    for (int i = 0; i < Enemywave.Count; i++)
                     {
-                        Enemywave[i].hurtFlash = Color.White;
-                    }
-
-                    int collide = Enemywave[i].CollisionShot(playerShip.Primary);
-                    if (collide != -1)
-                    {
-                        Enemywave[i].painSwitch = true;
-                        Enemywave[i].flashCounter = 0;
-                        Enemywave[i].Health -= playerShip.Primary[collide].Damage; 
-                        playerShip.Primary.RemoveAt(collide);
-
-                        Enemywave[i].Position += Vector2.Normalize(Enemywave[i].Position - playerShip.Position) * 2000 / Enemywave[i].frameHeight;
-
-                        playerShip.CurrentPrimaryAmmo++;
-
-                        if (Enemywave[i].Health <= 0f)
+                        int collide = Enemywave[i].CollisionShot(playerShip.Secondary);
+                        if (collide != -1)
                         {
-                            if (Enemywave[i].enemyType == "stingRay")
+                            if (playerShip.SecondaryType != "gravityWell")
                             {
-                                score += 100;
-                                StingrayParticles.RemoveAt(StingrayParticles.Count-1);
-                            }
-                            if (Enemywave[i].enemyType == "voidVulture")
-                            {
-                                score += 1000;
-
-                                DestructionParticles.Add(new ParticleEngine(DestructionTextures, new Vector2(400, 240)));
-                                DestructionRadiusCounters.Add(10);
-                                DestructionAngleCounters.Add(0);
-                                DestructionEmmision.Add(Enemywave[i].Position);
-                            }
-                            if (Enemywave[i].enemyType == "voidAngel")
-                            {
-                                score += 500;
-                            } 
-
-                            double rand = random.NextDouble();
-                            if (rand < spawnChance)
+                                playerShip.CurrentSecondaryAmmo++;
+                                playerShip.Secondary.RemoveAt(collide);
+                                if (random.NextDouble() <= spawnChance)
                                     SpawnPowerUp(Enemywave[i].Position);
-                            Enemywave[i].Alive = false;
-                            Enemywave.RemoveAt(i);
+                                Enemywave[i].Alive = false;
+                                Enemywave.RemoveAt(i);
+
+                            }
                         }
                     }
                 }
 
+                //Destrcution Update
+                for (int i = 0; i < DestructionParticles.Count; i++)
+                {
+                    DestructionParticles[i].EmitterLocation = DestructionEmmision[i];
+                    DestructionEmmision[i] += new Vector2(Convert.ToSingle(Math.Cos(DestructionAngleCounters[i]) * DestructionRadiusCounters[i]), Convert.ToSingle(Math.Sin(DestructionAngleCounters[i]) * DestructionRadiusCounters[i]));
+                    DestructionRadiusCounters[i] += 10;
+                    DestructionAngleCounters[i] += 10;
+                    DestructionParticles[i].Update((DestructionRadiusCounters[i] < 1000), new Vector2(10, 10), 0f, new Color(random.Next(0, 255), random.Next(0, 50), random.Next(0, 100)), 10);
 
-                // tests for collision of secondary shots against enemy
+                }
+                // testing collision of playership with enemy
+
                 for (int i = 0; i < Enemywave.Count; i++)
                 {
-                    int collide = Enemywave[i].CollisionShot(playerShip.Secondary);
-                    if (collide != -1)
+                    if (playerShip.CollisionSprite(Enemywave[i]))
                     {
-                        if (playerShip.SecondaryType != "gravityWell")
-                        {
-                            playerShip.CurrentSecondaryAmmo++;
-                            playerShip.Secondary.RemoveAt(collide);
-                            if (random.NextDouble() <= spawnChance)
-                                SpawnPowerUp(Enemywave[i].Position);
-                            Enemywave[i].Alive = false;
-                            Enemywave.RemoveAt(i);
-
-                        }
-                    }
-                }
-            }
-
-            //Destrcution Update
-            for (int i = 0; i < DestructionParticles.Count; i ++ )
-            {
-                DestructionParticles[i].EmitterLocation = DestructionEmmision[i];
-                DestructionEmmision[i]+=new Vector2(Convert.ToSingle(Math.Cos(DestructionAngleCounters[i])*DestructionRadiusCounters[i]),Convert.ToSingle(Math.Sin(DestructionAngleCounters[i])*DestructionRadiusCounters[i]));
-                DestructionRadiusCounters[i]+=10;
-                DestructionAngleCounters[i]+=10;
-                DestructionParticles[i].Update((DestructionRadiusCounters[i] < 1000), new Vector2(10,10), 0f, new Color(random.Next(0,255),random.Next(0,50),random.Next(0,100)), 10);
-                
-            }
-            // testing collision of playership with enemy
-            for (int i = 0; i < Enemywave.Count; i++)
-            {
-                if (playerShip.CollisionSprite(Enemywave[i]))
-                {
-                    //if (playerShip.IntersectsPixel(playerShip.source, playerShip.textureData, Enemywave[i].source, Enemywave[i].textureData))
-                    //{
+                        //if (playerShip.IntersectsPixel(playerShip.source, playerShip.textureData, Enemywave[i].source, Enemywave[i].textureData))
+                        //{
                         playerShip.collisionDetected = true;
                         if (playerShip.collisionDetected == true)
                         {
-                            playerShip.Health -= Enemywave[i].Damage;
+                            damage += Enemywave[i].Damage;
                             Console.WriteLine("Health:" + playerShip.Health);
                             if (playerShip.Health <= 0.0f)
                             {
+
                                 gameState = GameState.GameOver;
                                 playerShip.Alive = false;
                                 follower.Alive = false;
+                                playGame = false;
                             }
                         }
-                        
+
                         //Enemywave.RemoveAt(i);
-                    //}
+                        //}
+                    }
                 }
-            }
+                playerShip.Health -= damage;
+                damage = 0f;
 
-            // gravity well
-            if (playerShip.ForcePull)
-            {
-                playerShip.Secondary[0].forcePull(gameTime, Enemywave);
-                playerShip.Secondary[0].ElapsedTime += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
 
-                if (playerShip.Secondary[0].ElapsedTime > 5.0f)
+                // gravity well
+                if (playerShip.ForcePull)
                 {
-                    playerShip.ForcePull = false;
-                    playerShip.Secondary.RemoveAt(0);
-                }
-            }
+                    playerShip.Secondary[0].forcePull(gameTime, Enemywave);
+                    playerShip.Secondary[0].ElapsedTime += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
 
-            for (int i = powerUpList.Count - 1; i >= 0; i--)
-            {
-                if (powerUpList[i].removeFromScreen )
-                {
-                    powerUpList.RemoveAt(i);
+                    if (playerShip.Secondary[0].ElapsedTime > 5.0f)
+                    {
+                        playerShip.ForcePull = false;
+                        playerShip.Secondary.RemoveAt(0);
+                    }
                 }
-                else if (CheckForPowerUps(playerShip.CollisionRectangle, powerUpList[i].CollisionRectangle))
+
+                for (int i = powerUpList.Count - 1; i >= 0; i--)
                 {
-                    powerUpList[i].ActivatePowerUp(Powerups, playerShip);
-                    powerUpList.RemoveAt(i);
+                    if (powerUpList[i].removeFromScreen)
+                    {
+                        powerUpList.RemoveAt(i);
+                    }
+                    else if (CheckForPowerUps(playerShip.CollisionRectangle, powerUpList[i].CollisionRectangle))
+                    {
+                        powerUpList[i].ActivatePowerUp(Powerups, playerShip);
+                        powerUpList.RemoveAt(i);
+                    }
                 }
-            }
+
                 base.Update(gameTime);
+            }
         }
-        private void UpdateInput(GameTime gameTime)
+        //public void ResetGame
+        public void UpdateInput(GameTime gameTime)
         {
             bool keyPressed = false;
             KeyboardState keyState = Keyboard.GetState();
             GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
+
             if (gameState == GameState.StartMenu)
             {
                 Rectangle exit = new Rectangle(572, 384, 100, 50);
@@ -486,11 +507,19 @@ namespace MonoGame_Dynamics_Final_Project
                 }
                 else if (menuScreen.ItemSelected == 1)
                 {
+                    playGame = true;
                     gameState = GameState.Play;
                 }
             }
-
-            if (gameState == GameState.Play)
+            if (gameState == GameState.GameOver)
+            {
+                playGame = false;
+                if (keyState.IsKeyDown(Keys.Enter))
+                {
+                    gameState = GameState.StartMenu;
+                }
+            }
+            if (gameState == GameState.Play && playGame == true)
             {
                 if (keyState.IsKeyDown(Keys.Up)
                || keyState.IsKeyDown(Keys.W)
@@ -688,7 +717,7 @@ namespace MonoGame_Dynamics_Final_Project
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
                     myBackground.Draw(spriteBatch);
                     spriteBatch.Draw(health, healthRect, Color.White);
-                    spriteBatch.DrawString(menuFont, "Score:" + score, new Vector2(GraphicsDevice.Viewport.Width / 8, GraphicsDevice.Viewport.Height / 9), Color.White, 0.0f,Vector2.Zero,0.4f,SpriteEffects.None,0.0f);
+                    spriteBatch.DrawString(menuFont, "Score:" + (Math.Round(timer,2) * score), new Vector2(GraphicsDevice.Viewport.Width / 8, GraphicsDevice.Viewport.Height / 9), Color.White, 0.0f,Vector2.Zero,0.4f,SpriteEffects.None,0.0f);
                     
                     follower.Draw(spriteBatch, gameTime, Color.White);
                     foreach (Enemy enemy in Enemywave)
@@ -733,7 +762,8 @@ namespace MonoGame_Dynamics_Final_Project
                     GraphicsDevice.Clear(Color.Black);
                     spriteBatch.Begin();
                     drawRect(new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.Black);
-                    spriteBatch.DrawString(menuFont, "Game Over", new Vector2(GraphicsDevice.Viewport.Width / 5, GraphicsDevice.Viewport.Height / 9), customColor);
+                    spriteBatch.DrawString(menuFont, "Game Over\n", new Vector2(GraphicsDevice.Viewport.Width / 4, 100), customColor,0f,Vector2.Zero,0.5f,SpriteEffects.None,0f);
+                    spriteBatch.DrawString(menuFont, "You Scored:" + (Math.Round(timer, 2) * score), new Vector2(GraphicsDevice.Viewport.Width / 6, 200), customColor, 0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
                     spriteBatch.End();
                     break;
                 case GameState.Exit:

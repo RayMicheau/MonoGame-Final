@@ -107,6 +107,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
             textureImage.GetData(textureData);
             angle = 0f;
             Damage = damage;
+            spriteOrigin = new Vector2(textureImage.Width / 2, textureImage.Height / 2);
         }
 
         public virtual void Update(GameTime gameTime)
