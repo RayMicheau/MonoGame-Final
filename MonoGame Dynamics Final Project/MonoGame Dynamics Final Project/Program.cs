@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using MonoGame_Dynamics_Final_Project;
 #endregion
 
 namespace MonoGame_Dynamics_Final_Project
@@ -15,10 +16,12 @@ namespace MonoGame_Dynamics_Final_Project
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
+        /// 
         [STAThread]
         static void Main()
         {
-            using (var game = new Game1())
+            var game = new Game1();
+            using (game)
                 game.Run();
         }
     }

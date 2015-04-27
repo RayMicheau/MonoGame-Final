@@ -1,3 +1,0 @@
-C:\Users\hau5t_000\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\ContentProject\ContentProjectContent\obj\PSM\ContentProjectContent.contentprojResolveAssemblyReference.cache
-C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\ContentProject\ContentProjectContent\obj\PSM\ContentProjectContent.contentprojResolveAssemblyReference.cache
-C:\Users\Hau5\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\ContentProject\ContentProjectContent\obj\PSM\ContentProjectContent.contentprojResolveAssemblyReference.cache

@@ -36,13 +36,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="animateSprite.cs" />
+    <Compile Include="AudioManager.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="Particle.cs" />
     <Compile Include="ParticleEngine.cs" />
     <Compile Include="Sprites\Enemy.cs" />
     <Compile Include="Sprites\Follower.cs" />
     <Compile Include="Game1.cs" />
-    <Compile Include="Sprites\PowerUp.cs" />
+    <Compile Include="Sprites\PowerUp.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Sprites\Stingray.cs" />
     <Compile Include="Sprites\VoidAngel.cs" />
     <Compile Include="Sprites\VoidVulture.cs" />
@@ -177,9 +180,42 @@
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\Audio\Sound Effects\click.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Audio\Sound Effects\enemy dead.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Audio\Sound Effects\Enemy dead2.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Audio\Sound Effects\enemy noise.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Audio\Sound Effects\gravity well.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Audio\Sound Effects\player dead.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Audio\Sound Effects\powerup 2.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Audio\Sound Effects\powerup_gained something.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Audio\Sound Effects\rocket shot.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Audio\Sound Effects\thrust.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Content\Fonts\titleFont.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Content\Audio\Songs\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

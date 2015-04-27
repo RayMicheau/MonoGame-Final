@@ -1,3 +1,0 @@
-Content\TellMe.xnb
-Content\TellMe.wma
-Content\TellMe.mp3

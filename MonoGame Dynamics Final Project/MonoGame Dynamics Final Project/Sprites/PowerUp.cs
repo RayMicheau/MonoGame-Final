@@ -66,6 +66,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
 
         public Texture2D TextureImage { get; set; }
 
+
         public PowerUp(Texture2D textureImg, GraphicsDevice Device,
             PowerUps PowerUp, Player player, Vector2 position, float scale)
         {
@@ -86,12 +87,12 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                 Alive = false;
             }
         }
-        public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        public void Draw(SpriteBatch spriteBatch, GameTime gameTime, float scale)
         {
             float timeLapse = (gameTime.ElapsedGameTime.Milliseconds / 1000f);
             if (Alive)
             {
-                spriteBatch.Draw(TextureImage, Position, null, Color.White, 0.0f, spriteOrigin, 1.0f, SpriteEffects.None, 0);
+                spriteBatch.Draw(TextureImage, Position, null, Color.White, 0.0f, spriteOrigin, scale, SpriteEffects.None, 0);
             }
         }
         public void ActivatePowerUp(PowerUps pwerUp, Player player)
