@@ -353,7 +353,7 @@ namespace MonoGame_Dynamics_Final_Project
                         
                         playerShip.CurrentPrimaryAmmo++;
 
-                        if (Enemywave[i].Health == 0f)
+                        if (Enemywave[i].Health <= 0f)
                         {
                             if (Enemywave[i].enemyType == "stingRay")
                             {
