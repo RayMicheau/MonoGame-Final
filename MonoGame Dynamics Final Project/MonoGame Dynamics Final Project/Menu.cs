@@ -132,8 +132,8 @@ namespace MonoGame_Dynamics_Final_Project
                 {
                     hilight = normal;
                 }
-                spriteBatch.DrawString(spriteFont, menuItems[i], location + new Vector2(100, 130), hilight, 0.0f, Vector2.Zero, 0.25f, SpriteEffects.None, 0.0f);
-                location.Y += spriteFont.LineSpacing + 5;
+                spriteBatch.DrawString(spriteFont, menuItems[i], location + new Vector2(100, 70), hilight, 0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0.0f);
+                location.Y += spriteFont.LineSpacing + 135;
             }
         }
     }

@@ -144,8 +144,8 @@ namespace MonoGame_Dynamics_Final_Project
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-            graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            graphics.PreferredBackBufferWidth = VIRTUAL_RESOLUTION_WIDTH;
+            graphics.PreferredBackBufferHeight = VIRTUAL_RESOLUTION_HEIGHT;
             this.Window.IsBorderless = true;
             graphics.ApplyChanges();
         }
@@ -155,8 +155,8 @@ namespace MonoGame_Dynamics_Final_Project
             //set virtual screen resolution
             _irr = new ResolutionRenderer(this, VIRTUAL_RESOLUTION_WIDTH, VIRTUAL_RESOLUTION_HEIGHT, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
 
-            _camera = new Camera2D(_irr) { MaxZoom = 10f, MinZoom = .4f, Zoom = 1.5f};
-            _camera.SetPosition(new Vector2(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 2, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height/2));
+            _camera = new Camera2D(_irr) { MaxZoom = 10f, MinZoom = .4f, Zoom = 0.8f};
+            _camera.SetPosition(new Vector2(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width-200f, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height));
             _camera.RecalculateTransformationMatrices();
 
             base.Initialize();
@@ -169,6 +169,7 @@ namespace MonoGame_Dynamics_Final_Project
 
 
             string[] menuItems = { "Launch Ship","How to Play", "Exit Cockpit" };
+            string menuTitle = "FINAL CATACLYSM";
 
            // try
             //{
@@ -664,14 +665,18 @@ namespace MonoGame_Dynamics_Final_Project
                 case GameState.StartMenu:
 
                     _irr.Draw();
-                    spriteBatch.BeginCamera(_camera, BlendState.NonPremultiplied);
+                    spriteBatch.BeginCamera(_camera, BlendState.AlphaBlend);
                     
                     //spriteBatch.Begin();
 
                     myBackground.Draw(spriteBatch);
                     myBGtwo.Draw(spriteBatch);
+
+                    //spriteBatch.DrawString(menuFont, "Cataclysm", new Vector2(GraphicsDevice.Viewport.Width / 8, GraphicsDevice.Viewport.Height / 9), customColor);
+                    spriteBatch.DrawString(menuFont, "FINAL CATACLYSM", new Vector2(GraphicsDevice.Viewport.Width / 8, GraphicsDevice.Viewport.Height / 15), customColor, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0.0f);
+
                     spriteBatch.Draw(startMenuScreen, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
-                    spriteBatch.DrawString(menuFont, "Cataclysm", new Vector2(GraphicsDevice.Viewport.Width / 8, GraphicsDevice.Viewport.Height / 9), customColor);
+                    
                     menuScreen.Draw(spriteBatch);
 
                     spriteBatch.End();
