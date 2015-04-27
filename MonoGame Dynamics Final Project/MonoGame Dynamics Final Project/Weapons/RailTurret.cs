@@ -76,14 +76,14 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             position = playerPosition + offset;
         }
 
-        public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        public override void Draw(SpriteBatch spriteBatch, GameTime gameTime, Color color)
         {
             //base.Draw(spriteBatch, gameTime);
 
             spriteBatch.Draw(TextureImage,
                              position,
                              source,
-                             Color.White,
+                             color,
                              angle,
                              spriteOrigin,
                              1f,

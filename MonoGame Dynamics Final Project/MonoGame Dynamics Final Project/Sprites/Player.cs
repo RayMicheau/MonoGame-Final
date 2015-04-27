@@ -188,6 +188,9 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
 
         public bool isMoving;
 
+        public int flashCounter = 0;
+        public Color hurtFlash = Color.White;
+        public bool painSwitch = false;
         //rail
         
         #endregion
@@ -237,7 +240,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         }
         
         // Draws the ship and all projectiles currently in motion
-        public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime, Color color)
         {
             float timeLapse = (gameTime.ElapsedGameTime.Milliseconds/1000f);
             if (Alive)
@@ -245,7 +248,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                 spriteBatch.Draw(TextureImage,
                     Position,
                     source,
-                    Microsoft.Xna.Framework.Color.White,
+                    color,
                     rotation,
                     SpriteOrigin,
                     Scale*2,

@@ -127,7 +127,6 @@ namespace MonoGame_Dynamics_Final_Project
 
         Random randomnumber = new Random();
 
-
         #endregion
 
         public Game1()
@@ -328,13 +327,32 @@ namespace MonoGame_Dynamics_Final_Project
             {
                 for (int i = 0; i < Enemywave.Count; i++)
                 {
+
+                    if (Enemywave[i].painSwitch == true)
+                    {
+                        Enemywave[i].flashCounter++;
+                        Enemywave[i].hurtFlash = new Color(random.Next(0, 255), random.Next(0, 10), random.Next(0, 100));
+                        if (Enemywave[i].flashCounter >= 100)
+                        {
+                            Enemywave[i].flashCounter = 0;
+                            Enemywave[i].painSwitch = false;
+                        }
+                    }
+                    else
+                    {
+                        Enemywave[i].hurtFlash = Color.White;
+                    }
+
                     int collide = Enemywave[i].CollisionShot(playerShip.Primary);
                     if (collide != -1)
                     {
+                        Enemywave[i].painSwitch = true;
+                        Enemywave[i].flashCounter = 0;
                         Enemywave[i].Health -= playerShip.Primary[collide].Damage; 
                         playerShip.Primary.RemoveAt(collide);
                         
                         playerShip.CurrentPrimaryAmmo++;
+
                         if (Enemywave[i].Health == 0f)
                         {
                             if (Enemywave[i].enemyType == "stingRay")
@@ -364,6 +382,7 @@ namespace MonoGame_Dynamics_Final_Project
                         }
                     }
                 }
+
 
                 // tests for collision of secondary shots against enemy
                 for (int i = 0; i < Enemywave.Count; i++)
@@ -669,10 +688,10 @@ namespace MonoGame_Dynamics_Final_Project
                     spriteBatch.Draw(health, healthRect, Color.White);
                     spriteBatch.DrawString(menuFont, "Score:" + score, new Vector2(GraphicsDevice.Viewport.Width / 8, GraphicsDevice.Viewport.Height / 9), Color.White, 0.0f,Vector2.Zero,0.4f,SpriteEffects.None,0.0f);
                     
-                    follower.Draw(spriteBatch, gameTime);
+                    follower.Draw(spriteBatch, gameTime, Color.White);
                     foreach (Enemy enemy in Enemywave)
                     {
-                        enemy.Draw(spriteBatch, gameTime);
+                        enemy.Draw(spriteBatch, gameTime, enemy.hurtFlash);
                     }
                     foreach (PowerUp pUp in powerUpList)
                     {
@@ -688,8 +707,8 @@ namespace MonoGame_Dynamics_Final_Project
                     Thruster2.Draw(spriteBatch);
                     foreach (ParticleEngine particle in StingrayParticles) { particle.Draw(spriteBatch); }
               
-                    railLeft.Draw(spriteBatch, gameTime);
-                    railRight.Draw(spriteBatch, gameTime);
+                    railLeft.Draw(spriteBatch, gameTime, Color.White);
+                    railRight.Draw(spriteBatch, gameTime, Color.White);
 
                     //Draw Explosion
                     for(int i = 0; i < DestructionParticles.Count; i++)
@@ -704,7 +723,7 @@ namespace MonoGame_Dynamics_Final_Project
                         }
                     }
 
-                    playerShip.Draw(spriteBatch, gameTime);
+                    playerShip.Draw(spriteBatch, gameTime, Color.White);
                     spriteBatch.End();
                  //   base.Draw(gameTime);
                     break;
