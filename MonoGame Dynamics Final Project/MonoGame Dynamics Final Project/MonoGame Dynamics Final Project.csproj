@@ -36,9 +36,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="animateSprite.cs" />
+    <Compile Include="Camera2d.cs" />
+    <Compile Include="ExtentionsCamera.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="Particle.cs" />
     <Compile Include="ParticleEngine.cs" />
+    <Compile Include="ResolutionRenderer.cs" />
     <Compile Include="Sprites\Enemy.cs" />
     <Compile Include="Sprites\Follower.cs" />
     <Compile Include="Game1.cs" />

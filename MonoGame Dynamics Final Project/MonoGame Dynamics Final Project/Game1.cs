@@ -48,6 +48,13 @@ namespace MonoGame_Dynamics_Final_Project
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        //Independent Resolution and Camera
+        private ResolutionRenderer _irr;
+        private const int VIRTUAL_RESOLUTION_WIDTH = 2160;
+        private const int VIRTUAL_RESOLUTION_HEIGHT = 1440;
+        private Camera2D _camera;
+
+
         GameState gameState = GameState.StartMenu;
         Wave wave = Wave.Null;
         Level level = Level.Null;
@@ -145,6 +152,13 @@ namespace MonoGame_Dynamics_Final_Project
 
         protected override void Initialize()
         {
+            //set virtual screen resolution
+            _irr = new ResolutionRenderer(this, VIRTUAL_RESOLUTION_WIDTH, VIRTUAL_RESOLUTION_HEIGHT, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
+
+            _camera = new Camera2D(_irr) { MaxZoom = 10f, MinZoom = .4f, Zoom = 1f };
+            _camera.SetPosition(new Vector2(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 2, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height/2));
+            _camera.RecalculateTransformationMatrices();
+
             base.Initialize();
         }
 
@@ -152,6 +166,7 @@ namespace MonoGame_Dynamics_Final_Project
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
 
             string[] menuItems = { "Launch Ship","How to Play", "Exit Cockpit" };
 
@@ -271,9 +286,10 @@ namespace MonoGame_Dynamics_Final_Project
             myBackground.Update(gameTime, elapsed * 100);
             myBGtwo.Update(gameTime, elapsed * 100);
             UpdateInput(gameTime); 
+
+            //If Game is Running
             if (gameState == GameState.Play)
             {
-
                 healthRect = new Rectangle(100, GraphicsDevice.Viewport.Height - 50, (int)playerShip.Health / 5, health.Height);
 
                 // updating scroll speed
@@ -489,7 +505,9 @@ namespace MonoGame_Dynamics_Final_Project
                     }
                 }
 
+                _camera.Update(gameTime);
                 base.Update(gameTime);
+                
             }
         }
         //public void ResetGame
@@ -702,23 +720,39 @@ namespace MonoGame_Dynamics_Final_Project
             switch (gameState)
             {
                 case GameState.SplashScreen:
-
+                    
                     break;
 
                 case GameState.StartMenu:
-                    spriteBatch.Begin();
+
+                    _irr.Draw();
+                    spriteBatch.BeginCamera(_camera, BlendState.NonPremultiplied);
+                    
+                    //spriteBatch.Begin();
+
                     myBackground.Draw(spriteBatch);
                     myBGtwo.Draw(spriteBatch);
                     spriteBatch.Draw(startMenuScreen, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
                     spriteBatch.DrawString(menuFont, "Cataclysm", new Vector2(GraphicsDevice.Viewport.Width / 8, GraphicsDevice.Viewport.Height / 9), customColor);
                     menuScreen.Draw(spriteBatch);
+
                     spriteBatch.End();
+                    
+                    _irr.SetupVirtualScreenViewport();
+
                     break;
 
                 case GameState.Play:
                     GraphicsDevice.Clear(Color.Black);
-                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
+                    
+                    _irr.Draw();
+
+                    spriteBatch.BeginCamera(_camera, BlendState.NonPremultiplied);
+                    
+                    //spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
                     myBackground.Draw(spriteBatch);
+
+
                     spriteBatch.Draw(health, healthRect, Color.White);
                     spriteBatch.DrawString(menuFont, "Score:" + (Math.Round(timer,2) * score), new Vector2(0.0f, 50.0f), Color.White, 0.0f,Vector2.Zero,0.25f,SpriteEffects.None,0.0f);
                     spriteBatch.DrawString(menuFont, "Primary:" + playerShip.PrimaryType, new Vector2(100.0f, GraphicsDevice.Viewport.Height - 25.0f), Color.White, 0.0f, Vector2.Zero, 0.15f, SpriteEffects.None, 0.0f);
@@ -760,24 +794,33 @@ namespace MonoGame_Dynamics_Final_Project
                             DestructionParticles.RemoveAt(i);
                         }
                     }
-
                     
-                    spriteBatch.End();
+                    spriteBatch.End(); 
+                    _irr.SetupVirtualScreenViewport();
                  //   base.Draw(gameTime);
                     break;
+
                 case GameState.GameOver:
                     GraphicsDevice.Clear(Color.Black);
-                    spriteBatch.Begin();
+                    _irr.Draw();
+                    spriteBatch.BeginCamera(_camera, BlendState.NonPremultiplied);
+                    //spriteBatch.Begin();
                     drawRect(new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.Black);
                     spriteBatch.DrawString(menuFont, "Game Over\n", new Vector2(GraphicsDevice.Viewport.Width / 4, 100.0f), customColor,0f,Vector2.Zero,0.5f,SpriteEffects.None,0f);
                     spriteBatch.DrawString(menuFont, "You Scored:" + (Math.Round(timer, 2) * score), new Vector2(GraphicsDevice.Viewport.Width / 6, 200.0f), customColor, 0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
+                    
                     spriteBatch.End();
+                    _irr.SetupVirtualScreenViewport();
+                    
                     break;
+
                 case GameState.Exit:
 
                     break;
             }
 
+            
+            //spriteBatch.End();
         }
 
         // Load the enemy level/waves here

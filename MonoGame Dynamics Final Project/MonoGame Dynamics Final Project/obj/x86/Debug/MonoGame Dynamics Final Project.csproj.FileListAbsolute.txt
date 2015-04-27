@@ -505,7 +505,6 @@ C:\Users\Kai\Desktop\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dyn
 C:\Users\Kai\Desktop\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\void-vulture-expel.png
 C:\Users\Kai\Desktop\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\voidVulture.png
 C:\Users\Kai\Desktop\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\voidVultureImpale.png
-C:\Users\Kai\Desktop\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\yellowstar.png
 C:\Users\Kai\Desktop\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Backgrounds\background-level-1.png
 C:\Users\Kai\Desktop\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Backgrounds\Menu.png
 C:\Users\Kai\Desktop\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Backgrounds\universe01.png
@@ -586,3 +585,5 @@ C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Fin
 C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\PowerUps\MoveSpdUp.png
 C:\Users\hau5t_000\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\Sting-Ray-2.png
 C:\Users\hau5t_000\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\gravityWell.png
+C:\Users\Kai\Desktop\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\gravityWell.png
+C:\Users\Kai\Desktop\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\Sting-Ray-2.png
