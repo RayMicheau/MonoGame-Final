@@ -19,17 +19,20 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
         protected float shotTime, shotSpeed;
         protected int shotFrameWidth, shotFrameHeight, shotFrames;
         protected Rectangle shotRectangle;
-        protected float scale; 
-        public EnemyWeapon(Texture2D shotTexture, Vector2 startPosition, float velocity)
-            :base(shotTexture, startPosition, velocity, 1)
+        protected float scale;
+        public float velocitySpeed;
+        protected Vector2 directionShot;
+        Texture2D shotTexture;
+        public EnemyWeapon(Texture2D ShotTexture, Vector2 startPosition, float velocity)
+            :base(ShotTexture, startPosition, velocity, 1)
         {
-
+            shotTexture = shotTexture;
         }
         public override void Update(GameTime gameTime, Sprites.Player player)
         {
             base.Update(gameTime, player);
             float time = gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
-            shotRectangle = animatedSprite(shotFrames, shotSpeed, shotFrameWidth, shotFrameHeight, TextureImage, time);
+            shotRectangle = animatedSprite(shotFrames, shotSpeed, shotFrameWidth, shotFrameHeight, shotTexture, time);
             
             
         }
@@ -41,10 +44,6 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
                 shotX = 0;
             }
             // Calculate the source rectangle of the current frame.
-            if (shotFrameIndex == (image.Width / frameWidth) + 1)
-            {
-                shotX = 0;
-            }
 
             Rectangle source = new Rectangle(shotX * frameWidth, 0, frameWidth, frameHeight);
 

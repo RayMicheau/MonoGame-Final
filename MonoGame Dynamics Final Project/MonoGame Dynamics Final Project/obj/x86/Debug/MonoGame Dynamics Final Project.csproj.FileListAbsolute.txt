@@ -559,3 +559,29 @@ C:\Users\Kai\Desktop\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dyn
 C:\Users\Kai\Desktop\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\obj\x86\Debug\MonoGame Dynamics Final Project.exe
 C:\Users\Kai\Desktop\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\obj\x86\Debug\MonoGame Dynamics Final Project.pdb
 C:\Users\Kai\Desktop\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\obj\x86\Debug\MonoGame Dynamics Final Project.csprojResolveAssemblyReference.cache
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\Plasma-Repeater-Shot.png
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\Plasma-Repeater.png
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\Sting-Ray-2.png
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\Sting-Ray-shot.png
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\Void-Angel-Attack.png
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\Void-angel-shot.png
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\Void-Angel.png
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\void-vulture-expel.png
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\voidVulture.png
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\voidVultureImpale.png
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Particles\meow.png
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Particles\meow1.png
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Particles\meow2.png
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Particles\meow3.png
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Particles\meow4.png
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Particles\poofparticle.png
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Particles\smokepoof.png
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Particles\starpoof1.png
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Particles\starpoof2.png
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\playerhealth.png
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\PowerUps\AtkSpdDown.png
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\PowerUps\AtkSpdUp.png
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\PowerUps\HPDown.png
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\PowerUps\HPUp.png
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\PowerUps\MoveSpdDown.png
+C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\PowerUps\MoveSpdUp.png

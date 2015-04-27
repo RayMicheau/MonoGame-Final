@@ -109,7 +109,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
             Damage = damage;
             spriteOrigin = new Vector2(textureImage.Width / 2, textureImage.Height / 2);
         }
-
+        // player shooting
         public virtual void Update(GameTime gameTime)
         {
             //Time between the frames
@@ -123,10 +123,19 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
                 offScreen = true;
             }
         }
-
+        // enemy shooting
         public virtual void Update(GameTime gameTime, Player player)
         {
+            //Time between the frames
+            float timeLapse = (float)(gameTime.ElapsedGameTime.TotalSeconds);
 
+            //Move the sprite
+            position += velocity * timeLapse * 10f;
+
+            if (position.Y + TextureImage.Height < 0)
+            {
+                offScreen = true;
+            }
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)

@@ -303,6 +303,11 @@ namespace MonoGame_Dynamics_Final_Project
                         //Stingray Particles
 
                         if (EnemyParticleCounter < StingrayParticles.Count)
+                        enemy.Update(Content, gameTime, playerShip);
+                    
+                    //Stingray Particles
+                    
+                    if (EnemyParticleCounter < StingrayParticles.Count)
                         {
                             StingrayParticles[EnemyParticleCounter].EmitterLocation = enemy.Position + new Vector2(Convert.ToSingle(Math.Cos(enemy.rotation) * enemy.frameWidth / 4), Convert.ToSingle(Math.Sin(enemy.rotation) * enemy.frameWidth / 4));
                             StingrayParticles[EnemyParticleCounter].Update(enemy.Alive, enemy.Velocity, 9f, Color.Plum, 1);
