@@ -274,7 +274,7 @@ namespace MonoGame_Dynamics_Final_Project
             if (gameState == GameState.Play)
             {
 
-                healthRect = new Rectangle(100, GraphicsDevice.Viewport.Height - 50, (int)playerShip.Health, health.Height);
+                healthRect = new Rectangle(100, GraphicsDevice.Viewport.Height - 50, (int)playerShip.Health / 5, health.Height);
 
                 // updating scroll speed
                
@@ -440,6 +440,7 @@ namespace MonoGame_Dynamics_Final_Project
                     {
                         //if (playerShip.IntersectsPixel(playerShip.source, playerShip.textureData, Enemywave[i].source, Enemywave[i].textureData))
                         //{
+                       
                         playerShip.collisionDetected = true;
                         if (playerShip.collisionDetected == true)
                         {
@@ -451,7 +452,6 @@ namespace MonoGame_Dynamics_Final_Project
                                 gameState = GameState.GameOver;
                                 playerShip.Alive = false;
                                 follower.Alive = false;
-                                playGame = false;
                             }
                         }
 
@@ -512,19 +512,17 @@ namespace MonoGame_Dynamics_Final_Project
                 }
                 else if (menuScreen.ItemSelected == 1)
                 {
-                    playGame = true;
                     gameState = GameState.Play;
                 }
             }
             if (gameState == GameState.GameOver)
             {
-                playGame = false;
                 if (keyState.IsKeyDown(Keys.Enter))
                 {
                     gameState = GameState.StartMenu;
                 }
             }
-            if (gameState == GameState.Play && playGame == true)
+            if (gameState == GameState.Play)
             {
                 if (keyState.IsKeyDown(Keys.Up)
                || keyState.IsKeyDown(Keys.W)
@@ -722,13 +720,14 @@ namespace MonoGame_Dynamics_Final_Project
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
                     myBackground.Draw(spriteBatch);
                     spriteBatch.Draw(health, healthRect, Color.White);
-                    spriteBatch.DrawString(menuFont, "Score:" + (Math.Round(timer,2) * score), new Vector2(GraphicsDevice.Viewport.Width / 8, GraphicsDevice.Viewport.Height / 9), Color.White, 0.0f,Vector2.Zero,0.4f,SpriteEffects.None,0.0f);
-                    
+                    spriteBatch.DrawString(menuFont, "Score:" + (Math.Round(timer,2) * score), new Vector2(0.0f, 50.0f), Color.White, 0.0f,Vector2.Zero,0.25f,SpriteEffects.None,0.0f);
+                    spriteBatch.DrawString(menuFont, "Primary:" + playerShip.PrimaryType, new Vector2(100.0f, GraphicsDevice.Viewport.Height - 25.0f), Color.White, 0.0f, Vector2.Zero, 0.15f, SpriteEffects.None, 0.0f);
+                    spriteBatch.DrawString(menuFont, "Secondary:" + playerShip.SecondaryType, new Vector2(GraphicsDevice.Viewport.Width - 550.0f, GraphicsDevice.Viewport.Height - 25.0f), Color.White, 0.0f,Vector2.Zero,0.15f,SpriteEffects.None,0.0f);
                     railLeft.Draw(spriteBatch, gameTime, Color.White);
                     railRight.Draw(spriteBatch, gameTime, Color.White);
                     playerShip.Draw(spriteBatch, gameTime, Color.White);
 
-                    follower.Draw(spriteBatch, gameTime, Color.White);
+                    //follower.Draw(spriteBatch, gameTime, Color.White);
                     foreach (Enemy enemy in Enemywave)
                     {
                         enemy.Draw(spriteBatch, gameTime, enemy.hurtFlash);
@@ -770,8 +769,8 @@ namespace MonoGame_Dynamics_Final_Project
                     GraphicsDevice.Clear(Color.Black);
                     spriteBatch.Begin();
                     drawRect(new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.Black);
-                    spriteBatch.DrawString(menuFont, "Game Over\n", new Vector2(GraphicsDevice.Viewport.Width / 4, 100), customColor,0f,Vector2.Zero,0.5f,SpriteEffects.None,0f);
-                    spriteBatch.DrawString(menuFont, "You Scored:" + (Math.Round(timer, 2) * score), new Vector2(GraphicsDevice.Viewport.Width / 6, 200), customColor, 0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
+                    spriteBatch.DrawString(menuFont, "Game Over\n", new Vector2(GraphicsDevice.Viewport.Width / 4, 100.0f), customColor,0f,Vector2.Zero,0.5f,SpriteEffects.None,0f);
+                    spriteBatch.DrawString(menuFont, "You Scored:" + (Math.Round(timer, 2) * score), new Vector2(GraphicsDevice.Viewport.Width / 6, 200.0f), customColor, 0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
                     spriteBatch.End();
                     break;
                 case GameState.Exit:

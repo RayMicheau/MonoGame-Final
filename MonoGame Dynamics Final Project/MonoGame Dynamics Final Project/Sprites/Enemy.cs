@@ -55,7 +55,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             float timeLapse = (float)(gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
             source = animatedSprite(frameNum, frameTime, frameWidth, frameHeight, TextureImage, timeLapse);
             distanceBetween = ((player.Position + player.SpriteOrigin) - (position + spriteOrigin));
-            if (distanceBetween.Length() > 75.0f)
+            if (distanceBetween.Length() > 40.0f)
             {
                 distanceBetween.Normalize();
                 rotation = (float)Math.Atan2(distanceBetween.Y, distanceBetween.X) - MathHelper.PiOver2;
