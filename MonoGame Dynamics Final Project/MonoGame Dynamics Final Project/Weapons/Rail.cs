@@ -32,7 +32,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
             shotRectangle = new Rectangle(0, 0, shotFrameWidth, shotFrameHeight);
             shotFrames = 4;
             angle = 0;
-
+            damage = 500;
             if(orientation == -1)
             {
                 spriteEffect = SpriteEffects.FlipHorizontally;
@@ -41,10 +41,10 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
             {
                 spriteEffect = SpriteEffects.None;
             }
-            scale = 1f;
+            scale = 2f;
         }
 
-        public override void Update(GameTime gameTime, Player player)
+        public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
             float elapsedTime = gameTime.ElapsedGameTime.Milliseconds / 1000.0f;          

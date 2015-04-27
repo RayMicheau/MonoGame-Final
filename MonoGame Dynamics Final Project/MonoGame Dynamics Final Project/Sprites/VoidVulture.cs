@@ -34,6 +34,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             velocity = new Vector2(0, 10);
             enemyType = "voidVulture";
             Content = content;
+            damage = 20;
         }
        
         public override void Update(GameTime gameTime, Player player)
@@ -44,7 +45,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             {
                 case VultureState.Expel:
                     TextureImage = Content.Load<Texture2D>("Images/Animations/void-vulture-expel");
-                    ChasePlayer(gameTime, player.Position);
+                    ChasePlayer(gameTime, player);
                     frameHeight = 300;
                     frameWidth = 300;
                     break;

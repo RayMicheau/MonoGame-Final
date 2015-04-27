@@ -51,17 +51,17 @@ namespace MonoGame_Dynamics_Final_Project
              */
         }
 
-        public void Play(string soundName)
+        public void Play(string songName)
         {
             //will fail silently, and play nothing
-            if (soundName == "" || soundName == null)
+            if (songName == "" || songName == null)
                 return;
 
-            if(soundName == menuSong.Name)
+            if(songName == menuSong.Name)
             {
                 MediaPlayer.Play(menuSong);
             }
-            else if (soundName == gameplaySong.Name)
+            else if (songName == gameplaySong.Name)
             {
                 MediaPlayer.Play(gameplaySong);
             }

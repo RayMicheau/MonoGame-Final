@@ -188,11 +188,27 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
 
         public bool isMoving;
 
+        public int flashCounter = 0;
+        public Color hurtFlash = Color.White;
+        public bool painSwitch = false;
+        protected RailTurret railLeft, railRight;
+        public RailTurret RailLeft
+        {
+            get { return railLeft; }
+            set { railLeft = value; }
+        }
+
+        public RailTurret RailRight
+        {
+            get { return railRight; }
+            set { railRight = value; }
+        }
+        protected Texture2D railTurretImage;
         //rail
         
         #endregion
 
-        public Player(int FrameWidth, int FrameHeight, Texture2D textureImage, Vector2 position, Vector2 velocity, bool setOrig, float scale, float damage, float health)
+        public Player(int FrameWidth, int FrameHeight, Texture2D textureImage, Vector2 position, Vector2 velocity, bool setOrig, float scale, float health)
         {
             frameWidth = FrameWidth;
             frameHeight = FrameHeight;
@@ -201,6 +217,8 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             frameTime = 0.2f;
             textureData = new Color[source.Width * source.Height];
             //textureImage.GetData<Color>(0, source, textureData, 0, source.Width * source.Height);
+
+            
 
             Position = position;
             TextureImage = textureImage;
@@ -226,54 +244,65 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             // Set Primary Weapons
             
             // Set Secondary Weapons
-            //setWeapon("gravityWell", 1);
-            setWeapon("helixMissile", 2);
+            setWeapon("gravityWell", 1);
+            //setWeapon("helixMissile", 2);
             //setWeapon("homingMissile", 2);
             //setWeapon("laser", 5);
             setWeapon("rail", 4);
             hasShot = false;
             hasShotPrim = false;
             forcePull = false;
-            health = 100;
+        }
+
+        public Player(int FrameWidth, int FrameHeight, Texture2D textureImage, Texture2D turretImage, Vector2 position, Vector2 velocity, bool setOrig, float scale, float health)
+            : this(FrameWidth, FrameHeight, textureImage, position, velocity, setOrig, scale, health)
+        {
+            railTurretImage = turretImage;
+            railLeft = new RailTurret(railTurretImage, position, velocity, 1);
+            railRight = new RailTurret(railTurretImage, position, velocity, -1);
         }
         
         // Draws the ship and all projectiles currently in motion
-        public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime, Color color)
         {
             float timeLapse = (gameTime.ElapsedGameTime.Milliseconds/1000f);
             if (Alive)
             {
+                foreach (Weapon shot in secondary)
+                {
+                    shot.Draw(spriteBatch);
+                }
+
+                if (railLeft != null && railRight != null)
+                {
+                    foreach (Weapon shot in railLeft.primary)
+                    {
+                        shot.Draw(spriteBatch);
+                    }
+                    foreach(Weapon shot in railRight.primary)
+                    {
+                        shot.Draw(spriteBatch);
+                    }
+
+                    railLeft.Draw(spriteBatch, gameTime, Color.White);
+                    railRight.Draw(spriteBatch, gameTime, Color.White);
+                }
+
                 spriteBatch.Draw(TextureImage,
                     Position,
                     source,
-                    Microsoft.Xna.Framework.Color.White,
+                    color,
                     rotation,
                     SpriteOrigin,
                     Scale*2,
                     Spriteeffect,
                     0.0f);
-
-                foreach (Weapon shot in primary)
-                {
-                    shot.Draw(spriteBatch);
-                }
-                foreach (Weapon shot in secondary)
-                {
-                    shot.Draw(spriteBatch);
-                }
             }
         }
 
         #region Update Methods
-        // Main update method
-        public virtual void Update(GameTime gameTime, Player player)
-        {
 
-            float timeLapse = (float)(gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
-            position += Velocity * timeLapse;
-            source = animatedSprite(frameNum, frameTime, frameWidth, frameHeight, TextureImage, timeLapse);
-         //   TextureImage.GetData<Color>(0, source, textureData, 0, source.Width * source.Height);
-        }
+    
         public virtual void Update(GameTime gameTime, List<Enemy> enemyWave)
         {
             if (Alive)
@@ -284,11 +313,15 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                 source = animatedSprite(frameNum, frameTime, frameWidth, frameHeight, TextureImage, timeLapse);
             //    TextureImage.GetData<Color>(0, source, textureData, 0, source.Width * source.Height);
 
-                UpdateWeapon(primary, gameTime, enemyWave);
+                //update weapons
+                railRight.UpdateWeapon(railRight.primary, gameTime, enemyWave);
+                railLeft.UpdateWeapon(railLeft.primary, gameTime, enemyWave);
                 UpdateWeapon(secondary, gameTime, enemyWave);
 
                 //Move the sprite
                 position += Velocity * timeLapse;
+                railLeft.Update(gameTime, position);
+                railRight.Update(gameTime, position);
             }
         }
 
@@ -394,8 +427,8 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                 }
             }
         }
-
-        public virtual void Update(GameTime gameTime, Vector2 playerPosition)
+        // turret update
+        public virtual void Update(GameTime gameTime, Vector2 playerPos)
         {
 
         }
@@ -624,9 +657,20 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
 
         public void shootRail(ContentManager content)
         {
-            Rail rail1 = new Rail(content, new Vector2(position.X, position.Y), 500f, 1);
-            primary.Add(rail1);
-            currentPrimaryAmmo--;
+        //    Vector2 offset = new Vector2(15, -35); // change in railturret as well!
+        //    Vector2 shotPos = position; 
+        //    Rail rail = new Rail(content, shotPos, 500f, 1);
+        //    //primary.Add(rail);
+
+        //    offset.X += offset.X;
+        //    shotPos = position - (offset);
+        //    rail = new Rail(content, shotPos, 500f, 1);
+        //    primary.Add(rail);
+        //    currentPrimaryAmmo--;
+            Rail rail = new Rail(content, railLeft.position, 500f, 1);
+            railLeft.primary.Add(rail);
+            rail = new Rail(content, railRight.position, 500f, -1);
+            railRight.primary.Add(rail);
         }
         #endregion
 

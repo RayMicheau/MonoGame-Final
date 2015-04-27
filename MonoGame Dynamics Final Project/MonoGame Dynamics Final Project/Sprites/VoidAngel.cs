@@ -23,6 +23,12 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
        ContentManager Content; 
         public AngelState angelState;
         protected Vector2 distanceBetween;
+        protected float elapsedTime;
+        public float ElapsedTime
+        {
+            get { return elapsedTime; }
+            set { elapsedTime = value; }
+        }
         public VoidAngel(ContentManager content, GraphicsDevice Device, int spotinFormation, string formationType) :
             base(content,100, 100, content.Load<Texture2D>("Images/Animations/Void-Angel"), Device, spotinFormation, formationType, 0.5f, 100f, 500f)
         {
@@ -32,12 +38,16 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             enemyType = "voidAngel";
             angelState = AngelState.Idle;
             velocity = new Vector2(0.0f, 20.0f);
-            collisionRange = new BoundingSphere(new Vector3(position.X + spriteOrigin.X, position.Y + spriteOrigin.Y, 0), 300f); 
+            collisionRange = new BoundingSphere(new Vector3(position.X + spriteOrigin.X, position.Y + spriteOrigin.Y, 0), 300f);
+            //EnemyShot = Content.Load<Texture2D>("Images/Animations/Void-angel-shot");
 
         }
         public override void Update(GameTime gameTime, Player player)
         {
+            elapsedTime += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+            Console.WriteLine("angel shot:" + elapsedTime);
             collisionRange = new BoundingSphere(new Vector3(position.X + spriteOrigin.X, position.Y + spriteOrigin.Y, 0), 300f);
+
             setAngel(player);
             switch (angelState)
             {
@@ -46,7 +56,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                     TextureImage = Content.Load<Texture2D>("Images/Animations/Void-Angel");
                     break;
                 case AngelState.Chase:
-                    ChasePlayer(gameTime, player.Position);
+                    ChasePlayer(gameTime, player);
                     break;
                 case AngelState.Attack:
                     base.Update(gameTime, player);
@@ -54,6 +64,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                     break;
             }
         }
+
         public void setAngel(Player player)
         {
             distanceBetween = player.Position - position;
@@ -65,6 +76,17 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             else
             {
                 angelState = AngelState.Idle;
+            }
+            if (elapsedTime > 5.0f)
+            {
+                angelState = AngelState.Attack;
+                frameNum = 14;
+                velocity = Vector2.Zero;
+                if (frameIndex == 13)
+                {
+
+                }
+                
             }
         }
              

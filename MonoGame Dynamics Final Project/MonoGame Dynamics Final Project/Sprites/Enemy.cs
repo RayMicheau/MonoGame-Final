@@ -27,37 +27,72 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             get { return mass; }
             set { mass = value; }
         }
-
+        public float VectorSpeed;
         protected float tileWidth;
         protected float tileHeight;
         protected float windowHeight;
         public string enemyType;
 
         protected Vector2 distanceBetween;
-
+        public Texture2D EnemyShot;
         public Enemy(ContentManager content, int width, int height, Texture2D textureImage, GraphicsDevice Device, int spotinFormation, string formationType, float scale, float damage, float health)
-            : base(width, height, textureImage, new Vector2(0, -100), new Vector2(0, 0), true, scale, damage, health)
+            : base(width, height, textureImage, new Vector2(0, -100), new Vector2(0, 10f), true, scale, health)
         {
             mass = 5f;
-
+            AtkSpeed = 1f;
             tileWidth = Device.Adapter.CurrentDisplayMode.Width / 7f;
             tileHeight = Device.Adapter.CurrentDisplayMode.Height / 5f;
             windowHeight = Device.Adapter.CurrentDisplayMode.Height;
-
             setEnemy(spotinFormation, formationType);
+            VectorSpeed = 1.0f;
+            rotation = 0.0f;
+            
+            
         }
 
-        public void ChasePlayer(GameTime gameTime, Vector2 playerPos)
+        public void ChasePlayer(GameTime gameTime, Player player)
         {
             float timeLapse = (float)(gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
             source = animatedSprite(frameNum, frameTime, frameWidth, frameHeight, TextureImage, timeLapse);
-            distanceBetween = playerPos - position;
-            distanceBetween.Normalize();
-            rotation = (float)Math.Atan2(distanceBetween.Y, distanceBetween.X) - MathHelper.PiOver2;
-            position += distanceBetween * 1.0f; // set speed here
+            distanceBetween = ((player.Position + player.SpriteOrigin) - (position + spriteOrigin));
+            if (distanceBetween.Length() > 40.0f)
+            {
+                distanceBetween.Normalize();
+                rotation = (float)Math.Atan2(distanceBetween.Y, distanceBetween.X) - MathHelper.PiOver2;
+                position += distanceBetween * VectorSpeed; // set speed here
+            }
+            
         }
 
-        // This method sets the enemy position depending on it's spot in the formation            
+        public Vector2 getDirectionVector()
+        {
+            if (distanceBetween != null)
+            {
+                return distanceBetween;
+            }
+            return new Vector2(0, 100);
+        }
+
+       
+        public virtual void UpdateWeapon(GameTime gameTime, Player player, Vector2 directionShot, ContentManager content)
+        {
+            directionShot = velocity;
+            
+           
+        }
+
+        public virtual void Update(ContentManager content, GameTime gameTime, Player player) { }
+        public virtual void Update(GameTime gameTime, Player player)
+        {
+
+            float timeLapse = (float)(gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
+            position += Velocity * timeLapse;
+            source = animatedSprite(frameNum, frameTime, frameWidth, frameHeight, TextureImage, timeLapse);
+
+            //   TextureImage.GetData<Color>(0, source, textureData, 0, source.Width * source.Height);
+        }
+       
+        // This method sets the enemy position depending on it's spot in the formation 
         private void setEnemy(int spotinFormation, string formationType)
         {        
             switch(formationType)
