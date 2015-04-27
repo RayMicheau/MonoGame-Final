@@ -51,8 +51,8 @@ namespace MonoGame_Dynamics_Final_Project
 
         //Independent Resolution and Camera
         private ResolutionRenderer _irr;
-        private const int VIRTUAL_RESOLUTION_WIDTH = 2160;
-        private const int VIRTUAL_RESOLUTION_HEIGHT = 1440;
+        private const int VIRTUAL_RESOLUTION_WIDTH = 1920;
+        private const int VIRTUAL_RESOLUTION_HEIGHT = 1080;
         private Camera2D _camera;
 
 
@@ -146,8 +146,8 @@ namespace MonoGame_Dynamics_Final_Project
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            graphics.PreferredBackBufferWidth = VIRTUAL_RESOLUTION_WIDTH;
-            graphics.PreferredBackBufferHeight = VIRTUAL_RESOLUTION_HEIGHT;
+            graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
             this.Window.IsBorderless = true;
             graphics.ApplyChanges();
         }
@@ -157,8 +157,10 @@ namespace MonoGame_Dynamics_Final_Project
             //set virtual screen resolution
             _irr = new ResolutionRenderer(this, VIRTUAL_RESOLUTION_WIDTH, VIRTUAL_RESOLUTION_HEIGHT, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
 
-            _camera = new Camera2D(_irr) { MaxZoom = 10f, MinZoom = .4f, Zoom = 0.8f};
-            _camera.SetPosition(new Vector2(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width-200f, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height));
+            _camera = new Camera2D(_irr) { MaxZoom = 10f, MinZoom = .4f, Zoom = 1.4f};
+            //_camera.CenterOnTarget(new Rectangle(0,0, GraphicsDevice.Viewport.Width,GraphicsDevice.Viewport.Height));
+            _camera.SetPosition(new Vector2(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width/2, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height/2));
+            //_camera.SetPosition(Vector2.Zero);
             _camera.RecalculateTransformationMatrices();
 
             base.Initialize();
@@ -701,7 +703,7 @@ namespace MonoGame_Dynamics_Final_Project
                     myBGtwo.Draw(spriteBatch);
 
                     //spriteBatch.DrawString(menuFont, "Cataclysm", new Vector2(GraphicsDevice.Viewport.Width / 8, GraphicsDevice.Viewport.Height / 9), customColor);
-                    spriteBatch.DrawString(menuFont, "FINAL CATACLYSM", new Vector2(GraphicsDevice.Viewport.Width / 8, GraphicsDevice.Viewport.Height / 15), customColor, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0.0f);
+                    spriteBatch.DrawString(menuFont, "FINAL CATACLYSM", new Vector2(GraphicsDevice.Viewport.Width / 8, GraphicsDevice.Viewport.Height / 15), customColor, 0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0.0f);
 
                     spriteBatch.Draw(startMenuScreen, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
                     
