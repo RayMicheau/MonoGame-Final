@@ -187,7 +187,6 @@ C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Fin
 C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\obj\x86\Debug\MonoGame Dynamics Final Project.csprojResolveAssemblyReference.cache
 C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\yellowstar.png
 C:\Users\Hau5\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\yellowstar.png
-C:\Users\hau5t_000\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\yellowstar.png
 C:\Users\hau5t_000\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\rocket.png
 C:\Users\Hau5\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\rocket.png
 C:\Users\hau5t_000\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\MonoGame.Framework.xml
@@ -585,3 +584,5 @@ C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Fin
 C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\PowerUps\HPUp.png
 C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\PowerUps\MoveSpdDown.png
 C:\projects\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\PowerUps\MoveSpdUp.png
+C:\Users\hau5t_000\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\Sting-Ray-2.png
+C:\Users\hau5t_000\Documents\GitHub\MonoGame-Final\MonoGame Dynamics Final Project\MonoGame Dynamics Final Project\bin\Windows\Debug\Content\Images\Animations\gravityWell.png

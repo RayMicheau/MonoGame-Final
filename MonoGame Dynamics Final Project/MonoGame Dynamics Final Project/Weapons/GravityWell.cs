@@ -35,11 +35,12 @@ namespace MonoGame_Dynamics_Final_Project
         protected Vector2 difference;
 
         public GravityWell(ContentManager content, Vector2 startPosition, float velocity) 
-            :base(content.Load<Texture2D>("Images/Animations/yellowstar"), startPosition, velocity, 2)
+            :base(content.Load<Texture2D>("Images/Animations/GravityWell"), startPosition, velocity, 2)
         {
             gravityForce = Vector2.Zero;
             mass = 5.0f;
             angle = 0f;
+            scale = 0.75f;
         }
 
         public override void forcePull(GameTime gameTime, List<Enemy> enemies)

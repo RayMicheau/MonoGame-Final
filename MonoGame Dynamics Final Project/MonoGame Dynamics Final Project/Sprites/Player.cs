@@ -245,6 +245,15 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             float timeLapse = (gameTime.ElapsedGameTime.Milliseconds/1000f);
             if (Alive)
             {
+                foreach (Weapon shot in primary)
+                {
+                    shot.Draw(spriteBatch);
+                }
+                foreach (Weapon shot in secondary)
+                {
+                    shot.Draw(spriteBatch);
+                }
+
                 spriteBatch.Draw(TextureImage,
                     Position,
                     source,
@@ -254,15 +263,6 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                     Scale*2,
                     Spriteeffect,
                     0.0f);
-
-                foreach (Weapon shot in primary)
-                {
-                    shot.Draw(spriteBatch);
-                }
-                foreach (Weapon shot in secondary)
-                {
-                    shot.Draw(spriteBatch);
-                }
             }
         }
 

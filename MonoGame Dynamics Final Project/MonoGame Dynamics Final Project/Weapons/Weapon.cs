@@ -52,6 +52,13 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
             set { angle = value; }
         }
 
+        protected float scale;
+        public float Scale
+        {
+            get { return scale; }
+            set { scale = value; }
+        }
+
         // pixel collision
         public Color[] textureData;
         public bool offScreen;
@@ -146,7 +153,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
                 Microsoft.Xna.Framework.Color.White,
                 angle,
                 SpriteOrigin,
-                1f, // scale
+                scale, // scale
                 SpriteEffects.None,
                 1f);
         }

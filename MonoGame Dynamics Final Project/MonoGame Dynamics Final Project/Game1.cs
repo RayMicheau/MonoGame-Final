@@ -724,6 +724,10 @@ namespace MonoGame_Dynamics_Final_Project
                     spriteBatch.Draw(health, healthRect, Color.White);
                     spriteBatch.DrawString(menuFont, "Score:" + (Math.Round(timer,2) * score), new Vector2(GraphicsDevice.Viewport.Width / 8, GraphicsDevice.Viewport.Height / 9), Color.White, 0.0f,Vector2.Zero,0.4f,SpriteEffects.None,0.0f);
                     
+                    railLeft.Draw(spriteBatch, gameTime, Color.White);
+                    railRight.Draw(spriteBatch, gameTime, Color.White);
+                    playerShip.Draw(spriteBatch, gameTime, Color.White);
+
                     follower.Draw(spriteBatch, gameTime, Color.White);
                     foreach (Enemy enemy in Enemywave)
                     {
@@ -741,10 +745,9 @@ namespace MonoGame_Dynamics_Final_Project
 
                     Thruster1.Draw(spriteBatch);
                     Thruster2.Draw(spriteBatch);
+
                     foreach (ParticleEngine particle in StingrayParticles) { particle.Draw(spriteBatch); }
               
-                    railLeft.Draw(spriteBatch, gameTime, Color.White);
-                    railRight.Draw(spriteBatch, gameTime, Color.White);
 
                     //Draw Explosion
                     for(int i = 0; i < DestructionParticles.Count; i++)
@@ -759,7 +762,7 @@ namespace MonoGame_Dynamics_Final_Project
                         }
                     }
 
-                    playerShip.Draw(spriteBatch, gameTime, Color.White);
+                    
                     spriteBatch.End();
                  //   base.Draw(gameTime);
                     break;
