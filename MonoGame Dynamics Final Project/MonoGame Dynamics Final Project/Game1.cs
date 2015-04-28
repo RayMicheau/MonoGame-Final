@@ -158,18 +158,15 @@ namespace MonoGame_Dynamics_Final_Project
         {
             //set virtual screen resolution
             _irr = new ResolutionRenderer(this, VIRTUAL_RESOLUTION_WIDTH, VIRTUAL_RESOLUTION_HEIGHT, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
-
             _camera = new Camera2D(_irr) { MaxZoom = 10f, MinZoom = .4f, Zoom = 1.0f};
             //_camera.CenterOnTarget(new Rectangle(0, 0, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height));
-            float offsetWidth = (graphics.PreferredBackBufferWidth - VIRTUAL_RESOLUTION_WIDTH)*0.25f;
-            float offsetHeight = (graphics.PreferredBackBufferHeight - VIRTUAL_RESOLUTION_HEIGHT)*0.25f;
             _camera.SetPosition(new Vector2(VIRTUAL_RESOLUTION_WIDTH/2, VIRTUAL_RESOLUTION_HEIGHT/2));
-            //_camera.SetPosition(Vector2.Zero);
             _camera.RecalculateTransformationMatrices();
 
             base.Initialize();
         }
 
+//Load Content method *******************************************************************************************************************
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
@@ -283,6 +280,7 @@ namespace MonoGame_Dynamics_Final_Project
         {
         }
         
+//Update Method *************************************************************************************************************************
         protected override void Update(GameTime gameTime)
         {
 
@@ -457,9 +455,10 @@ namespace MonoGame_Dynamics_Final_Project
                 
             }
         }
-        
-        
+
         //public void ResetGame
+
+//Update Input Method **************************************************************************************************************
         public void UpdateInput(GameTime gameTime)
         {
             bool keyPressed = false;
@@ -686,7 +685,8 @@ namespace MonoGame_Dynamics_Final_Project
             var rect = new Texture2D(GraphicsDevice, 1, 1);
             rect.SetData(new[] { color });
         }
-  
+
+//Draw Method***********************************************************************************************************************
         protected override void Draw(GameTime gameTime)
         {
             switch (gameState)
@@ -695,6 +695,7 @@ namespace MonoGame_Dynamics_Final_Project
                     
                     break;
 
+    //Menu?***********************************************************************************************************************
                 case GameState.StartMenu:
 
                     _irr.Draw();
@@ -719,43 +720,42 @@ namespace MonoGame_Dynamics_Final_Project
 
                     break;
 
+    //Play?***********************************************************************************************************************
                 case GameState.Play:
+
+                    //Clear screen
                     GraphicsDevice.Clear(Color.Black);
-
-                    _irr.Draw();
-
                     
-
+                    //IRR
+                    _irr.Draw();
                     //spriteBatch.BeginResolution(_irr);
-
+                
+                //Begin Drawing Gameplay Stuff!!
                     spriteBatch.BeginCamera(_camera, BlendState.NonPremultiplied);
 
+                    //Draw Background
                     myBackground.Draw(spriteBatch);
 
-                    //spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
-                    
-                    playerShip.Draw(spriteBatch, gameTime, Color.White);
+                    //Draw Stingray Particles
+                    foreach (ParticleEngine particle in StingrayParticles) 
+                    { 
+                        particle.Draw(spriteBatch); 
+                    }
 
-                    //follower.Draw(spriteBatch, gameTime, Color.White);
+                    //Draw Enemies
                     foreach (Enemy enemy in Enemywave)
                     {
                         enemy.Draw(spriteBatch, gameTime, enemy.hurtFlash);
                     }
+
+                    //Draw Powerups
                     foreach (PowerUp pUp in powerUpList)
                     {
                         pUp.Draw(spriteBatch, gameTime);
                     }
 
-                    foreach (ParticleEngine explosion in DestructionParticles)
-                    {
-                        explosion.Draw(spriteBatch);
-                    }
-
-                    Thruster1.Draw(spriteBatch);
-                    Thruster2.Draw(spriteBatch);
-
-                    foreach (ParticleEngine particle in StingrayParticles) { particle.Draw(spriteBatch); }
-              
+                    //Draw Follower
+                    //follower.Draw(spriteBatch, gameTime, Color.White);
 
                     //Draw Explosion
                     for(int i = 0; i < DestructionParticles.Count; i++)
@@ -769,26 +769,45 @@ namespace MonoGame_Dynamics_Final_Project
                             DestructionParticles.RemoveAt(i);
                         }
                     }
+
+                    //Draw Ship Thruster Particles
+                    Thruster1.Draw(spriteBatch);
+                    Thruster2.Draw(spriteBatch);
+
+                    //Draw Ship
+                    playerShip.Draw(spriteBatch, gameTime, Color.White);
                     
+                //End Drawing Gameplay Stuff!!
                     spriteBatch.End();
-
-
                     _irr.SetupFullViewport();
+
+                //Begin Drawing UI
                     spriteBatch.Begin();
+
                     spriteBatch.Draw(health, healthRect, Color.White);
                     spriteBatch.DrawString(menuFont, "Score:" + (Math.Round(timer,2) * score), new Vector2(0.0f, 50.0f), Color.White, 0.0f,Vector2.Zero,0.25f,SpriteEffects.None,0.0f);
                     spriteBatch.DrawString(menuFont, "Primary:" + playerShip.PrimaryType, new Vector2(100.0f, GraphicsDevice.Viewport.Height - 25.0f), Color.White, 0.0f, Vector2.Zero, 0.15f, SpriteEffects.None, 0.0f);
                     spriteBatch.DrawString(menuFont, "Secondary:" + playerShip.SecondaryType, new Vector2(GraphicsDevice.Viewport.Width - 550.0f, GraphicsDevice.Viewport.Height - 25.0f), Color.White, 0.0f,Vector2.Zero,0.15f,SpriteEffects.None,0.0f);
+
+                //End Drawing UI
                     spriteBatch.End();
                     _irr.SetupVirtualScreenViewport();
-                 //   base.Draw(gameTime);
+                    //base.Draw(gameTime);
+                    
                     break;
+
+    //Pause?******************************************************************************************************************
                 case GameState.Pause:
+                    
                     spriteBatch.Begin();
                     spriteBatch.DrawString(menuFont, "Paused", new Vector2(GraphicsDevice.Viewport.Width / 4, 100.0f), customColor, 0.0f,Vector2.Zero,0.5f,SpriteEffects.None,0.0f);
                     spriteBatch.End();
+                    
                     break;
+
+    //Game Over?**************************************************************************************************************
                 case GameState.GameOver:
+                   
                     GraphicsDevice.Clear(Color.Black);
                     _irr.Draw();
                     _irr.SetupFullViewport();
@@ -803,6 +822,7 @@ namespace MonoGame_Dynamics_Final_Project
                     
                     break;
 
+    //Exit?**********************************************************************************************************************************
                 case GameState.Exit:
 
                     break;
@@ -812,7 +832,7 @@ namespace MonoGame_Dynamics_Final_Project
             //spriteBatch.End();
         }
 
-        // Load the enemy level/waves here
+//Load the enemy level/waves here*******************************************************************************************************
         public void LoadLevel(int levelNum, int waveNum)
         {
             switch(levelNum)
@@ -878,7 +898,7 @@ namespace MonoGame_Dynamics_Final_Project
             }
         }
 
-        // Define the enemy waves here
+//Define the enemy waves here************************************************************************************************************
         public void LoadWaves()
         {
             Enemy enemy;
@@ -920,6 +940,8 @@ namespace MonoGame_Dynamics_Final_Project
             // Wave 9
             WaveDef[8] = new List<Enemy>();
         }
+
+//Spawn Powerups Method *************************************************************************************************************
         public void SpawnPowerUp(Vector2 Position)
         {
             switch (random.Next(6))
@@ -952,11 +974,14 @@ namespace MonoGame_Dynamics_Final_Project
                 default: break;
             }
         }
+
+//Check Powerups Method *************************************************************************************************************
         public bool CheckForPowerUps(Rectangle player, Rectangle pwerUp)
         {
             return player.Intersects(pwerUp);
         }
 
+//Primary Collisions Check Method *************************************************************************************************************
         public void checkPrimaryCollisions(int turret)
         {
             List<Weapon> weaponList = new List<Weapon>();
@@ -969,31 +994,35 @@ namespace MonoGame_Dynamics_Final_Project
             {
                 weaponList = playerShip.RailRight.Primary;
             }
-            if (Enemywave.Count > 0 && weaponList.Count != 0)
+
+            if (Enemywave.Count > 0)
             {
                 for (int i = 0; i < Enemywave.Count; i++)
                 {
-
                     if (Enemywave[i].painSwitch == true)
                     {
                         Enemywave[i].flashCounter++;
                         Enemywave[i].hurtFlash = new Color(random.Next(0, 255), random.Next(0, 10), random.Next(0, 100));
                         if (Enemywave[i].flashCounter >= 100)
                         {
+                            Enemywave[i].hurtFlash = Color.White;
                             Enemywave[i].flashCounter = 0;
                             Enemywave[i].painSwitch = false;
                         }
                     }
-                    else
-                    {
-                        Enemywave[i].hurtFlash = Color.White;
-                    }
+                }
+            }
 
+            if (Enemywave.Count > 0 && weaponList.Count != 0)
+            {
+                for (int i = 0; i < Enemywave.Count; i++)
+                {
                     int collide = Enemywave[i].CollisionShot(weaponList);
                     if (collide != -1)
                     {
                         Enemywave[i].painSwitch = true;
                         Enemywave[i].flashCounter = 0;
+
                         Enemywave[i].Health -= weaponList[collide].Damage;
                         weaponList.RemoveAt(collide);
 
