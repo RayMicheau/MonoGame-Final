@@ -1,6 +1,5 @@
 ﻿#region Using Statements
 using System;
-using System.IO;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -11,14 +10,13 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
 using MonoGame_Dynamics_Final_Project.Sprites;
 using MonoGame_Dynamics_Final_Project.Weapons;
-
 #endregion
 
 namespace MonoGame_Dynamics_Final_Project
 {
     public enum GameState
     {
-        SplashScreen,
+        SplashScreen, 
         StartMenu,
         Play, 
         Pause,
@@ -53,20 +51,18 @@ namespace MonoGame_Dynamics_Final_Project
 
         //Independent Resolution and Camera
         private ResolutionRenderer _irr;
-        private const int VIRTUAL_RESOLUTION_WIDTH = 1920;
-        private const int VIRTUAL_RESOLUTION_HEIGHT = 1080;
+        private const int VIRTUAL_RESOLUTION_WIDTH = 2160;
+        private const int VIRTUAL_RESOLUTION_HEIGHT = 1440;
+        Rectangle VirtualSize = new Rectangle(0,0,VIRTUAL_RESOLUTION_WIDTH,VIRTUAL_RESOLUTION_HEIGHT);
         private Camera2D _camera;
+
 
         GameState gameState = GameState.StartMenu;
         Wave wave = Wave.Null;
         Level level = Level.Null;
         PowerUps Powerups = PowerUps.Null;
 
-        AudioManager audioManager;
-      
         public static Random random;
-
-        //SOUNDEFFECTS + SONGS
 
         // background
         int windowWidth, windowHeight;
@@ -86,14 +82,12 @@ namespace MonoGame_Dynamics_Final_Project
         Texture2D startMenuScreen;
         Menu menuScreen;
         SpriteFont menuFont;
-
-        Color customColor = new Color(255, 0, 200, 1);
-        int score = 0;
+        Color customColor;
         float score = 0;
         float timer = 0.0f;
         float damage = 0.0f; 
         bool playGame;
-        //Buttons
+        //Buttons;
 
         // player
         Texture2D playerTexture;
@@ -119,7 +113,7 @@ namespace MonoGame_Dynamics_Final_Project
         //PowerUps
         double spawnChance = 0.2;
 
-        // Vector2 gravityForce = new Vector2(0.0f, 150.0f);
+       // Vector2 gravityForce = new Vector2(0.0f, 150.0f);
         Vector2 offset = new Vector2(500, 500);
 
         // input
@@ -135,9 +129,9 @@ namespace MonoGame_Dynamics_Final_Project
 
         List<ParticleEngine> StingrayParticles = new List<ParticleEngine>();
         List<Texture2D> StingrayTextures;
+
         int EnemyParticleCounter = 0;
 
-        bool songSwap = false;
         List<ParticleEngine> DestructionParticles = new List<ParticleEngine>();
         List<Texture2D> DestructionTextures= new List<Texture2D>();
         List<int> DestructionRadiusCounters = new List<int>();
@@ -153,10 +147,11 @@ namespace MonoGame_Dynamics_Final_Project
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            graphics.PreferMultiSampling = true;
             graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
             this.Window.IsBorderless = true;
-            graphics.ApplyChanges();
+            //graphics.ApplyChanges();
         }
 
         protected override void Initialize()
@@ -164,9 +159,11 @@ namespace MonoGame_Dynamics_Final_Project
             //set virtual screen resolution
             _irr = new ResolutionRenderer(this, VIRTUAL_RESOLUTION_WIDTH, VIRTUAL_RESOLUTION_HEIGHT, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
 
-            _camera = new Camera2D(_irr) { MaxZoom = 10f, MinZoom = .4f, Zoom = 1.4f};
-            //_camera.CenterOnTarget(new Rectangle(0,0, GraphicsDevice.Viewport.Width,GraphicsDevice.Viewport.Height));
-            _camera.SetPosition(new Vector2(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width/2, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height/2));
+            _camera = new Camera2D(_irr) { MaxZoom = 10f, MinZoom = .4f, Zoom = 1.0f};
+            //_camera.CenterOnTarget(new Rectangle(0, 0, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height));
+            float offsetWidth = (graphics.PreferredBackBufferWidth - VIRTUAL_RESOLUTION_WIDTH)*0.25f;
+            float offsetHeight = (graphics.PreferredBackBufferHeight - VIRTUAL_RESOLUTION_HEIGHT)*0.25f;
+            _camera.SetPosition(new Vector2(VIRTUAL_RESOLUTION_WIDTH/2, VIRTUAL_RESOLUTION_HEIGHT/2));
             //_camera.SetPosition(Vector2.Zero);
             _camera.RecalculateTransformationMatrices();
 
@@ -178,8 +175,8 @@ namespace MonoGame_Dynamics_Final_Project
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+
             string[] menuItems = { "Launch Ship","How to Play", "Exit Cockpit" };
-            string menuTitle = "FINAL CATACLYSM";
 
            // try
             //{
@@ -209,7 +206,7 @@ namespace MonoGame_Dynamics_Final_Project
                 
 
                 menuFont = Content.Load<SpriteFont>("Fonts/titleFont");
-                menuScreen = new Menu(GraphicsDevice, Content, menuFont, menuItems);
+                menuScreen = new Menu(GraphicsDevice, menuFont, menuItems);
                 startMenuScreen = Content.Load<Texture2D>("Images/Backgrounds/MenuTwo");
                 customColor.A = 1;
                 customColor.R = 200;
@@ -267,17 +264,11 @@ namespace MonoGame_Dynamics_Final_Project
 
                 foreach (Enemy enemy in Enemywave)
                 {
-                    StingrayParticles.Add(new ParticleEngine(StingrayTextures, new Vector2(400, 240)));
+                    if (enemy.enemyType == "stingRay")
+                    {
+                        StingrayParticles.Add(new ParticleEngine(StingrayTextures, new Vector2(400, 240)));
+                    }
                 }
-            }
-
-            //  catch (ContentLoadException e)
-            //   {
-            //Will properly display error messages soon
-            //       Console.WriteLine("Could not load " + e.Source);
-            //       Console.ReadLine();
-            //      this.Exit();
-            // }
             //}
             //catch (ContentLoadException e)
             //{
@@ -297,7 +288,6 @@ namespace MonoGame_Dynamics_Final_Project
 
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            // updating scroll speed
             float BGelapsed = (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f; 
             myBackground.Update(gameTime, BGelapsed * 100);
             myBGtwo.Update(gameTime, BGelapsed * 100);
@@ -314,8 +304,8 @@ namespace MonoGame_Dynamics_Final_Project
                 timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 if (playerShip.Alive && playGame == true)
                 {
-                    playerShip.Update(gameTime, GraphicsDevice, Enemywave);
                     
+                    playerShip.Update(gameTime,VirtualSize , Enemywave);
                     follower.Update(playerShip, gameTime);
                    
                     Thruster1.EmitterLocation = playerShip.Position + new Vector2(15, playerShip.frameHeight - 30);
@@ -426,8 +416,9 @@ namespace MonoGame_Dynamics_Final_Project
                                 playerShip.Alive = false;
                                 follower.Alive = false;
                             }
+                        }
 
-                            //Enemywave.RemoveAt(i);
+                        //Enemywave.RemoveAt(i);
                         //}
                     }
                 }
@@ -490,7 +481,6 @@ namespace MonoGame_Dynamics_Final_Project
                 else if (menuScreen.ItemSelected == 1)
                 {
                     gameState = GameState.Play;
-                    songSwap = true;
                 }
             }
             if (gameState == GameState.GameOver)
@@ -510,7 +500,6 @@ namespace MonoGame_Dynamics_Final_Project
                || gamePadState.ThumbSticks.Left.Y > 0)
                 {
                     playerShip.Up();
-                    audioManager.PlaySoundEffect("thrust");
                     keyPressed = true;
 
                     if (animationResetSwitchU == 0 && animationResetSwitchR == 0 && animationResetSwitchL == 0)
@@ -520,6 +509,7 @@ namespace MonoGame_Dynamics_Final_Project
                         animationResetSwitchU++;
                         keyPressed = true;
                     }
+
 
                 }
                 else if (keyState.IsKeyUp(Keys.Up)
@@ -541,7 +531,6 @@ namespace MonoGame_Dynamics_Final_Project
                   || gamePadState.ThumbSticks.Left.Y < -0.5f)
                 {
                     playerShip.Down();
-                    audioManager.PlaySoundEffect("thrust");
                     keyPressed = true;
                 }
                 else if (keyState.IsKeyUp(Keys.Down)
@@ -556,7 +545,6 @@ namespace MonoGame_Dynamics_Final_Project
                   || gamePadState.ThumbSticks.Left.X < -0.5f)
                 {
                     playerShip.Left();
-                    audioManager.PlaySoundEffect("thrust");
                     keyPressed = true;
 
                     if (animationResetSwitchL == 0)
@@ -599,7 +587,6 @@ namespace MonoGame_Dynamics_Final_Project
                   || gamePadState.DPad.Right == ButtonState.Pressed
                   || gamePadState.ThumbSticks.Left.X > 0.5f)
                 {
-                    audioManager.PlaySoundEffect("thrust");
                     playerShip.Right();
                     keyPressed = true;
 
@@ -657,7 +644,6 @@ namespace MonoGame_Dynamics_Final_Project
                 {
                     if (playerShip.HasShot)
                     {
-                        audioManager.PlaySoundEffect("rocket");
                         playerShip.HasShot = false;
                         playerShip.ForcePull = true;
                         playerShip.Secondary[0].ElapsedTime = gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
@@ -700,7 +686,7 @@ namespace MonoGame_Dynamics_Final_Project
             var rect = new Texture2D(GraphicsDevice, 1, 1);
             rect.SetData(new[] { color });
         }
-
+  
         protected override void Draw(GameTime gameTime)
         {
             switch (gameState)
@@ -712,7 +698,8 @@ namespace MonoGame_Dynamics_Final_Project
                 case GameState.StartMenu:
 
                     _irr.Draw();
-                    spriteBatch.BeginCamera(_camera, BlendState.AlphaBlend);
+                    _irr.SetupFullViewport();
+                    spriteBatch.Begin();
                     
                     //spriteBatch.Begin();
 
@@ -727,32 +714,27 @@ namespace MonoGame_Dynamics_Final_Project
                     menuScreen.Draw(spriteBatch);
 
                     spriteBatch.End();
-                    
+                   
                     _irr.SetupVirtualScreenViewport();
 
                     break;
 
                 case GameState.Play:
                     GraphicsDevice.Clear(Color.Black);
-                    
+
                     _irr.Draw();
 
-                    spriteBatch.DrawString(menuFont, "Score:" + score, new Vector2(GraphicsDevice.Viewport.Width / 8, GraphicsDevice.Viewport.Height / 9), Color.White, 0.0f, Vector2.Zero, 0.4f, SpriteEffects.None, 0.0f);
-                    playerShip.Draw(spriteBatch, gameTime);
-                    railLeft.Draw(spriteBatch, gameTime);
+                    
+
+                    //spriteBatch.BeginResolution(_irr);
 
                     spriteBatch.BeginCamera(_camera, BlendState.NonPremultiplied);
-                    
-                    //spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
+
                     myBackground.Draw(spriteBatch);
 
-
-                    spriteBatch.Draw(health, healthRect, Color.White);
-                    spriteBatch.DrawString(menuFont, "Score:" + (Math.Round(timer,2) * score), new Vector2(0.0f, 50.0f), Color.White, 0.0f,Vector2.Zero,0.25f,SpriteEffects.None,0.0f);
-                    spriteBatch.DrawString(menuFont, "Primary:" + playerShip.PrimaryType, new Vector2(100.0f, GraphicsDevice.Viewport.Height - 25.0f), Color.White, 0.0f, Vector2.Zero, 0.15f, SpriteEffects.None, 0.0f);
-                    spriteBatch.DrawString(menuFont, "Secondary:" + playerShip.SecondaryType, new Vector2(GraphicsDevice.Viewport.Width - 550.0f, GraphicsDevice.Viewport.Height - 25.0f), Color.White, 0.0f,Vector2.Zero,0.15f,SpriteEffects.None,0.0f);
+                    //spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
+                    
                     playerShip.Draw(spriteBatch, gameTime, Color.White);
-
 
                     //follower.Draw(spriteBatch, gameTime, Color.White);
                     foreach (Enemy enemy in Enemywave)
@@ -761,7 +743,7 @@ namespace MonoGame_Dynamics_Final_Project
                     }
                     foreach (PowerUp pUp in powerUpList)
                     {
-                        pUp.Draw(spriteBatch, gameTime, 1.0f);
+                        pUp.Draw(spriteBatch, gameTime);
                     }
 
                     foreach (ParticleEngine explosion in DestructionParticles)
@@ -788,7 +770,16 @@ namespace MonoGame_Dynamics_Final_Project
                         }
                     }
                     
-                    spriteBatch.End(); 
+                    spriteBatch.End();
+
+
+                    _irr.SetupFullViewport();
+                    spriteBatch.Begin();
+                    spriteBatch.Draw(health, healthRect, Color.White);
+                    spriteBatch.DrawString(menuFont, "Score:" + (Math.Round(timer,2) * score), new Vector2(0.0f, 50.0f), Color.White, 0.0f,Vector2.Zero,0.25f,SpriteEffects.None,0.0f);
+                    spriteBatch.DrawString(menuFont, "Primary:" + playerShip.PrimaryType, new Vector2(100.0f, GraphicsDevice.Viewport.Height - 25.0f), Color.White, 0.0f, Vector2.Zero, 0.15f, SpriteEffects.None, 0.0f);
+                    spriteBatch.DrawString(menuFont, "Secondary:" + playerShip.SecondaryType, new Vector2(GraphicsDevice.Viewport.Width - 550.0f, GraphicsDevice.Viewport.Height - 25.0f), Color.White, 0.0f,Vector2.Zero,0.15f,SpriteEffects.None,0.0f);
+                    spriteBatch.End();
                     _irr.SetupVirtualScreenViewport();
                  //   base.Draw(gameTime);
                     break;
@@ -800,7 +791,8 @@ namespace MonoGame_Dynamics_Final_Project
                 case GameState.GameOver:
                     GraphicsDevice.Clear(Color.Black);
                     _irr.Draw();
-                    spriteBatch.BeginCamera(_camera, BlendState.AlphaBlend);
+                    _irr.SetupFullViewport();
+                    spriteBatch.Begin();
                     //spriteBatch.Begin();
                     drawRect(new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.Black);
                     spriteBatch.DrawString(menuFont, "Game Over\n", new Vector2(GraphicsDevice.Viewport.Width / 4, 100.0f), customColor,0f,Vector2.Zero,0.5f,SpriteEffects.None,0f);
@@ -823,11 +815,11 @@ namespace MonoGame_Dynamics_Final_Project
         // Load the enemy level/waves here
         public void LoadLevel(int levelNum, int waveNum)
         {
-            switch (levelNum)
+            switch(levelNum)
             {
                 case 1:
                     level = Level.Level1;
-                    switch (waveNum)
+                    switch(waveNum)
                     {
                         case 1:
                             wave = Wave.Wave1;
@@ -895,7 +887,7 @@ namespace MonoGame_Dynamics_Final_Project
             WaveDef[0] = new List<Enemy>();
             //formationSize = 10;          
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 10; i++ )
             {
                 enemy = new Stingray(Content, GraphicsDevice, i + 1, "delta");
                 WaveDef[0].Add(enemy);
@@ -903,7 +895,7 @@ namespace MonoGame_Dynamics_Final_Project
             VoidVulture voidVulture = new VoidVulture(Content, GraphicsDevice, 3, "line");
             WaveDef[0].Add(voidVulture);
             VoidAngel voidAngel = new VoidAngel(Content, GraphicsDevice, 3, "line");
-            WaveDef[0].Add(voidAngel);
+            WaveDef[0].Add(voidAngel); 
             // Wave 2
             WaveDef[1] = new List<Enemy>();
 
@@ -959,7 +951,6 @@ namespace MonoGame_Dynamics_Final_Project
 
                 default: break;
             }
-            audioManager.PlaySoundEffect("Spawn pUp");
         }
         public bool CheckForPowerUps(Rectangle player, Rectangle pwerUp)
         {
