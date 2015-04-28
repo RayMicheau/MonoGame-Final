@@ -341,7 +341,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         }
 
         // Update methods for bounds checks
-        public virtual void Update(GameTime gameTime, GraphicsDevice Device, List<Enemy> enemyWave)
+        public virtual void Update(GameTime gameTime, Rectangle virtualSize, List<Enemy> enemyWave)
         {
             float timeLapse = gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
 
@@ -351,18 +351,18 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                 //Keep the sprite onscreen
                 Update(gameTime, enemyWave);
 
-                if (Position.X > Device.Viewport.Width + frameWidth)
+                if (Position.X > virtualSize.Width + frameWidth)
                 {
                     position.X = frameWidth * -1;
                 }
                 else if (Position.X < frameWidth*-1)
                 {
-                    position.X = Device.Viewport.Width + frameWidth;
+                    position.X = virtualSize.Width + frameWidth;
                 }
 
-                if (Position.Y >= Device.Viewport.Height - SpriteOrigin.Y * Scale)
+                if (Position.Y >= virtualSize.Height - SpriteOrigin.Y * Scale)
                 {
-                    position.Y = Device.Viewport.Height - SpriteOrigin.Y * Scale;
+                    position.Y = virtualSize.Height - SpriteOrigin.Y * Scale;
                     if (velocity.Y >= 0)
                     {
                         velocity.Y *= -0.95f;

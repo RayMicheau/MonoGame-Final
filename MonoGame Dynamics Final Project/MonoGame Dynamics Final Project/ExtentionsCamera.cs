@@ -17,5 +17,6 @@ namespace MonoGame_Dynamics_Final_Project
         {
             mBatch.Begin(SpriteSortMode.Deferred, bstate, SamplerState.AnisotropicWrap, DepthStencilState.Default, RasterizerState.CullNone, null, camera.GetViewTransformationMatrix());
         }
+
     }
 }

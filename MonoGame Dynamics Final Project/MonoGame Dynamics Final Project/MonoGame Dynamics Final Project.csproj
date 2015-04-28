@@ -36,17 +36,23 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="animateSprite.cs" />
+    <Compile Include="Camera2d.cs" />
+    <Compile Include="Extentions.cs" />
+    <Compile Include="ExtentionsCamera.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="Particle.cs" />
     <Compile Include="ParticleEngine.cs" />
+    <Compile Include="ResolutionRenderer.cs" />
     <Compile Include="Sprites\Enemy.cs" />
     <Compile Include="Sprites\Follower.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Sprites\PowerUp.cs" />
     <Compile Include="Sprites\Stingray.cs" />
+    <Compile Include="Sprites\StingRay2.cs" />
     <Compile Include="Sprites\VoidAngel.cs" />
     <Compile Include="Sprites\VoidVulture.cs" />
     <Compile Include="Weapons\BasicLaser.cs" />
+    <Compile Include="Weapons\EnemyWeapon.cs" />
     <Compile Include="Weapons\GravityWell.cs" />
     <Compile Include="Sprites\Player.cs" />
     <Compile Include="Program.cs" />
@@ -56,6 +62,7 @@
     <Compile Include="Weapons\HomingMissile.cs" />
     <Compile Include="Weapons\Rail.cs" />
     <Compile Include="Weapons\RailTurret.cs" />
+    <Compile Include="Weapons\StingRayWeapon.cs" />
     <Compile Include="Weapons\Weapon.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -72,6 +79,9 @@
     <Content Include="Content\Images\Animations\crossHair.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Images\Animations\gravityWell.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Images\Animations\laser.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -82,6 +92,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\Animations\rocket.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\Animations\Sting-Ray-2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\Animations\Sting-Ray-shot.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\Animations\Sting-ray.png">
@@ -106,9 +122,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\Animations\voidVultureImpale.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Images\Animations\yellowstar.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\Backgrounds\background-level-1.png">
@@ -139,6 +152,21 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\Backgrounds\universe2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\Particles\meow.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\Particles\meow1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\Particles\meow2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\Particles\meow3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\Particles\meow4.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\Particles\poofparticle.png">
