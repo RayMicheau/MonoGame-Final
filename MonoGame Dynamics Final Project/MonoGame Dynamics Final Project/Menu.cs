@@ -16,8 +16,6 @@ namespace MonoGame_Dynamics_Final_Project
 {
     public class Menu
     {
-        SoundEffect select;
-        SoundEffect click;
         private string[] menuItems;
         private int selIndex;
 
@@ -56,14 +54,11 @@ namespace MonoGame_Dynamics_Final_Project
             set { itemSelected = value; }
         }
 
-        public Menu(GraphicsDevice Device, ContentManager content, SpriteFont _spriteFont, string[] _menuItems)
+        public Menu(GraphicsDevice Device, SpriteFont _spriteFont, string[] _menuItems)
         {
             spriteFont = _spriteFont;
             menuItems = _menuItems;
-            select = content.Load <SoundEffect>("Audio/Sound Effects/powerup 2");
-            click = content.Load<SoundEffect>("Audio/Sound Effects/click");
             MeasureMenu(Device);
-            
         }
 
         public void MeasureMenu(GraphicsDevice Device)
@@ -98,7 +93,6 @@ namespace MonoGame_Dynamics_Final_Project
             //change index based on up or down getting pressed
             if (CheckKey(Keys.Down) || CheckPad(Buttons.DPadDown))
             {
-                click.Play();
                 SelIndex++;
                 if (selIndex == menuItems.Length)
                 {
@@ -107,7 +101,6 @@ namespace MonoGame_Dynamics_Final_Project
             }
             if (CheckKey(Keys.Up) || CheckPad(Buttons.DPadUp))
             {
-                click.Play();
                 SelIndex--;
                 if (SelIndex < 0)
                 {
@@ -116,7 +109,6 @@ namespace MonoGame_Dynamics_Final_Project
             }
             if (keyState.IsKeyDown(Keys.Enter) || gpState.IsButtonDown(Buttons.A))
             {
-                select.Play();
                 ItemSelected = SelIndex + 1;
             }
             preKeyState = keyState;
