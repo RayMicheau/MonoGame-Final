@@ -15,11 +15,9 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
 {
     class BasicLaser : Weapon
     {
-        public int orientation;
-        public BasicLaser(ContentManager content, Vector2 startPosition, float velocity, int Orientation)
+        public BasicLaser(ContentManager content, Vector2 startPosition, float velocity)
             : base(content.Load<Texture2D>("Images/Animations/laser"), startPosition, velocity, 1)
         {
-            orientation = Orientation;
             damage = 100;
         }
     }
