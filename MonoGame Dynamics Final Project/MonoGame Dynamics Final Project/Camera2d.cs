@@ -114,6 +114,23 @@ namespace MonoGame_Dynamics_Final_Project
             Position += amount;
         }
 
+        
+        //Shake screen by specified amount
+        
+        int shakeCounter = 0;
+        public void Shake(Vector2 amount, Vector2 OriginalPosition)
+        {
+            if (shakeCounter < 5)
+            {
+                Position = OriginalPosition;
+                shakeCounter++ ;
+            }
+            if (shakeCounter == 5)
+            {
+                Position += amount;
+            }
+        }
+
         /// <summary>
         /// Set camera position
         /// </summary>

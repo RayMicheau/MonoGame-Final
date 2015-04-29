@@ -205,7 +205,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         }
         protected Texture2D railTurretImage;
         //rail
-        
+        Rectangle extractRegion;
         #endregion
 
         public Player(int FrameWidth, int FrameHeight, Texture2D textureImage, Vector2 position, Vector2 velocity, bool setOrig, float scale, float health)
@@ -215,13 +215,16 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             source = new Rectangle(0, 0, frameWidth, frameHeight);
             frameNum = 4;
             frameTime = 0.2f;
+            extractRegion = new Rectangle(source.Location.X, source.Location.Y, source.Width, source.Height);
+            TextureImage = textureImage;
             textureData = new Color[source.Width * source.Height];
+            textureImage.GetData<Color>(0, extractRegion, textureData, 0, source.Width * source.Height);
             //textureImage.GetData<Color>(0, source, textureData, 0, source.Width * source.Height);
 
             
 
             Position = position;
-            TextureImage = textureImage;
+            
             InitialVelocity = velocity;
             Velocity = velocity;
             SetOrigin = setOrig;

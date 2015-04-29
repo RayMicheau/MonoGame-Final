@@ -152,6 +152,10 @@ namespace MonoGame_Dynamics_Final_Project
 
         Random randomnumber = new Random();
 
+        public int shakeCounter = 0;
+        public bool shakeSwitch = false;
+        Vector2 originalCameraPosition;
+
         #endregion
 
         public Game1()
@@ -174,6 +178,8 @@ namespace MonoGame_Dynamics_Final_Project
             //_camera.CenterOnTarget(new Rectangle(0, 0, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height));
             _camera.SetPosition(new Vector2(VIRTUAL_RESOLUTION_WIDTH/2, VIRTUAL_RESOLUTION_HEIGHT/2));
             _camera.RecalculateTransformationMatrices();
+
+            originalCameraPosition = _camera.Position;
 
             base.Initialize();
         }
@@ -442,36 +448,44 @@ namespace MonoGame_Dynamics_Final_Project
                     }
                 }
                 // testing collision of playership with enemy
+                playerShip.collisionDetected = false;
+
+                shakeSwitch = false;
 
                 for (int i = 0; i < Enemywave.Count; i++)
                 {
                     if (playerShip.CollisionSprite(Enemywave[i]))
                     {
-                        //if (playerShip.IntersectsPixel(playerShip.source, playerShip.textureData, Enemywave[i].source, Enemywave[i].textureData))
-                        //{
-                       
-                        playerShip.collisionDetected = true;
-                        if (playerShip.collisionDetected == true)
+
+                        if (playerShip.IntersectsPixel(playerShip.source, playerShip.textureData, Enemywave[i].source, Enemywave[i].textureData))
                         {
+                            playerShip.collisionDetected = true;
+                        
+                            shakeSwitch = true;
+
                             damage += Enemywave[i].Damage;
                             Console.WriteLine("Health:" + playerShip.Health);
                             if (playerShip.Health <= 0.0f)
                             {
-
                                 gameState = GameState.GameOver;
                                 playerShip.Alive = false;
                                 follower.Alive = false;
                             }
+                            
                         }
 
                         //Enemywave.RemoveAt(i);
-                        //}
-                    }
+                        }
+               
+                    //else { playerShip.collisionDetected = false; }
                 }
                 playerShip.Health -= damage;
                 damage = 0f;
 
-
+                if (shakeSwitch == true) { _camera.Shake(new Vector2(random.Next(-50, 50), random.Next(-50, 50)), originalCameraPosition); }
+                else { _camera.Position = originalCameraPosition; }
+                //_camera.Shake(new Vector2(random.Next(-50, 50), random.Next(-50, 50)), shakeCounter);
+                shakeCounter++;
                 // gravity well
                 if (playerShip.ForcePull)
                 {
