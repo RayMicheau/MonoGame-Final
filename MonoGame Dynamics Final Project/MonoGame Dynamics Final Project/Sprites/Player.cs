@@ -215,10 +215,8 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             source = new Rectangle(0, 0, frameWidth, frameHeight);
             frameNum = 4;
             frameTime = 0.2f;
-            extractRegion = new Rectangle(source.Location.X, source.Location.Y, source.Width, source.Height);
             TextureImage = textureImage;
-            textureData = new Color[source.Width * source.Height];
-            textureImage.GetData<Color>(0, extractRegion, textureData, 0, source.Width * source.Height);
+            
             //textureImage.GetData<Color>(0, source, textureData, 0, source.Width * source.Height);
 
             
@@ -445,8 +443,21 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         }
 
         // Pixel Collision Detection
-        public bool IntersectsPixel(Rectangle rect1, Color[] data1, Rectangle rect2, Color[] data2)
+        public bool IntersectsPixel(Player player, Player enemy)
         {
+            extractRegion = source;
+            textureData = new Color[source.Width * source.Height];
+            TextureImage.GetData<Color>(0, extractRegion, textureData, 0, source.Width * source.Height);
+
+            enemy.extractRegion = enemy.source;
+            enemy.textureData = new Color[enemy.source.Width * enemy.source.Height];
+            enemy.TextureImage.GetData<Color>(0, enemy.extractRegion, enemy.textureData, 0, enemy.source.Width * enemy.source.Height);
+
+            Rectangle rect1 = player.source;
+            Color[] data1 = player.textureData; 
+            Rectangle rect2 = enemy.source;
+            Color[] data2 = enemy.textureData;
+
             bool collision = false;
             int top = Math.Max(rect1.Top, rect2.Top);
             int bottom = Math.Min(rect1.Bottom, rect2.Bottom);

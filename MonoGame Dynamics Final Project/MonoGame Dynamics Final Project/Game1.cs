@@ -457,7 +457,7 @@ namespace MonoGame_Dynamics_Final_Project
                     if (playerShip.CollisionSprite(Enemywave[i]))
                     {
 
-                        if (playerShip.IntersectsPixel(playerShip.source, playerShip.textureData, Enemywave[i].source, Enemywave[i].textureData))
+                        if (playerShip.IntersectsPixel(playerShip, Enemywave[i]))
                         {
                             playerShip.collisionDetected = true;
                         
@@ -482,8 +482,8 @@ namespace MonoGame_Dynamics_Final_Project
                 playerShip.Health -= damage;
                 damage = 0f;
 
-                if (shakeSwitch == true) { _camera.Shake(new Vector2(random.Next(-50, 50), random.Next(-50, 50)), originalCameraPosition); }
-                else { _camera.Position = originalCameraPosition; }
+                if (shakeSwitch == true) { _camera.Move(new Vector2(random.Next(-50, 50), random.Next(-50, 50))); }
+                else { _camera.Position = originalCameraPosition;}
                 //_camera.Shake(new Vector2(random.Next(-50, 50), random.Next(-50, 50)), shakeCounter);
                 shakeCounter++;
                 // gravity well
