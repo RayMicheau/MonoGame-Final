@@ -207,10 +207,12 @@ namespace MonoGame_Dynamics_Final_Project
                 DestructionTextures.Add(Content.Load<Texture2D>("Images/Particles/meow1"));
                 DestructionTextures.Add(Content.Load<Texture2D>("Images/Particles/meow2"));
                 DestructionTextures.Add(Content.Load<Texture2D>("Images/Particles/meow3"));
-                //AftershockTextures.Add(Content.Load<Texture2D>("Images/Particles/smokepoof"));
+                DestructionTextures.Add(Content.Load<Texture2D>("Images/Particles/meow4"));    
+            
+            //AftershockTextures.Add(Content.Load<Texture2D>("Images/Particles/smokepoof"));
                 AftershockTextures.Add(Content.Load<Texture2D>("Images/Particles/xdiamond"));
-                AftershockTextures.Add(Content.Load<Texture2D>("Images/Particles/exhaust")); 
-                AftershockTextures.Add(Content.Load<Texture2D>("Images/Particles/meow4"));
+                AftershockTextures.Add(Content.Load<Texture2D>("Images/Particles/exhaust"));
+                
                 AftershockTextures.Add(Content.Load<Texture2D>("Images/Particles/starpoo"));
                 AftershockTextures.Add(Content.Load<Texture2D>("Images/Particles/pulse"));
                 
@@ -417,11 +419,11 @@ namespace MonoGame_Dynamics_Final_Project
                     DestructionAngleCounters[i] += 10;
                     
                     //DestructionParticles[i].Update((DestructionRadiusCounters[i] < 1000), new Vector2(10, 10), 0f, new Color(random.Next(0, 255), random.Next(0, 50), random.Next(0, 100)), 10);
-                    DestructionParticles[i].Update((DestructionRadiusCounters[i] < 200), new Vector2(10, 10), 0f, Color.White, 2);
-                    DestructionParticles[i].Update((DestructionRadiusCounters[i] < 400 && DestructionRadiusCounters[i] >= 200), new Vector2(10, 10), 0f, Color.Yellow, 200);
-                    DestructionParticles[i].Update((DestructionRadiusCounters[i] < 600 && DestructionRadiusCounters[i] >= 400), new Vector2(10, 10), 0f, Color.Orange, 300);
-                    DestructionParticles[i].Update((DestructionRadiusCounters[i] < 800 && DestructionRadiusCounters[i] >= 600), new Vector2(10, 10), 0f, Color.Red, 400);
-                    DestructionParticles[i].Update((DestructionRadiusCounters[i] < 1000 && DestructionRadiusCounters[i] >= 800), new Vector2(10, 10), 0f, Color.DarkRed, 500);
+                    DestructionParticles[i].Update((DestructionRadiusCounters[i] < 200), new Vector2(10, 10), 0f, Color.White, 20);
+                    DestructionParticles[i].Update((DestructionRadiusCounters[i] < 400 && DestructionRadiusCounters[i] >= 200), new Vector2(10, 10), 0f, Color.Yellow, 40);
+                    DestructionParticles[i].Update((DestructionRadiusCounters[i] < 600 && DestructionRadiusCounters[i] >= 400), new Vector2(10, 10), 0f, Color.Orange, 60);
+                    DestructionParticles[i].Update((DestructionRadiusCounters[i] < 800 && DestructionRadiusCounters[i] >= 600), new Vector2(10, 10), 0f, Color.Red, 80);
+                    DestructionParticles[i].Update((DestructionRadiusCounters[i] < 1000 && DestructionRadiusCounters[i] >= 800), new Vector2(10, 10), 0f, Color.DarkRed, 100);
 
                     if (DestructionRadiusCounters[i] >= 200)
                     {
@@ -432,10 +434,10 @@ namespace MonoGame_Dynamics_Final_Project
                             AftershockRadiusCounters[f] += 10;
                             AftershockAngleCounters[f] -= 10;
 
-                            AftershockParticles[f].Update((AftershockRadiusCounters[f] <= 200), new Vector2(10, 10), 0f, Color.Purple, 2);
-                            AftershockParticles[f].Update((AftershockRadiusCounters[f] <= 400 && AftershockRadiusCounters[f] > 200), new Vector2(10, 10), 0f, Color.Blue, 200);
-                            AftershockParticles[f].Update((AftershockRadiusCounters[f] <= 600 && AftershockRadiusCounters[f] > 400), new Vector2(10, 10), 0f, Color.Turquoise, 300);
-                            AftershockParticles[f].Update((AftershockRadiusCounters[f] <= 800 && AftershockRadiusCounters[f] > 600), new Vector2(10, 10), 0f, Color.GreenYellow, 400);
+                            AftershockParticles[f].Update((AftershockRadiusCounters[f] <= 200), new Vector2(10, 10), 0f, Color.Purple, 40);
+                            AftershockParticles[f].Update((AftershockRadiusCounters[f] <= 400 && AftershockRadiusCounters[f] > 200), new Vector2(10, 10), 0f, Color.Blue, 60);
+                            AftershockParticles[f].Update((AftershockRadiusCounters[f] <= 600 && AftershockRadiusCounters[f] > 400), new Vector2(10, 10), 0f, Color.Turquoise, 80);
+                            AftershockParticles[f].Update((AftershockRadiusCounters[f] <= 800 && AftershockRadiusCounters[f] > 600), new Vector2(10, 10), 0f, Color.GreenYellow, 100);
                         }
                     }
                 }
@@ -807,7 +809,7 @@ namespace MonoGame_Dynamics_Final_Project
                     //spriteBatch.BeginResolution(_irr);
                 
                 //Begin Drawing Gameplay Stuff!!
-                    spriteBatch.BeginCamera(_camera, BlendState.NonPremultiplied);
+                    spriteBatch.BeginCamera(_camera, BlendState.AlphaBlend);
 
                     //Draw Background
                     myBackground.Draw(spriteBatch);
