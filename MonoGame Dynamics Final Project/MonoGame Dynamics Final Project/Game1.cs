@@ -731,7 +731,7 @@ namespace MonoGame_Dynamics_Final_Project
                // MathHelper.Clamp(playerShip.RailLeft.rotation, 0, 2f);
 
                 // Primary Weapon
-                if (oldState.IsKeyUp(Keys.Space) && keyState.IsKeyDown(Keys.Space))
+                if (oldState.IsKeyUp(Keys.Space) && keyState.IsKeyDown(Keys.Space) && playerShip.PrimaryType == "rail")
                 {
                     playerShip.HasShotPrim = true;
                     if (playerShip.HasShotPrim)
@@ -743,7 +743,19 @@ namespace MonoGame_Dynamics_Final_Project
                     {
                         playerShip.HasShotPrim = false;
                     }
-
+                }
+                else if (keyState.IsKeyDown(Keys.Space) && playerShip.PrimaryType == "laser")
+                {
+                    playerShip.HasShotPrim = true;
+                    if (playerShip.HasShotPrim)
+                    {
+                        audioManager.PlaySoundEffect("shot");
+                        playerShip.shootPrimary(Content, gameTime);
+                    }
+                    else
+                    {
+                        playerShip.HasShotPrim = false;
+                    }
                 }
                 // Secondary Weapon
                 if (oldState.IsKeyUp(Keys.B) && keyState.IsKeyDown(Keys.B))
@@ -768,6 +780,8 @@ namespace MonoGame_Dynamics_Final_Project
                 if (keyState.IsKeyDown(Keys.D2))
                 {
                     playerShip.setWeapon("laser", 5);
+                    playerShip.RailLeft.rotation = 0;
+                    playerShip.RailRight.rotation = 0;
                 } 
                 if (keyState.IsKeyDown(Keys.D3))
                 {

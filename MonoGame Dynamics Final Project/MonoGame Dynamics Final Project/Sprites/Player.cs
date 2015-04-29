@@ -96,7 +96,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         //Texture object and a collision rectangle
         public Texture2D TextureImage { get; set; }
 
-        public float AtkSpeed = .7f;
+        public float AtkSpeed;
         public float MoveSpeed = 1000.0f;
 
         public virtual Rectangle CollisionRectangle
@@ -218,7 +218,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             TextureImage = textureImage;
             
             //textureImage.GetData<Color>(0, source, textureData, 0, source.Width * source.Height);
-
+            AtkSpeed = .7f;
             
 
             Position = position;
@@ -243,7 +243,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             secondary = new List<Weapon>();
             
             // Set Default Weapons
-            setWeapon("laser", 5);
+            setWeapon("rail", 5);
             hasShot = false;
             hasShotPrim = false;
             forcePull = false;
@@ -546,6 +546,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                 primaryType = weaponType;
                 primaryAmmo = ammoCapacity;
                 currentPrimaryAmmo = ammoCapacity;
+                AtkSpeed = .15f;
             }
 
             if (weaponType == "rail")
@@ -553,6 +554,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                 primaryType = weaponType;
                 primaryAmmo = ammoCapacity;
                 currentPrimaryAmmo = ammoCapacity;
+                AtkSpeed = .7f;
             }
 
             // List of Secondary Weapons
@@ -671,9 +673,9 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
 
         public void shootRail(ContentManager content)
         {
-            Rail rail = new Rail(content, railLeft.position, 500f, -1);
+            Rail rail = new Rail(content, railLeft.position, 250f, -1);
             railLeft.primary.Add(rail);
-            rail = new Rail(content, railRight.position, 500f, 1);
+            rail = new Rail(content, railRight.position, 250f, 1);
             railRight.primary.Add(rail);
            // currentPrimaryAmmo--;
         }
