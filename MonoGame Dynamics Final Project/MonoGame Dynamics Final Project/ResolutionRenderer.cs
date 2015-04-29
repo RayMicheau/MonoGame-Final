@@ -100,6 +100,17 @@ namespace MonoGame_Dynamics_Final_Project
             SetupVirtualScreenViewport();
         }
 
+        public void DrawPause()
+        {
+            //set full viewport
+            SetupFullViewport();
+            //clear screen with BG color
+            
+
+            //set virtual viewport
+            SetupVirtualScreenViewport();
+        }
+
         /// <summary>
         /// Get modified matrix for sprite rendering
         /// </summary>

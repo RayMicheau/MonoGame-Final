@@ -32,13 +32,15 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         protected float tileHeight;
         protected float windowHeight;
         public string enemyType;
+        public bool offScreen;
+        protected float maxSpeed;
 
         protected Vector2 distanceBetween;
         public Texture2D EnemyShot;
         public Enemy(ContentManager content, int width, int height, Texture2D textureImage, GraphicsDevice Device, int spotinFormation, string formationType, float scale, float damage, float health)
             : base(width, height, textureImage, new Vector2(0, -100), new Vector2(0, 10f), true, scale, health)
         {
-            mass = 5f;
+            Mass = mass;
             AtkSpeed = 1f;
             tileWidth = Device.Adapter.CurrentDisplayMode.Width / 7f;
             tileHeight = Device.Adapter.CurrentDisplayMode.Height / 5f;
@@ -46,6 +48,8 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             setEnemy(spotinFormation, formationType);
             VectorSpeed = 1.0f;
             rotation = 0.0f;
+            offScreen = true;
+            maxSpeed = 100.0f;
             
             
         }
@@ -80,7 +84,47 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             
            
         }
+        public void Update(GameTime gameTime, Rectangle virtualSize)
+        {
+            float timeLapse = (float)(gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
+            position += Velocity * timeLapse;
+            velocity.X = MathHelper.Clamp(velocity.X, 0.0f, maxSpeed);
+            velocity.Y = MathHelper.Clamp(velocity.Y, 0.0f, maxSpeed);
+            source = animatedSprite(frameNum, frameTime, frameWidth, frameHeight, TextureImage, timeLapse);
+            if (Position.Y > 0.0f)
+            {
+                offScreen = false;
 
+            } 
+            if (!offScreen)
+            {
+                if (Position.X >= virtualSize.Width)
+                {
+                    //position.X = frameWidth * -1;
+                    velocity.X *= -1;
+                }
+                else if (Position.X <= 0)
+                {
+                    //position.X = virtualSize.Width + frameWidth;
+                    velocity.X *= -1;
+                }
+
+                if (Position.Y >= virtualSize.Height)
+                {
+                    //position.Y = virtualSize.Height - SpriteOrigin.Y * Scale;
+                    velocity.Y *= -1;
+
+                }
+                else if (Position.Y <= 0)
+                {
+                    //position.Y = virtualSize.Height - SpriteOrigin.Y * Scale;
+                    velocity.Y *= -1;
+
+                } 
+
+            }
+            
+        }
         public virtual void Update(ContentManager content, GameTime gameTime, Player player) { }
         public virtual void Update(GameTime gameTime, Player player)
         {
@@ -88,6 +132,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             float timeLapse = (float)(gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
             position += Velocity * timeLapse;
             source = animatedSprite(frameNum, frameTime, frameWidth, frameHeight, TextureImage, timeLapse);
+
 
             //   TextureImage.GetData<Color>(0, source, textureData, 0, source.Width * source.Height);
         }

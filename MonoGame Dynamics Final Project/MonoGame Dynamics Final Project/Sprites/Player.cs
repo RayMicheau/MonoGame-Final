@@ -247,8 +247,8 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             // Set Secondary Weapons
             //setWeapon("gravityWell", 1);
             //setWeapon("helixMissile", 2);
-            setWeapon("homingMissile", 2);
-            setWeapon("laser", 5);
+            //setWeapon("homingMissile", 2);
+            //setWeapon("laser", 5);
             //setWeapon("rail", 4);
             hasShot = false;
             hasShotPrim = false;
@@ -351,7 +351,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             {
                 //Keep the sprite onscreen
                 Update(gameTime, enemyWave);
-
+                
                 if (Position.X > virtualSize.Width + frameWidth)
                 {
                     position.X = frameWidth * -1;

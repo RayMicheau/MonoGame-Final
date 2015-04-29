@@ -29,6 +29,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         public Stingray2(ContentManager content, GraphicsDevice Device, int spotinFormation, string formationType) :
             base(content, 80, 80, content.Load<Texture2D>("Images/Animations/Sting-Ray-2"), Device, spotinFormation, formationType, 0.5f, 100f, 500f)
         {
+            mass = 2f;
             frameNum = 12;
             frameTime = 0.1f;
             Ai = RayState.Default;

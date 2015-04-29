@@ -32,6 +32,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         public VoidAngel(ContentManager content, GraphicsDevice Device, int spotinFormation, string formationType) :
             base(content,100, 100, content.Load<Texture2D>("Images/Animations/Void-Angel"), Device, spotinFormation, formationType, 0.5f, 100f, 500f)
         {
+            mass = 3f;
             frameNum = 7;
             frameTime = 0.1f;
             Content = content;

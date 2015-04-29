@@ -27,6 +27,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             base(content, 300, 300, content.Load<Texture2D>("Images/Animations/voidVulture"), Device, spotinFormation, formationType, 0.5f, 100f, 2000f)
              
         {
+            mass = 10f;
             frameNum = 15;
             frameTime = 0.08f;
             vultureState = VultureState.Idle;

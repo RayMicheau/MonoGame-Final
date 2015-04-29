@@ -75,6 +75,7 @@ namespace MonoGame_Dynamics_Final_Project
         Texture2D[] background; // Current Resolution 480w x 800h
         ScrollingBackground myBackground;
         ScrollingBackground myBGtwo;
+        
 
         //POWER UP IMGs
         Texture2D AtkSpdUp;
@@ -348,7 +349,8 @@ namespace MonoGame_Dynamics_Final_Project
 
                 foreach (Enemy enemy in Enemywave)
                 {
-                    enemy.Update(gameTime, playerShip);
+                    //enemy.Update(gameTime, playerShip);
+                    enemy.Update(gameTime, VirtualSize);
                     if (enemy.enemyType == "stingRay" && playGame == true)
                     {
                         enemy.Update(gameTime, playerShip);
@@ -416,37 +418,41 @@ namespace MonoGame_Dynamics_Final_Project
                     }
                 }
 
-                //Destrcution Update
-                for (int i = 0; i < DestructionParticles.Count; i++)
-                {
-                    DestructionParticles[i].EmitterLocation = DestructionEmmision[i];
-                    DestructionEmmision[i] += new Vector2(Convert.ToSingle(Math.Cos(DestructionAngleCounters[i]) * DestructionRadiusCounters[i]), Convert.ToSingle(Math.Sin(DestructionAngleCounters[i]) * DestructionRadiusCounters[i]));
-                    DestructionRadiusCounters[i] += 10;
-                    DestructionAngleCounters[i] += 10;
-                    
-                    //DestructionParticles[i].Update((DestructionRadiusCounters[i] < 1000), new Vector2(10, 10), 0f, new Color(random.Next(0, 255), random.Next(0, 50), random.Next(0, 100)), 10);
-                    DestructionParticles[i].Update((DestructionRadiusCounters[i] < 200), new Vector2(10, 10), 0f, Color.White, 20);
-                    DestructionParticles[i].Update((DestructionRadiusCounters[i] < 400 && DestructionRadiusCounters[i] >= 200), new Vector2(10, 10), 0f, Color.Yellow, 40);
-                    DestructionParticles[i].Update((DestructionRadiusCounters[i] < 600 && DestructionRadiusCounters[i] >= 400), new Vector2(10, 10), 0f, Color.Orange, 60);
-                    DestructionParticles[i].Update((DestructionRadiusCounters[i] < 800 && DestructionRadiusCounters[i] >= 600), new Vector2(10, 10), 0f, Color.Red, 80);
-                    DestructionParticles[i].Update((DestructionRadiusCounters[i] < 1000 && DestructionRadiusCounters[i] >= 800), new Vector2(10, 10), 0f, Color.DarkRed, 100);
+               
 
-                    if (DestructionRadiusCounters[i] >= 200)
+
+                    //Destrcution Update
+                    for (int i = 0; i < DestructionParticles.Count; i++)
                     {
-                        for (int f = 0; f < AftershockParticles.Count; f++)
-                        {
-                            AftershockParticles[f].EmitterLocation = AftershockEmmision[f];
-                            AftershockEmmision[f] += new Vector2(Convert.ToSingle(Math.Cos(AftershockAngleCounters[f]) * AftershockRadiusCounters[f]), Convert.ToSingle(Math.Sin(AftershockAngleCounters[f]) * AftershockRadiusCounters[f]));
-                            AftershockRadiusCounters[f] += 10;
-                            AftershockAngleCounters[f] -= 10;
+                        DestructionParticles[i].EmitterLocation = DestructionEmmision[i];
+                        DestructionEmmision[i] += new Vector2(Convert.ToSingle(Math.Cos(DestructionAngleCounters[i]) * DestructionRadiusCounters[i]), Convert.ToSingle(Math.Sin(DestructionAngleCounters[i]) * DestructionRadiusCounters[i]));
+                        DestructionRadiusCounters[i] += 10;
+                        DestructionAngleCounters[i] += 10;
 
-                            AftershockParticles[f].Update((AftershockRadiusCounters[f] <= 200), new Vector2(10, 10), 0f, Color.Purple, 4);
-                            AftershockParticles[f].Update((AftershockRadiusCounters[f] <= 400 && AftershockRadiusCounters[f] > 200), new Vector2(10, 10), 0f, Color.Blue, 6);
-                            AftershockParticles[f].Update((AftershockRadiusCounters[f] <= 600 && AftershockRadiusCounters[f] > 400), new Vector2(10, 10), 0f, Color.Turquoise, 8);
-                            AftershockParticles[f].Update((AftershockRadiusCounters[f] <= 800 && AftershockRadiusCounters[f] > 600), new Vector2(10, 10), 0f, Color.Goldenrod, 10);
+                        //DestructionParticles[i].Update((DestructionRadiusCounters[i] < 1000), new Vector2(10, 10), 0f, new Color(random.Next(0, 255), random.Next(0, 50), random.Next(0, 100)), 10);
+                        DestructionParticles[i].Update((DestructionRadiusCounters[i] < 200), new Vector2(10, 10), 0f, Color.White, 20);
+                        DestructionParticles[i].Update((DestructionRadiusCounters[i] < 400 && DestructionRadiusCounters[i] >= 200), new Vector2(10, 10), 0f, Color.Yellow, 40);
+                        DestructionParticles[i].Update((DestructionRadiusCounters[i] < 600 && DestructionRadiusCounters[i] >= 400), new Vector2(10, 10), 0f, Color.Orange, 60);
+                        DestructionParticles[i].Update((DestructionRadiusCounters[i] < 800 && DestructionRadiusCounters[i] >= 600), new Vector2(10, 10), 0f, Color.Red, 80);
+                        DestructionParticles[i].Update((DestructionRadiusCounters[i] < 1000 && DestructionRadiusCounters[i] >= 800), new Vector2(10, 10), 0f, Color.DarkRed, 100);
+
+                        if (DestructionRadiusCounters[i] >= 200)
+                        {
+                            for (int f = 0; f < AftershockParticles.Count; f++)
+                            {
+                                AftershockParticles[f].EmitterLocation = AftershockEmmision[f];
+                                AftershockEmmision[f] += new Vector2(Convert.ToSingle(Math.Cos(AftershockAngleCounters[f]) * AftershockRadiusCounters[f]), Convert.ToSingle(Math.Sin(AftershockAngleCounters[f]) * AftershockRadiusCounters[f]));
+                                AftershockRadiusCounters[f] += 10;
+                                AftershockAngleCounters[f] -= 10;
+
+                                AftershockParticles[f].Update((AftershockRadiusCounters[f] <= 200), new Vector2(10, 10), 0f, Color.Purple, 4);
+                                AftershockParticles[f].Update((AftershockRadiusCounters[f] <= 400 && AftershockRadiusCounters[f] > 200), new Vector2(10, 10), 0f, Color.Blue, 6);
+                                AftershockParticles[f].Update((AftershockRadiusCounters[f] <= 600 && AftershockRadiusCounters[f] > 400), new Vector2(10, 10), 0f, Color.Turquoise, 8);
+                                AftershockParticles[f].Update((AftershockRadiusCounters[f] <= 800 && AftershockRadiusCounters[f] > 600), new Vector2(10, 10), 0f, Color.Goldenrod, 10);
+                            }
                         }
                     }
-                }
+                
                 // testing collision of playership with enemy
                 playerShip.collisionDetected = false;
 
@@ -750,17 +756,38 @@ namespace MonoGame_Dynamics_Final_Project
                         playerShip.shootSecondary(Content);
                     }
                 }
+                if (keyState.IsKeyDown(Keys.D1))
+                {
+                    playerShip.setWeapon("rail",4);
+                }
+                if (keyState.IsKeyDown(Keys.D2))
+                {
+                    playerShip.setWeapon("laser", 5);
+                } 
+                if (keyState.IsKeyDown(Keys.D3))
+                {
+                    playerShip.setWeapon("gravityWell", 1);
+                }
+                if (keyState.IsKeyDown(Keys.D4))
+                {
+                    playerShip.setWeapon("helixMissile", 2);
+                } 
+                if (keyState.IsKeyDown(Keys.D5))
+                {
+                    playerShip.setWeapon("homingMissile", 2);
+                }
                 if (keyState.IsKeyDown(Keys.P))
                 {
                     gameState = GameState.Pause;
                     playGame = false;
-                    if (oldState.IsKeyUp(Keys.P) && keyState.IsKeyDown(Keys.P))
+                    /*if (gameState == GameState.Pause && keyState.IsKeyDown(Keys.P))
                     {
                         Update(gameTime);
                         gameState = GameState.Play;
                         playGame = true;
-                    }
+                    }*/
                 }
+                
                 /*if (gameState == GameState.Pause && keyState.IsKeyDown(Keys.P))
                 {
                     //if (keyState.IsKeyDown(Keys.P))
@@ -910,10 +937,12 @@ namespace MonoGame_Dynamics_Final_Project
 
     //Pause?******************************************************************************************************************
                 case GameState.Pause:
-                    
+                    _irr.DrawPause();
+                    _irr.SetupFullViewport();
                     spriteBatch.Begin();
                     spriteBatch.DrawString(menuFont, "Paused", new Vector2(GraphicsDevice.Viewport.Width / 4, 100.0f), customColor, 0.0f,Vector2.Zero,0.5f,SpriteEffects.None,0.0f);
                     spriteBatch.End();
+                    _irr.SetupVirtualScreenViewport();
                     
                     break;
 
