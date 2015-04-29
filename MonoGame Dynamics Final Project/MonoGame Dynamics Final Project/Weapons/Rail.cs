@@ -16,72 +16,57 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
 {
     class Rail : Weapon
     {
-        protected int shotFrameIndex = 1;
-        protected int shotX = 0;
-        protected float shotTime, shotSpeed; 
-        protected int shotFrameWidth, shotFrameHeight, shotFrames;
-        protected Rectangle shotRectangle; 
-        protected float scale;
+        public int orientation;
+        private float elapsedShotTime;
+        protected float scalarVelocity;
 
-        public Rail(ContentManager content, Vector2 startPosition, float velocity, int orientation) // 1 right, -1 left
+        public Rail(ContentManager content, Vector2 startPosition, float velocity, int Orientation) // 1 right, -1 left
             : base(content.Load<Texture2D>("Images/Animations/Plasma-Repeater-Shot"), startPosition, velocity, 1)
         {
-            shotTime = 0f; 
-            shotSpeed = 0.1f;
-            shotFrameWidth = shotFrameHeight = 20;
-            shotRectangle = new Rectangle(0, 0, shotFrameWidth, shotFrameHeight);
-            shotFrames = 4;
             angle = 0;
             damage = 500;
-            scale = 1f;
+            scale = 2f;
+            orientation = Orientation;
+            spriteEffect = SpriteEffects.None;
+            scalarVelocity = velocity;
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime, float turretRotation)
         {
+            angle = turretRotation;
+            turretRotation -= MathHelper.PiOver2;
+            
+            velocity = new Vector2((float)Math.Cos(turretRotation),
+                                   (float)Math.Sin(turretRotation)) * scalarVelocity;
             base.Update(gameTime);
-            float elapsedTime = gameTime.ElapsedGameTime.Milliseconds / 1000.0f;          
-            shotRectangle = animatedSprite(shotFrames, shotSpeed, shotFrameWidth, shotFrameHeight, TextureImage, elapsedTime);
+
+            elapsedShotTime += gameTime.ElapsedGameTime.Milliseconds / 1000.0f; 
+         
+            if(elapsedShotTime > 0.5f)
+            {
+                if(spriteEffect == SpriteEffects.None)
+                {
+                    spriteEffect = SpriteEffects.FlipHorizontally;
+                }
+                else if (spriteEffect == SpriteEffects.FlipHorizontally)
+                {
+                    spriteEffect = SpriteEffects.None;
+                }
+                elapsedShotTime = 0f;
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(TextureImage,
                              position,
-                             shotRectangle,
+                             null,
                              Color.White,
                              angle,
                              spriteOrigin,
                              scale,
-                             SpriteEffects.None,
+                             spriteEffect,
                              1f);
-        }
-
-        public Rectangle animatedSprite(int frames, float frameTime, int frameWidth, int frameHeight, Texture2D image, float timeLapse)
-        {
-            if (shotFrameIndex == frames + 1)
-            {
-                shotFrameIndex = 1;
-                shotX = 0;
-            }
-            // Calculate the source rectangle of the current frame.
-            if (shotFrameIndex == (image.Width / frameWidth) + 1)
-            {
-                shotX = 0;
-            }
-
-            Rectangle source = new Rectangle(shotX * frameWidth, 0 , frameWidth, frameHeight);
-
-            shotTime += timeLapse;
-            while (shotTime > frameTime)
-            {
-                // Play the next frame in the SpriteSheet
-                shotFrameIndex++;
-                shotX++;
-
-                // reset elapsed time
-                shotTime = 0f;
-            }
-            return source;
         }
     }
 }

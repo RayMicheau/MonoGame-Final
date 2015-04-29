@@ -242,14 +242,8 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             primary =  new List<Weapon>();
             secondary = new List<Weapon>();
             
-            // Set Primary Weapons
-            
-            // Set Secondary Weapons
-            //setWeapon("gravityWell", 1);
-            //setWeapon("helixMissile", 2);
-            //setWeapon("homingMissile", 2);
-            //setWeapon("laser", 5);
-            //setWeapon("rail", 4);
+            // Set Default Weapons
+            setWeapon("laser", 5);
             hasShot = false;
             hasShotPrim = false;
             forcePull = false;
@@ -392,6 +386,10 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                 {
                     weapon[i].Update(gameTime, enemyWave);
                 }
+                if(secondaryType == "helixMissile")
+                {
+                    weapon[i].Update(gameTime);
+                }
                 else
                 {
                     weapon[i].Update(gameTime);
@@ -404,7 +402,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                         break;
 
                     case "rail":
-                        weapon[i].Update(gameTime);
+                        weapon[i].Update(gameTime, rotation);
                         break;
 
                     default:
@@ -635,9 +633,9 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             if (primary.Count + 1 <= primaryAmmo)
             { 
                 Weapon left = new HelixMissile(content, new Vector2(position.X, position.Y + 50f - spriteOrigin.Y), 2f, -1);
-                primary.Add(left);
+                secondary.Add(left);
                 Weapon right = new HelixMissile(content, new Vector2(position.X, position.Y + 50f - spriteOrigin.Y), 2f, 1);
-                primary.Add(right);
+                secondary.Add(right);
             }
         }
 
@@ -649,10 +647,10 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
 
         public void shootLaser(ContentManager content, GameTime gameTime)
         {
-                BasicLaser laser = new BasicLaser(content, new Vector2(position.X, position.Y - spriteOrigin.Y), 500f, -1);
+                BasicLaser laser = new BasicLaser(content, railLeft.position, 2000f);
                 railLeft.primary.Add(laser);
-               // laser = new BasicLaser(content, new Vector2(position.X, position.Y - spriteOrigin.Y), 500f, 1);
-               // railRight.primary.Add(laser);
+                laser = new BasicLaser(content, railRight.position, 2000f);
+                railRight.primary.Add(laser);
                 currentPrimaryAmmo--;
         }
 
@@ -674,11 +672,10 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         public void shootRail(ContentManager content)
         {
             Rail rail = new Rail(content, railLeft.position, 500f, -1);
-        //    Rail rail = new Rail(content, railLeft.position + railLeft.offset + railLeft.spriteOrigin, 500f, -1);
-        //    railLeft.primary.Add(rail);
+            railLeft.primary.Add(rail);
             rail = new Rail(content, railRight.position, 500f, 1);
             railRight.primary.Add(rail);
-            currentPrimaryAmmo--;
+           // currentPrimaryAmmo--;
         }
         #endregion
 

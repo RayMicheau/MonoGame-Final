@@ -201,6 +201,8 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
 
         public virtual void Update(GameTime gameTime, List<Enemy> enemyWave)
         { }
+
+        public virtual void Update(GameTime gameTime, float turretRotation) { }
         #endregion
     }
 }
