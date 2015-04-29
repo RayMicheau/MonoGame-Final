@@ -144,6 +144,12 @@ namespace MonoGame_Dynamics_Final_Project
         List<int> DestructionAngleCounters = new List<int>();
         List<Vector2> DestructionEmmision = new List<Vector2>();
 
+        List<ParticleEngine> AftershockParticles = new List<ParticleEngine>();
+        List<Texture2D> AftershockTextures = new List<Texture2D>();
+        List<int> AftershockRadiusCounters = new List<int>();
+        List<int> AftershockAngleCounters = new List<int>();
+        List<Vector2> AftershockEmmision = new List<Vector2>();
+
         Random randomnumber = new Random();
 
         #endregion
@@ -201,8 +207,11 @@ namespace MonoGame_Dynamics_Final_Project
                 DestructionTextures.Add(Content.Load<Texture2D>("Images/Particles/meow1"));
                 DestructionTextures.Add(Content.Load<Texture2D>("Images/Particles/meow2"));
                 DestructionTextures.Add(Content.Load<Texture2D>("Images/Particles/meow3"));
-                DestructionTextures.Add(Content.Load<Texture2D>("Images/Particles/meow4"));
+                //AftershockTextures.Add(Content.Load<Texture2D>("Images/Particles/smokepoof"));
+                AftershockTextures.Add(Content.Load<Texture2D>("Images/Particles/xdiamond"));
+                AftershockTextures.Add(Content.Load<Texture2D>("Images/Particles/exhaust")); DestructionTextures.Add(Content.Load<Texture2D>("Images/Particles/meow4"));
                 
+
                 //Loading audio
                 audioManager = new AudioManager();
                 audioManager.Initialize(Content);
@@ -403,8 +412,29 @@ namespace MonoGame_Dynamics_Final_Project
                     DestructionEmmision[i] += new Vector2(Convert.ToSingle(Math.Cos(DestructionAngleCounters[i]) * DestructionRadiusCounters[i]), Convert.ToSingle(Math.Sin(DestructionAngleCounters[i]) * DestructionRadiusCounters[i]));
                     DestructionRadiusCounters[i] += 10;
                     DestructionAngleCounters[i] += 10;
-                    DestructionParticles[i].Update((DestructionRadiusCounters[i] < 1000), new Vector2(10, 10), 0f, new Color(random.Next(0, 255), random.Next(0, 50), random.Next(0, 100)), 10);
+                    
+                    //DestructionParticles[i].Update((DestructionRadiusCounters[i] < 1000), new Vector2(10, 10), 0f, new Color(random.Next(0, 255), random.Next(0, 50), random.Next(0, 100)), 10);
+                    DestructionParticles[i].Update((DestructionRadiusCounters[i] < 200), new Vector2(10, 10), 0f, Color.White, 2);
+                    DestructionParticles[i].Update((DestructionRadiusCounters[i] < 400 && DestructionRadiusCounters[i] >= 200), new Vector2(10, 10), 0f, Color.Yellow, 200);
+                    DestructionParticles[i].Update((DestructionRadiusCounters[i] < 600 && DestructionRadiusCounters[i] >= 400), new Vector2(10, 10), 0f, Color.Orange, 300);
+                    DestructionParticles[i].Update((DestructionRadiusCounters[i] < 800 && DestructionRadiusCounters[i] >= 600), new Vector2(10, 10), 0f, Color.Red, 400);
+                    DestructionParticles[i].Update((DestructionRadiusCounters[i] < 1000 && DestructionRadiusCounters[i] >= 800), new Vector2(10, 10), 0f, Color.DarkRed, 500);
 
+                    if (DestructionRadiusCounters[i] >= 200)
+                    {
+                        for (int f = 0; f < AftershockParticles.Count; f++)
+                        {
+                            AftershockParticles[f].EmitterLocation = AftershockEmmision[f];
+                            AftershockEmmision[f] += new Vector2(Convert.ToSingle(Math.Cos(AftershockAngleCounters[f]) * AftershockRadiusCounters[f]), Convert.ToSingle(Math.Sin(AftershockAngleCounters[f]) * AftershockRadiusCounters[f]));
+                            AftershockRadiusCounters[f] += 10;
+                            AftershockAngleCounters[f] -= 10;
+
+                            AftershockParticles[f].Update((AftershockRadiusCounters[f] <= 200), new Vector2(10, 10), 0f, Color.Purple, 2);
+                            AftershockParticles[f].Update((AftershockRadiusCounters[f] <= 400 && AftershockRadiusCounters[f] > 200), new Vector2(10, 10), 0f, Color.Blue, 200);
+                            AftershockParticles[f].Update((AftershockRadiusCounters[f] <= 600 && AftershockRadiusCounters[f] > 400), new Vector2(10, 10), 0f, Color.Turquoise, 300);
+                            AftershockParticles[f].Update((AftershockRadiusCounters[f] <= 800 && AftershockRadiusCounters[f] > 600), new Vector2(10, 10), 0f, Color.GreenYellow, 400);
+                        }
+                    }
                 }
                 // testing collision of playership with enemy
 
@@ -803,6 +833,20 @@ namespace MonoGame_Dynamics_Final_Project
                     //Draw Explosion
                     for(int i = 0; i < DestructionParticles.Count; i++)
                     {
+                        if (DestructionRadiusCounters[i] >= 200)
+                        {
+                            for (int f = 0; f < AftershockParticles.Count; f++)
+                            {
+                                AftershockParticles[f].Draw(spriteBatch);
+                                if (AftershockParticles[f].particles.Count == 0)
+                                {
+                                    AftershockRadiusCounters.RemoveAt(f);
+                                    AftershockAngleCounters.RemoveAt(f);
+                                    AftershockEmmision.RemoveAt(f);
+                                    AftershockParticles.RemoveAt(f);
+                                }
+                            }
+                        }
                         DestructionParticles[i].Draw(spriteBatch);
                         if (DestructionParticles[i].particles.Count == 0)
                         {
@@ -1093,6 +1137,11 @@ namespace MonoGame_Dynamics_Final_Project
                                 DestructionRadiusCounters.Add(10);
                                 DestructionAngleCounters.Add(0);
                                 DestructionEmmision.Add(Enemywave[i].Position);
+
+                                AftershockParticles.Add(new ParticleEngine(AftershockTextures, new Vector2(400, 240)));
+                                AftershockRadiusCounters.Add(10);
+                                AftershockAngleCounters.Add(0);
+                                AftershockEmmision.Add(Enemywave[i].Position);
                             }
                             if (Enemywave[i].enemyType == "voidAngel")
                             {
