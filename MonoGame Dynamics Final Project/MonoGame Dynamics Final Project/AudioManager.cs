@@ -12,9 +12,7 @@ namespace MonoGame_Dynamics_Final_Project
     {
         /// <summary>
         /// Sound effects to load in init
-        /// </summary>        
-        ///
-        Dictionary<string, SoundEffect> soundDictionary;
+        /// </summary>
         Song menuSong;
         Song gameplaySong;
         SoundEffect enemyDeath;
@@ -25,30 +23,30 @@ namespace MonoGame_Dynamics_Final_Project
         SoundEffect playerDeath;
         SoundEffect thrust;
         SoundEffect rocket;
+        SoundEffect hit;
+        SoundEffect hitTwo;
+        SoundEffect hitThree;
+        SoundEffect shot;
+        SoundEffectInstance thruster;
 
         public void Initialize(ContentManager Content)
         {
-            enemyDeath = Content.Load<SoundEffect>("Audio/Sound Effects/enemy dead");
-            enemyDeathTwo = Content.Load<SoundEffect>("Audio/Sound Effects/Enemy dead2");
-            gravityWell = Content.Load<SoundEffect>("Audio/Sound Effects/gravity well");
-            powerUpSpawn = Content.Load<SoundEffect>("Audio/Sound Effects/powerup 2");
-            powerUpGet = Content.Load<SoundEffect>("Audio/Sound Effects/powerup_gained something");
-            playerDeath = Content.Load<SoundEffect>("Audio/Sound Effects/player dead");
-            thrust = Content.Load<SoundEffect>("Audio/Sound Effects/thrust");
-            rocket = Content.Load<SoundEffect>("Audio/Sound Effects/rocket shot");
-            //gameplaySong = Content.Load<Song>("Audio/Songs/Catalysm Song");
-            //menuSong = Content.Load<Song>("Audio/Songs/menu song");
-            /*
-            soundDictionary.Add("enemy dead", Content.Load<SoundEffect>("Audio/Sound Effects/enemy dead"));
-            soundDictionary.Add("enemy dead2", Content.Load<SoundEffect>("Audio/Sound Effects/Enemy dead2"));
-            soundDictionary.Add("gravity well", Content.Load<SoundEffect>("Audio/Sound Effects/gravity well"));
-            soundDictionary.Add("powerup 2", Content.Load<SoundEffect>("Audio/Sound Effects/powerup 2"));
-            soundDictionary.Add("powerup gained", Content.Load<SoundEffect>("Audio/Sound Effects/powerup_gained something"));
-            soundDictionary.Add("player death", Content.Load<SoundEffect>("Audio/Sound Effects/player dead"));
-            soundDictionary.Add("thrust", Content.Load<SoundEffect>("Audio/Sound Effects/thrust"));
-            gameplaySong = Content.Load<Song>("Audio/Songs/Catalysm Song");
-            menuSong = Content.Load<Song>("Audio/Songs/menu song");
-             */
+            shot = Content.Load<SoundEffect>("Audio Files/Sound Effects/basic laser");
+            enemyDeath = Content.Load<SoundEffect>("Audio Files/Sound Effects/enemy dead");
+            enemyDeathTwo = Content.Load<SoundEffect>("Audio Files/Sound Effects/Enemy dead2");
+            gravityWell = Content.Load<SoundEffect>("Audio Files/Sound Effects/gravity well");
+            powerUpSpawn = Content.Load<SoundEffect>("Audio Files/Sound Effects/powerup 2");
+            powerUpGet = Content.Load<SoundEffect>("Audio Files/Sound Effects/powerup_gained something");
+            playerDeath = Content.Load<SoundEffect>("Audio Files/Sound Effects/player dead");
+            thrust = Content.Load<SoundEffect>("Audio Files/Sound Effects/thrust");
+            rocket = Content.Load<SoundEffect>("Audio Files/Sound Effects/rocket shot");
+            hit = Content.Load<SoundEffect>("Audio Files/Sound Effects/hit noise");
+            //gameplaySong = Content.Load<Song>("Audio Files/Songs/Catalysm Song");
+            //menuSong = Content.Load<Song>("Audio Files/Songs/menu song");
+
+            thruster = thrust.CreateInstance();
+            thruster.IsLooped = false;
+
         }
 
         public void Play(string songName)
@@ -59,10 +57,12 @@ namespace MonoGame_Dynamics_Final_Project
 
             if(songName == menuSong.Name)
             {
+                MediaPlayer.IsRepeating = true;
                 MediaPlayer.Play(menuSong);
             }
             else if (songName == gameplaySong.Name)
             {
+                MediaPlayer.IsRepeating = true;
                 MediaPlayer.Play(gameplaySong);
             }
         }
@@ -77,6 +77,9 @@ namespace MonoGame_Dynamics_Final_Project
 
             switch (effectName)
             {
+                case "gravity well":
+                    gravityWell.Play();
+                    break;
 
                 case "enemy dead":
                     enemyDeath.Play();
@@ -90,12 +93,13 @@ namespace MonoGame_Dynamics_Final_Project
                     break;
 
                 case "thrust":
-                    //thrust.Play();
+                    thrust.Play();
                     break;
 
                 case "rocket":
                     rocket.Play();
                     break;
+
                 case "Spawn pUp":
                     powerUpSpawn.Play();
                     break;
@@ -104,6 +108,13 @@ namespace MonoGame_Dynamics_Final_Project
                     powerUpGet.Play();
                     break;
 
+                case "hit":
+                    hit.Play();
+                    break;
+
+                case "shot":
+                    shot.Play();
+                    break;
                 default: break;
             }
         }
@@ -113,5 +124,35 @@ namespace MonoGame_Dynamics_Final_Project
             MediaPlayer.Stop();
         }
 
+        public void StopThrust()
+        {
+            thruster.Stop(true);
+        }
+
+        public void setLooping(bool set)
+        {
+            if (set)
+            {
+                thruster.IsLooped = true;
+                
+            }
+            else if (!set)
+            {
+                thruster.IsLooped = false;
+            }
+        }
+
+        public bool isLooping()
+        {
+            if (thruster.IsLooped)
+            {
+                return true;
+            }
+            if (!thruster.IsLooped)
+            {
+                return false;
+            }
+            else { return false; }
+        }
     }
 }

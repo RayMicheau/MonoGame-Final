@@ -64,6 +64,12 @@ namespace MonoGame_Dynamics_Final_Project
 
         public static Random random;
 
+        //AUDIO 
+        AudioManager audioManager;
+        bool isThrusting = false;
+        bool isThrustingDown = false;
+        bool songSwap = false;
+
         // background
         int windowWidth, windowHeight;
         Texture2D[] background; // Current Resolution 480w x 800h
@@ -196,14 +202,16 @@ namespace MonoGame_Dynamics_Final_Project
                 DestructionTextures.Add(Content.Load<Texture2D>("Images/Particles/meow2"));
                 DestructionTextures.Add(Content.Load<Texture2D>("Images/Particles/meow3"));
                 DestructionTextures.Add(Content.Load<Texture2D>("Images/Particles/meow4"));
-
-                /*Song song = Content.Load<Song>("TellMe");
-                MediaPlayer.Play(song);*/
-
+                
+                //Loading audio
+                audioManager = new AudioManager();
+                audioManager.Initialize(Content);
+                audioManager.Play("");
+            //TODO: ADD MENU SCREEN SONG
                 
 
                 menuFont = Content.Load<SpriteFont>("Fonts/titleFont");
-                menuScreen = new Menu(GraphicsDevice, menuFont, menuItems);
+                menuScreen = new Menu(GraphicsDevice,Content, menuFont, menuItems);
                 startMenuScreen = Content.Load<Texture2D>("Images/Backgrounds/MenuTwo");
                 customColor.A = 1;
                 customColor.R = 200;
@@ -294,6 +302,11 @@ namespace MonoGame_Dynamics_Final_Project
             //If Game is Running
             if (gameState == GameState.Play)
             {
+                if (songSwap)
+                {
+                    audioManager.Play("");
+                    songSwap = false;
+                }
                 playGame = true;
                 healthRect = new Rectangle(100, GraphicsDevice.Viewport.Height - 50, (int)playerShip.Health / 5, health.Height);
 
@@ -432,6 +445,7 @@ namespace MonoGame_Dynamics_Final_Project
 
                     if (playerShip.Secondary[0].ElapsedTime > 5.0f)
                     {
+                        audioManager.PlaySoundEffect("gravity well");
                         playerShip.ForcePull = false;
                         playerShip.Secondary.RemoveAt(0);
                     }
@@ -445,6 +459,7 @@ namespace MonoGame_Dynamics_Final_Project
                     }
                     else if (CheckForPowerUps(playerShip.CollisionRectangle, powerUpList[i].CollisionRectangle))
                     {
+                        audioManager.PlaySoundEffect("Get pUp");
                         powerUpList[i].ActivatePowerUp(Powerups, playerShip);
                         powerUpList.RemoveAt(i);
                     }
@@ -480,6 +495,7 @@ namespace MonoGame_Dynamics_Final_Project
                 else if (menuScreen.ItemSelected == 1)
                 {
                     gameState = GameState.Play;
+                    songSwap = true;
                 }
             }
             if (gameState == GameState.GameOver)
@@ -499,6 +515,12 @@ namespace MonoGame_Dynamics_Final_Project
                || gamePadState.ThumbSticks.Left.Y > 0)
                 {
                     playerShip.Up();
+                    if (!isThrusting)
+                    {
+                        audioManager.setLooping(true);
+                        audioManager.PlaySoundEffect("thrust");
+                        isThrusting = true;
+                    }
                     keyPressed = true;
 
                     if (animationResetSwitchU == 0 && animationResetSwitchR == 0 && animationResetSwitchL == 0)
@@ -516,6 +538,12 @@ namespace MonoGame_Dynamics_Final_Project
                   || gamePadState.DPad.Up == ButtonState.Released
                   || gamePadState.ThumbSticks.Left.Y == 0)
                 {
+                    if (isThrusting && audioManager.isLooping())
+                    {
+                        audioManager.setLooping(false);
+                        audioManager.StopThrust();
+                        isThrusting = false;
+                    }
                     if (animationResetSwitchU > 0)
                     {
                         playerShip.resetAnimation();
@@ -530,13 +558,26 @@ namespace MonoGame_Dynamics_Final_Project
                   || gamePadState.ThumbSticks.Left.Y < -0.5f)
                 {
                     playerShip.Down();
+                    if (!isThrustingDown)
+                    {
+                        audioManager.setLooping(true);
+                        audioManager.PlaySoundEffect("thrust");
+                        isThrustingDown = true;
+                    }
                     keyPressed = true;
                 }
                 else if (keyState.IsKeyUp(Keys.Down)
                   || keyState.IsKeyUp(Keys.S)
                   || gamePadState.DPad.Down == ButtonState.Released
                   || gamePadState.ThumbSticks.Left.Y == 0)
-                { }
+                {
+                    if (isThrustingDown && audioManager.isLooping())
+                    {
+                        audioManager.setLooping(false);
+                        audioManager.StopThrust();
+                        isThrustingDown = false;
+                    }
+                }
 
                 if (keyState.IsKeyDown(Keys.Left)
                   || keyState.IsKeyDown(Keys.A)
@@ -629,6 +670,7 @@ namespace MonoGame_Dynamics_Final_Project
                     playerShip.HasShotPrim = true;
                     if (playerShip.HasShotPrim)
                     {
+                        audioManager.PlaySoundEffect("shot");
                         playerShip.shootPrimary(Content, gameTime);
                     }
                     else
@@ -643,6 +685,7 @@ namespace MonoGame_Dynamics_Final_Project
                 {
                     if (playerShip.HasShot)
                     {
+                        audioManager.PlaySoundEffect("rocket");
                         playerShip.HasShot = false;
                         playerShip.ForcePull = true;
                         playerShip.Secondary[0].ElapsedTime = gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
@@ -973,6 +1016,7 @@ namespace MonoGame_Dynamics_Final_Project
 
                 default: break;
             }
+            audioManager.PlaySoundEffect("Spawn pUp");
         }
 
 //Check Powerups Method *************************************************************************************************************
@@ -1020,6 +1064,7 @@ namespace MonoGame_Dynamics_Final_Project
                     int collide = Enemywave[i].CollisionShot(weaponList);
                     if (collide != -1)
                     {
+                        audioManager.PlaySoundEffect("hit");
                         Enemywave[i].painSwitch = true;
                         Enemywave[i].flashCounter = 0;
 
@@ -1035,11 +1080,14 @@ namespace MonoGame_Dynamics_Final_Project
                             if (Enemywave[i].enemyType == "stingRay")
                             {
                                 score += 100;
+                                audioManager.PlaySoundEffect("enemy dead");
                                 StingrayParticles.RemoveAt(StingrayParticles.Count - 1);
                             }
                             if (Enemywave[i].enemyType == "voidVulture")
                             {
                                 score += 1000;
+
+                                audioManager.PlaySoundEffect("enemy dead2");
 
                                 DestructionParticles.Add(new ParticleEngine(DestructionTextures, new Vector2(400, 240)));
                                 DestructionRadiusCounters.Add(10);
