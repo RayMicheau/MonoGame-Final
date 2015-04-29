@@ -146,6 +146,24 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
             }
         }
 
+        public virtual void Update(GameTime gameTime, Rectangle virtualSize, Player player)
+        {
+            //Time between the frames
+            float timeLapse = (float)(gameTime.ElapsedGameTime.TotalSeconds);
+
+            //Move the sprite
+            position += velocity * timeLapse * 10f;
+
+            if (position.Y + TextureImage.Height < 0 || position.Y > virtualSize.Height)
+            {
+                offScreen = true;
+            }
+            else if(position.X + TextureImage.Width > virtualSize.Width || position.X < 0)
+            {
+                offScreen = true;
+            }
+        }
+
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(TextureImage,

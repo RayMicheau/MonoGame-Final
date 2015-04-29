@@ -27,6 +27,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
             :base(ShotTexture, startPosition, velocity, 1)
         {
             shotTexture = shotTexture;
+            scale = 1f;
         }
         public override void Update(GameTime gameTime, Sprites.Player player)
         {

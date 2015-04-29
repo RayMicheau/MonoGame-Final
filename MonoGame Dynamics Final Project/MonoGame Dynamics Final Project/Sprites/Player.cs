@@ -308,11 +308,6 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                 source = animatedSprite(frameNum, frameTime, frameWidth, frameHeight, TextureImage, timeLapse);
             //    TextureImage.GetData<Color>(0, source, textureData, 0, source.Width * source.Height);
 
-                //update weapons
-                railRight.UpdateWeapon(railRight.primary, gameTime, enemyWave);
-                railLeft.UpdateWeapon(railLeft.primary, gameTime, enemyWave);
-                UpdateWeapon(secondary, gameTime, enemyWave);
-
                 //Move the sprite
                 position += Velocity * timeLapse;
                 railLeft.Update(gameTime, position);
@@ -339,6 +334,11 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         public virtual void Update(GameTime gameTime, Rectangle virtualSize, List<Enemy> enemyWave)
         {
             float timeLapse = gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+
+            //update weapons
+            railRight.UpdateWeapon(railRight.primary, gameTime, enemyWave, virtualSize);
+            railLeft.UpdateWeapon(railLeft.primary, gameTime, enemyWave, virtualSize);
+            UpdateWeapon(secondary, gameTime, enemyWave, virtualSize);
 
          //   TextureImage.GetData<Color>(0, source, textureData, 0, source.Width * source.Height);
             if (Alive)
@@ -377,7 +377,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         }
 
         // Update helper: updates weapons, ammo counts and removes weapons that are off screen
-        public virtual void UpdateWeapon(List<Weapon> weapon, GameTime gameTime, List<Enemy> enemyWave)
+        public virtual void UpdateWeapon(List<Weapon> weapon, GameTime gameTime, List<Enemy> enemyWave, Rectangle virtualSize)
         {
             timer += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
             for (int i = 0; i < weapon.Count; i++)
@@ -408,6 +408,15 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                     default:
                         weapon[i].Update(gameTime);
                         break;
+                }
+
+                if (weapon[i].Position.Y + weapon[i].TextureImage.Height < 0 || weapon[i].Position.Y > virtualSize.Height)
+                {
+                    weapon[i].offScreen = true;
+                }
+                else if (weapon[i].Position.X + weapon[i].TextureImage.Width > virtualSize.Width || weapon[i].Position.X < 0)
+                {
+                    weapon[i].offScreen = true;
                 }
 
                 if (weapon[i].offScreen)
@@ -653,23 +662,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                 railLeft.primary.Add(laser);
                 laser = new BasicLaser(content, railRight.position, 2000f);
                 railRight.primary.Add(laser);
-                currentPrimaryAmmo--;
         }
-
-        //public void shootRail(ContentManager content, GameTime gameTime)
-        //{
-        //    timer += (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
-        //    if (hasShotPrim && timer <= 0.1f)
-        //    {
-        //        Rail rail = new Rail(content, new Vector2(position.X, position.Y - spriteOrigin.Y), 3000f);
-        //        primary.Add(rail);
-        //        Velocity = new Vector2(0.0f, 0.0f);
-        //    }
-        //    if (timer > 2.0f)
-        //    {
-        //        timer = 0.0f;
-        //    }
-        //}
 
         public void shootRail(ContentManager content)
         {
@@ -677,7 +670,6 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             railLeft.primary.Add(rail);
             rail = new Rail(content, railRight.position, 250f, 1);
             railRight.primary.Add(rail);
-           // currentPrimaryAmmo--;
         }
         #endregion
 
