@@ -24,7 +24,8 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
     class Stingray2 : Enemy
     {
         public RayState Ai;
-
+        float elapsedShotTime;
+        bool chasing;
         public Stingray2(ContentManager content, GraphicsDevice Device, int spotinFormation, string formationType) :
             base(content, 80, 80, content.Load<Texture2D>("Images/Animations/Sting-Ray-2"), Device, spotinFormation, formationType, 0.5f, 100f, 500f)
         {
@@ -39,8 +40,30 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             damage = 3;
         }
 
-        public override void Update(GameTime gameTime, Player player)
+        public override void Update(ContentManager content, GameTime gameTime, Player player)
         {
+            elapsedShotTime += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+
+
+            foreach (Weapon shot in primary)
+            {
+                shot.Update(gameTime, player);
+            }
+
+            if (elapsedShotTime > 2 && !chasing)
+            {
+                elapsedShotTime = 0f;
+                StingRayWeapon Stingshot = new StingRayWeapon(content, position);
+                primary.Add(Stingshot);
+            }
+            if (elapsedShotTime > 2 && chasing)
+            {
+                elapsedShotTime = 0f;
+                StingRayWeapon Stingshot = new StingRayWeapon(content, position);
+                Stingshot.Velocity = getDirectionVector() * Stingshot.velocitySpeed;
+                primary.Add(Stingshot);
+            }
+
             collisionRange = new BoundingSphere(new Vector3(position.X + spriteOrigin.X, position.Y + spriteOrigin.Y, 0), 400f);
             setAi(player);
             switch (Ai)
