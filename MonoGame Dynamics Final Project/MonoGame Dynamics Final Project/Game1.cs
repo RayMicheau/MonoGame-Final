@@ -209,7 +209,10 @@ namespace MonoGame_Dynamics_Final_Project
                 DestructionTextures.Add(Content.Load<Texture2D>("Images/Particles/meow3"));
                 //AftershockTextures.Add(Content.Load<Texture2D>("Images/Particles/smokepoof"));
                 AftershockTextures.Add(Content.Load<Texture2D>("Images/Particles/xdiamond"));
-                AftershockTextures.Add(Content.Load<Texture2D>("Images/Particles/exhaust")); DestructionTextures.Add(Content.Load<Texture2D>("Images/Particles/meow4"));
+                AftershockTextures.Add(Content.Load<Texture2D>("Images/Particles/exhaust")); 
+                AftershockTextures.Add(Content.Load<Texture2D>("Images/Particles/meow4"));
+                AftershockTextures.Add(Content.Load<Texture2D>("Images/Particles/starpoo"));
+                AftershockTextures.Add(Content.Load<Texture2D>("Images/Particles/pulse"));
                 
 
                 //Loading audio
