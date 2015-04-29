@@ -17,8 +17,8 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
     class Rail : Weapon
     {
         public int orientation;
-        SpriteEffects spriteEffect;
-        float elapsedTime;
+        private float elapsedShotTime;
+        protected float scalarVelocity;
 
         public Rail(ContentManager content, Vector2 startPosition, float velocity, int Orientation) // 1 right, -1 left
             : base(content.Load<Texture2D>("Images/Animations/Plasma-Repeater-Shot"), startPosition, velocity, 1)
@@ -27,13 +27,22 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
             damage = 500;
             scale = 2f;
             orientation = Orientation;
+            spriteEffect = SpriteEffects.None;
+            scalarVelocity = velocity;
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime, float turretRotation)
         {
+            angle = turretRotation;
+            turretRotation -= MathHelper.PiOver2;
+            
+            velocity = new Vector2((float)Math.Cos(turretRotation),
+                                   (float)Math.Sin(turretRotation)) * scalarVelocity;
             base.Update(gameTime);
-            elapsedTime += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;          
-            if(elapsedTime > 0.2f)
+
+            elapsedShotTime += gameTime.ElapsedGameTime.Milliseconds / 1000.0f; 
+         
+            if(elapsedShotTime > 0.5f)
             {
                 if(spriteEffect == SpriteEffects.None)
                 {
@@ -43,7 +52,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
                 {
                     spriteEffect = SpriteEffects.None;
                 }
-                elapsedTime = 0f;
+                elapsedShotTime = 0f;
             }
         }
 

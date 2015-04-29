@@ -528,7 +528,7 @@ namespace MonoGame_Dynamics_Final_Project
             bool keyPressed = false;
             KeyboardState keyState = Keyboard.GetState();
             GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
-
+            
             if (gameState == GameState.StartMenu)
             {
                 playGame = false;
@@ -709,16 +709,21 @@ namespace MonoGame_Dynamics_Final_Project
                     }
 
                 }
-                if (keyState.IsKeyDown(Keys.A))
+                
+                // turrets
+                if (keyState.IsKeyDown(Keys.A) && playerShip.PrimaryType == "rail")
                 {
                     playerShip.RailLeft.rotateTurret(-1 * playerShip.RailLeft.orientation);
                     playerShip.RailRight.rotateTurret(-1 * playerShip.RailRight.orientation);
                 }
-                else if (keyState.IsKeyDown(Keys.D))
+                else if (keyState.IsKeyDown(Keys.D) && playerShip.PrimaryType == "rail")
                 {
                     playerShip.RailLeft.rotateTurret(1 * playerShip.RailLeft.orientation);
                     playerShip.RailRight.rotateTurret(1 * playerShip.RailRight.orientation);
                 }
+               // playerShip.RailLeft.rotation = MathHelper.Clamp(playerShip.RailLeft.rotation, 0, -MathHelper.PiOver2);
+               // MathHelper.Clamp(playerShip.RailLeft.rotation, 0, 2f);
+
                 // Primary Weapon
                 if (oldState.IsKeyUp(Keys.Space) && keyState.IsKeyDown(Keys.Space))
                 {

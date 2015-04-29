@@ -408,7 +408,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                         break;
 
                     case "rail":
-                        weapon[i].Update(gameTime);
+                        weapon[i].Update(gameTime, rotation);
                         break;
 
                     default:
