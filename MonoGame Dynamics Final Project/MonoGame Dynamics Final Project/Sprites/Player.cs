@@ -443,7 +443,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         }
 
         // Pixel Collision Detection
-        public bool IntersectsPixel(Player player, Player enemy)
+        public bool IntersectsPixel(Player enemy)
         {
             extractRegion = source;
             textureData = new Color[source.Width * source.Height];
@@ -453,8 +453,8 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             enemy.textureData = new Color[enemy.source.Width * enemy.source.Height];
             enemy.TextureImage.GetData<Color>(0, enemy.extractRegion, enemy.textureData, 0, enemy.source.Width * enemy.source.Height);
 
-            Rectangle rect1 = player.source;
-            Color[] data1 = player.textureData; 
+            Rectangle rect1 = source;
+            Color[] data1 = textureData; 
             Rectangle rect2 = enemy.source;
             Color[] data2 = enemy.textureData;
 

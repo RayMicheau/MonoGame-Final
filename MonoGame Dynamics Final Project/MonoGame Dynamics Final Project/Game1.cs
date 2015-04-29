@@ -440,10 +440,10 @@ namespace MonoGame_Dynamics_Final_Project
                             AftershockRadiusCounters[f] += 10;
                             AftershockAngleCounters[f] -= 10;
 
-                            AftershockParticles[f].Update((AftershockRadiusCounters[f] <= 200), new Vector2(10, 10), 0f, Color.Purple, 40);
-                            AftershockParticles[f].Update((AftershockRadiusCounters[f] <= 400 && AftershockRadiusCounters[f] > 200), new Vector2(10, 10), 0f, Color.Blue, 60);
-                            AftershockParticles[f].Update((AftershockRadiusCounters[f] <= 600 && AftershockRadiusCounters[f] > 400), new Vector2(10, 10), 0f, Color.Turquoise, 80);
-                            AftershockParticles[f].Update((AftershockRadiusCounters[f] <= 800 && AftershockRadiusCounters[f] > 600), new Vector2(10, 10), 0f, Color.GreenYellow, 100);
+                            AftershockParticles[f].Update((AftershockRadiusCounters[f] <= 200), new Vector2(10, 10), 0f, Color.Purple, 4);
+                            AftershockParticles[f].Update((AftershockRadiusCounters[f] <= 400 && AftershockRadiusCounters[f] > 200), new Vector2(10, 10), 0f, Color.Blue, 6);
+                            AftershockParticles[f].Update((AftershockRadiusCounters[f] <= 600 && AftershockRadiusCounters[f] > 400), new Vector2(10, 10), 0f, Color.Turquoise, 8);
+                            AftershockParticles[f].Update((AftershockRadiusCounters[f] <= 800 && AftershockRadiusCounters[f] > 600), new Vector2(10, 10), 0f, Color.Goldenrod, 10);
                         }
                     }
                 }
@@ -457,7 +457,7 @@ namespace MonoGame_Dynamics_Final_Project
                     if (playerShip.CollisionSprite(Enemywave[i]))
                     {
 
-                        if (playerShip.IntersectsPixel(playerShip, Enemywave[i]))
+                        if (playerShip.IntersectsPixel(Enemywave[i]))
                         {
                             playerShip.collisionDetected = true;
                         
