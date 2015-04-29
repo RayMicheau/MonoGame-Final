@@ -245,11 +245,11 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             // Set Primary Weapons
             
             // Set Secondary Weapons
-            setWeapon("gravityWell", 1);
+            //setWeapon("gravityWell", 1);
             //setWeapon("helixMissile", 2);
-            //setWeapon("homingMissile", 2);
-            //setWeapon("laser", 5);
-            setWeapon("rail", 4);
+            setWeapon("homingMissile", 2);
+            setWeapon("laser", 5);
+            //setWeapon("rail", 4);
             hasShot = false;
             hasShotPrim = false;
             forcePull = false;
@@ -290,11 +290,11 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                 }
 
                 spriteBatch.Draw(TextureImage,
-                    Position,
+                    position,
                     source,
                     color,
                     rotation,
-                    SpriteOrigin,
+                    spriteOrigin,
                     Scale*2,
                     Spriteeffect,
                     0.0f);
@@ -399,7 +399,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
 
                 switch (primaryType)
                 {
-                    case "laser":
+                    case  "laser":
                         weapon[i].Update(gameTime);
                         break;
 
@@ -649,8 +649,10 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
 
         public void shootLaser(ContentManager content, GameTime gameTime)
         {
-                BasicLaser laser = new BasicLaser(content, new Vector2(position.X, position.Y - spriteOrigin.Y), 500f);
-                primary.Add(laser);
+                BasicLaser laser = new BasicLaser(content, new Vector2(position.X, position.Y - spriteOrigin.Y), 500f, -1);
+                railLeft.primary.Add(laser);
+               // laser = new BasicLaser(content, new Vector2(position.X, position.Y - spriteOrigin.Y), 500f, 1);
+               // railRight.primary.Add(laser);
                 currentPrimaryAmmo--;
         }
 
@@ -671,20 +673,12 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
 
         public void shootRail(ContentManager content)
         {
-        //    Vector2 offset = new Vector2(15, -35); // change in railturret as well!
-        //    Vector2 shotPos = position; 
-        //    Rail rail = new Rail(content, shotPos, 500f, 1);
-        //    //primary.Add(rail);
-
-        //    offset.X += offset.X;
-        //    shotPos = position - (offset);
-        //    rail = new Rail(content, shotPos, 500f, 1);
-        //    primary.Add(rail);
-        //    currentPrimaryAmmo--;
-            Rail rail = new Rail(content, railLeft.position, 500f, 1);
-            railLeft.primary.Add(rail);
-            rail = new Rail(content, railRight.position, 500f, -1);
+            Rail rail = new Rail(content, railLeft.position, 500f, -1);
+        //    Rail rail = new Rail(content, railLeft.position + railLeft.offset + railLeft.spriteOrigin, 500f, -1);
+        //    railLeft.primary.Add(rail);
+            rail = new Rail(content, railRight.position, 500f, 1);
             railRight.primary.Add(rail);
+            currentPrimaryAmmo--;
         }
         #endregion
 

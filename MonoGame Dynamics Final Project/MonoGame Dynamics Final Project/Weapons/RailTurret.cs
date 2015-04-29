@@ -42,17 +42,18 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         protected float turretTime, turretSpeed;
         public Vector2 offset;
         protected int turretFrameWidth, turretFrameHeight, turretFrames;
-        protected int orientation;
+        public int orientation;
         #endregion
     
         public RailTurret(Texture2D turretImage, Vector2 position, Vector2 velocity, int Orientation)
             :base(32, 64, turretImage, position, velocity, false, 1f, 100)
         {
-           // spriteOrigin = new Vector2(0, 0);
+            
             turretTime = 0f;
             turretSpeed = 0.1f;
             turretFrameWidth = 32;
             turretFrameHeight = 64;
+            spriteOrigin = new Vector2(turretFrameWidth / 2, turretFrameHeight);
             turretFrames = 6;
             source = new Rectangle(0, 0, turretFrameWidth, turretFrameHeight);
             orientation = Orientation;
@@ -76,6 +77,11 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             position = playerPosition + offset;
         }
 
+        public void rotateTurret(int direction)
+        {
+            rotation += direction * 0.1f;
+        }
+
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime, Color color)
         {
             //base.Draw(spriteBatch, gameTime);
@@ -84,7 +90,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                              position,
                              source,
                              color,
-                             angle,
+                             rotation,
                              spriteOrigin,
                              1f,
                              SpriteEffect,

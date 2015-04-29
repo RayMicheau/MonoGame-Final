@@ -24,7 +24,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
         protected float scale;
 
         public Rail(ContentManager content, Vector2 startPosition, float velocity, int orientation) // 1 right, -1 left
-            : base(content.Load<Texture2D>("Images/Animations/Plasma-Repeater-Shot"), startPosition, 1200.0f, 1)
+            : base(content.Load<Texture2D>("Images/Animations/Plasma-Repeater-Shot"), startPosition, velocity, 1)
         {
             shotTime = 0f; 
             shotSpeed = 0.1f;
@@ -33,15 +33,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
             shotFrames = 4;
             angle = 0;
             damage = 500;
-            if(orientation == -1)
-            {
-                spriteEffect = SpriteEffects.FlipHorizontally;
-            }
-            else
-            {
-                spriteEffect = SpriteEffects.None;
-            }
-            scale = 2f;
+            scale = 1f;
         }
 
         public override void Update(GameTime gameTime)
@@ -60,7 +52,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
                              angle,
                              spriteOrigin,
                              scale,
-                             spriteEffect,
+                             SpriteEffects.None,
                              1f);
         }
 

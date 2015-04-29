@@ -115,6 +115,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
             angle = 0f;
             Damage = damage;
             spriteOrigin = new Vector2(textureImage.Width / 2, textureImage.Height / 2);
+            scale = 1f;
         }
         // player shooting
         public virtual void Update(GameTime gameTime)
@@ -123,7 +124,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
             float timeLapse = (float)(gameTime.ElapsedGameTime.TotalSeconds);
 
             //Move the sprite
-            position += Velocity * timeLapse;
+            position += velocity * timeLapse;
 
             if (position.Y + TextureImage.Height < 0)
             {
@@ -189,12 +190,6 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
         }
 
         // Helper method for rotating projectiles
-        //public float getAngle(Vector2 pos)
-        //{
-        //    float angle = (float)Math.Atan2(pos.Y, pos.X);
-        //    return angle;
-        //}
-
         public float getAngle(float angle)
         {
             return angle * MathHelper.Pi / 180.0f;

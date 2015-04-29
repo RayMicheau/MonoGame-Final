@@ -629,7 +629,6 @@ namespace MonoGame_Dynamics_Final_Project
                 }
 
                 if (keyState.IsKeyDown(Keys.Left)
-                  || keyState.IsKeyDown(Keys.A)
                   || gamePadState.DPad.Left == ButtonState.Pressed
                   || gamePadState.ThumbSticks.Left.X < -0.5f)
                 {
@@ -657,7 +656,6 @@ namespace MonoGame_Dynamics_Final_Project
                     }
                 }
                 else if (keyState.IsKeyUp(Keys.Left)
-                  || keyState.IsKeyUp(Keys.A)
                   || gamePadState.DPad.Left == ButtonState.Released
                   || gamePadState.ThumbSticks.Left.X == 0)
                 {
@@ -672,7 +670,6 @@ namespace MonoGame_Dynamics_Final_Project
 
                 }
                 if (keyState.IsKeyDown(Keys.Right)
-                  || keyState.IsKeyDown(Keys.D)
                   || gamePadState.DPad.Right == ButtonState.Pressed
                   || gamePadState.ThumbSticks.Left.X > 0.5f)
                 {
@@ -699,7 +696,6 @@ namespace MonoGame_Dynamics_Final_Project
                     }
                 }
                 else if (keyState.IsKeyUp(Keys.Right)
-                  || keyState.IsKeyUp(Keys.D)
                   || gamePadState.DPad.Right == ButtonState.Released
                   || gamePadState.ThumbSticks.Left.X == 0)
                 {
@@ -712,6 +708,16 @@ namespace MonoGame_Dynamics_Final_Project
                         playerShip.TextureImage = playerTexture;
                     }
 
+                }
+                if (keyState.IsKeyDown(Keys.A))
+                {
+                    playerShip.RailLeft.rotateTurret(-1 * playerShip.RailLeft.orientation);
+                    playerShip.RailRight.rotateTurret(-1 * playerShip.RailRight.orientation);
+                }
+                else if (keyState.IsKeyDown(Keys.D))
+                {
+                    playerShip.RailLeft.rotateTurret(1 * playerShip.RailLeft.orientation);
+                    playerShip.RailRight.rotateTurret(1 * playerShip.RailRight.orientation);
                 }
                 // Primary Weapon
                 if (oldState.IsKeyUp(Keys.Space) && keyState.IsKeyDown(Keys.Space))
@@ -930,7 +936,7 @@ namespace MonoGame_Dynamics_Final_Project
 
     //Exit?**********************************************************************************************************************************
                 case GameState.Exit:
-
+                    
                     break;
             }
 
