@@ -60,6 +60,19 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
             }
             return source;
         }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(TextureImage,
+                position,
+                shotRectangle,
+                Microsoft.Xna.Framework.Color.White,
+                angle,
+                SpriteOrigin,
+                scale, // scale
+                SpriteEffects.None,
+                1f);
+        }
         
     }
 }

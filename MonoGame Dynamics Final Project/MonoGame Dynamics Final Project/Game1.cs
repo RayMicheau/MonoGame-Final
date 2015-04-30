@@ -17,32 +17,14 @@ namespace MonoGame_Dynamics_Final_Project
     public enum GameState
     {
         SplashScreen, 
+        LoadWave,
         StartMenu,
         Play, 
         Pause,
         GameOver,
         Exit
     }
-    public enum Level
-    {
-        Null,
-        Level1,
-        Level2,
-        Level3
-    }
-    public enum Wave
-    {
-        Null,
-        Wave1,
-        Wave2,
-        Wave3,
-        Wave4,
-        Wave5,
-        Wave6,
-        Wave7,
-        Wave8,
-        Wave9
-    }
+
     public class Game1 : Game
     {
         #region Variables
@@ -58,8 +40,6 @@ namespace MonoGame_Dynamics_Final_Project
 
 
         GameState gameState = GameState.StartMenu;
-        Wave wave = Wave.Null;
-        Level level = Level.Null;
         PowerUps Powerups = PowerUps.Null;
 
         public static Random random;
@@ -115,7 +95,7 @@ namespace MonoGame_Dynamics_Final_Project
         // enemies
         int currentWave;
         List<Enemy> Enemywave = new List<Enemy>();
-        List<Enemy>[] WaveDef = new List<Enemy>[9];
+        List<Enemy> tempWave = new List<Enemy>();
         List<PowerUp> powerUpList = new List<PowerUp>();
         List<Score> DisplayScorePos = new List<Score>();
 
@@ -287,8 +267,7 @@ namespace MonoGame_Dynamics_Final_Project
 
                 follower = new Follower(32,32,Content, playerShip,new Vector2(0, playerShip.frameHeight+20),1.0f, true);
 
-                LoadWaves();
-                LoadLevel(1, 1);
+                LoadWave();
 
                 foreach (Enemy enemy in Enemywave)
                 {
@@ -322,9 +301,21 @@ namespace MonoGame_Dynamics_Final_Project
             myBGtwo.Update(gameTime, BGelapsed * 100);
             UpdateInput(gameTime); 
 
+            if(gameState == GameState.LoadWave)
+            {
+                LoadWave();
+                gameState = GameState.Play;
+            }
+
             //If Game is Running
             if (gameState == GameState.Play)
             {
+                if(Enemywave.Count == 0)
+                {
+                    playerShip.Secondary.Clear();
+                    gameState = GameState.LoadWave;
+                }
+
                 if (songSwap)
                 {
                     audioManager.Play("");
@@ -496,7 +487,7 @@ namespace MonoGame_Dynamics_Final_Project
                 //_camera.Shake(new Vector2(random.Next(-50, 50), random.Next(-50, 50)), shakeCounter);
                 shakeCounter++;
                 // gravity well
-                if (playerShip.ForcePull)
+                if (playerShip.ForcePull && playerShip.Secondary.Count > 0)
                 {
                     playerShip.Secondary[0].forcePull(gameTime, Enemywave);
                     playerShip.Secondary[0].ElapsedTime += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
@@ -1006,112 +997,89 @@ namespace MonoGame_Dynamics_Final_Project
         }
 
 //Load the enemy level/waves here*******************************************************************************************************
-        public void LoadLevel(int levelNum, int waveNum)
-        {
-            switch(levelNum)
-            {
-                case 1:
-                    level = Level.Level1;
-                    switch(waveNum)
-                    {
-                        case 1:
-                            wave = Wave.Wave1;
-                            Enemywave = WaveDef[0];
-                            break;
-                        case 2:
-                            wave = Wave.Wave2;
-                            break;
-                        case 3:
-                            wave = Wave.Wave3;
-                            break;
-                        default:
-                            Console.WriteLine("Could not load wave (1-3)");
-                            break;
-                    }
-                    break;
-                case 2:
-                    level = Level.Level2;
-                    switch (levelNum)
-                    {
-                        case 1:
-                            wave = Wave.Wave4;
-                            break;
-                        case 2:
-                            wave = Wave.Wave5;
-                            break;
-                        case 3:
-                            wave = Wave.Wave6;
-                            break;
-                        default:
-                            Console.WriteLine("Could not load wave (4-6)");
-                            break;
-                    }
-                    break;
-                case 3:
-                    level = Level.Level3;
-                    switch (levelNum)
-                    {
-                        case 1:
-                            wave = Wave.Wave7;
-                            break;
-                        case 2:
-                            wave = Wave.Wave8;
-                            break;
-                        case 3:
-                            wave = Wave.Wave9;
-                            break;
-                        default:
-                            Console.WriteLine("Could not load wave (7-9)");
-                            break;
-                    }
-                    break;
-                default:
-                    Console.WriteLine("Could not load Level");
-                    break;
-            }
-        }
 
 //Define the enemy waves here************************************************************************************************************
-        public void LoadWaves()
+        public void LoadWave()
         {
-            Enemy enemy;
+            Enemywave.Clear();
+            tempWave.Clear();
+            int formationType;
+            int formationSize;
+            int percentage;
+            string formationName;
+
+            formationType = random.Next(1, 6);
+
+            switch (formationType)
+            {
+                case 1:
+                    formationName = "delta";
+                    formationSize = 10;
+                    break;
+                case 2:
+                    formationName = "v";
+                    formationSize = 7;
+                    break;
+                case 3:
+                    formationName = "line";
+                    formationSize = 5;
+                    break;
+                case 4:
+                    formationName = "diamond";
+                    formationSize = 9;
+                    break;
+                case 5:
+                    formationName = "shockwave";
+                    formationSize = 9;
+                    break;
+                default:
+                    formationName = "delta";
+                    formationSize = 10;
+                    break;
+            }
+
+            for (int i = 0; i < formationSize; i++)
+            {
+                Enemy enemy = new Stingray(Content, GraphicsDevice, 1, formationName);
+
+                percentage = random.Next(1, 101);
+
+                if (percentage > 0 && percentage <= 40)
+                {
+                    enemy = new Stingray(Content, GraphicsDevice, i + 1, formationName);
+                }
+                else if (percentage > 40 && percentage <= 60)
+                {
+                    enemy = new Stingray2(Content, GraphicsDevice, i + 1, formationName);
+                }
+                else if (percentage > 60 && percentage <= 90)
+                {
+                    enemy = new VoidAngel(Content, GraphicsDevice, i + 1, formationName);
+                }
+                else if (percentage > 90 && percentage <= 100)
+                {
+                    enemy = new VoidVulture(Content, GraphicsDevice, i + 1, formationName);
+                }
+
+                tempWave.Add(enemy);
+            }
+
+            Enemywave = tempWave;
 
             // Wave 1
-            WaveDef[0] = new List<Enemy>();
-            //formationSize = 10;          
+            //WaveDef[0] = new List<Enemy>();
+            ////formationSize = 10;          
 
-            for (int i = 0; i < 10; i++ )
-            {
-                enemy = new Stingray(Content, GraphicsDevice, i + 1, "delta");
-                WaveDef[0].Add(enemy);
-            }
-            VoidVulture voidVulture = new VoidVulture(Content, GraphicsDevice, 3, "line");
-            WaveDef[0].Add(voidVulture);
-            VoidAngel voidAngel = new VoidAngel(Content, GraphicsDevice, 3, "line");
-            WaveDef[0].Add(voidAngel); 
-            // Wave 2
-            WaveDef[1] = new List<Enemy>();
+            //for (int i = 0; i < 10; i++ )
+            //{
+            //    enemy = new Stingray(Content, GraphicsDevice, i + 1, "delta");
+            //    WaveDef[0].Add(enemy);
+            //}
+            //VoidVulture voidVulture = new VoidVulture(Content, GraphicsDevice, 3, "line");
+            //WaveDef[0].Add(voidVulture);
+            //VoidAngel voidAngel = new VoidAngel(Content, GraphicsDevice, 3, "line");
+            //WaveDef[0].Add(voidAngel); 
 
-            // Wave 3
-            WaveDef[2] = new List<Enemy>();
-
-            // Wave 4
-            WaveDef[3] = new List<Enemy>();
-
-            // Wave 5
-            WaveDef[4] = new List<Enemy>();
-
-            // Wave 6
-            WaveDef[5] = new List<Enemy>();
-
-            // Wave 7
-            WaveDef[6] = new List<Enemy>();
-
-            // Wave 8
-            WaveDef[7] = new List<Enemy>();
-
-            // Wave 9
-            WaveDef[8] = new List<Enemy>();
         }
 
 //Spawn Powerups Method *************************************************************************************************************

@@ -46,25 +46,17 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         public override void Update(ContentManager content, GameTime gameTime, Player player)
         {
             elapsedShotTime += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
-
+            
             
             foreach (Weapon shot in primary)
             {     
                 shot.Update(gameTime, player);
             }
 
-            if(elapsedShotTime > 2 && !chasing)
+            if(elapsedShotTime > 2)
             {
                 elapsedShotTime = 0f;
-                StingRayWeapon Stingshot = new StingRayWeapon(content, position);
-                primary.Add(Stingshot);
-            }
-            if(elapsedShotTime > 2 && chasing)
-            {
-                elapsedShotTime = 0f;
-                StingRayWeapon Stingshot = new StingRayWeapon(content, position);
-                Stingshot.Velocity = getDirectionVector() * Stingshot.velocitySpeed;
-                primary.Add(Stingshot);
+                shootPrimary(content);
             }
 
             collisionRange = new BoundingSphere(new Vector3(position.X + spriteOrigin.X, position.Y + spriteOrigin.Y, 0), 400f);
@@ -99,14 +91,24 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             }
             else
             {
-                Ai = EnemyState.Default;
-               
-                
+                Ai = EnemyState.Default;            
             }
         }
 
-        //public override void Draw(SpriteBatch spriteBatch, GameTime gameTime){
-        //    Draw(spriteBatch, gameTime);
-        //}
+        public override void shootPrimary(ContentManager content)
+        {
+            StingRayWeapon Stingshot = new StingRayWeapon(content, position + spriteOrigin);
+            if (!chasing)
+            {
+                Stingshot = new StingRayWeapon(content, position + spriteOrigin + Stingshot.SpriteOrigin);
+                primary.Add(Stingshot);
+            }
+            else if(chasing)
+            {
+                Stingshot = new StingRayWeapon(content, position + spriteOrigin + Stingshot.SpriteOrigin);
+                Stingshot.Velocity = getDirectionVector() * Stingshot.velocitySpeed;
+                primary.Add(Stingshot);
+            }
+        }
     }
 }

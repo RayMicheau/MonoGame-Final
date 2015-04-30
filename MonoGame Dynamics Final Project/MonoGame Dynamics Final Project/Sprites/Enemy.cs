@@ -39,7 +39,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         protected Vector2 distanceBetween;
         public Texture2D EnemyShot;
         public Enemy(ContentManager content, int width, int height, Texture2D textureImage, GraphicsDevice Device, int spotinFormation, string formationType, float scale, float damage, float health)
-            : base(width, height, textureImage, new Vector2(0, -100), new Vector2(0, 10f), true, scale, health)
+            : base(width, height, textureImage, new Vector2(0, -100), new Vector2(0, 50f), true, scale, health)
         {
             Mass = mass;
             AtkSpeed = 1f;
@@ -139,7 +139,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime, Color color)
         {
-            foreach(Weapon shot in primary)
+            foreach(EnemyWeapon shot in primary)
             {
                 shot.Draw(spriteBatch);
             }
@@ -153,7 +153,12 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                             Spriteeffect,
                             0.0f);
         }
-       
+
+        public virtual void shootPrimary(ContentManager content)
+        {
+
+        }
+
         // This method sets the enemy position depending on it's spot in the formation 
         private void setEnemy(int spotinFormation, string formationType)
         {        
