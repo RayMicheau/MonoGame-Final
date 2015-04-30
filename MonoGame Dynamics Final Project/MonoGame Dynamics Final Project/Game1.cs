@@ -404,7 +404,7 @@ namespace MonoGame_Dynamics_Final_Project
                                 if (random.NextDouble() <= spawnChance)
                                     SpawnPowerUp(Enemywave[i].Position);
                                 Enemywave[i].Alive = false;
-                                DisplayScorePos.Add(new Score(Enemywave[i].Position,Enemywave[i].score));
+                                DisplayScorePos.Add(new Score(Enemywave[i].Position,Enemywave[i].score, menuFont));
                                 Enemywave.RemoveAt(i);
 
                             }
@@ -513,9 +513,13 @@ namespace MonoGame_Dynamics_Final_Project
                         powerUpList.RemoveAt(i);
                     }
                 }
-                foreach (Score scoreDisplay in DisplayScorePos)
+                for (int i = 0; i < DisplayScorePos.Count; i++)
                 {
-                    scoreDisplay.Update(gameTime);
+                    DisplayScorePos[i].Update(gameTime);
+                    if (!DisplayScorePos[i].alive)
+                    {
+                        DisplayScorePos.RemoveAt(i);
+                    }
                 }
                 _camera.Update(gameTime);
                 base.Update(gameTime);
@@ -636,6 +640,8 @@ namespace MonoGame_Dynamics_Final_Project
                   || gamePadState.ThumbSticks.Left.X < -0.5f)
                 {
                     playerShip.Left();
+                    playerShip.isTurning = true;
+                    playerShip.turnOrientation = -1;
                     keyPressed = true;
 
                     if (animationResetSwitchL == 0)
@@ -662,6 +668,7 @@ namespace MonoGame_Dynamics_Final_Project
                   || gamePadState.DPad.Left == ButtonState.Released
                   || gamePadState.ThumbSticks.Left.X == 0)
                 {
+                    playerShip.isTurning = false;
                     if (animationResetSwitchL > 0)
                     {
                         playerShip.resetAnimation();
@@ -678,6 +685,8 @@ namespace MonoGame_Dynamics_Final_Project
                 {
                     playerShip.Right();
                     keyPressed = true;
+                    playerShip.isTurning = true;
+                    playerShip.turnOrientation = 1;
 
                     if (animationResetSwitchR == 0)
                     {
@@ -702,6 +711,7 @@ namespace MonoGame_Dynamics_Final_Project
                   || gamePadState.DPad.Right == ButtonState.Released
                   || gamePadState.ThumbSticks.Left.X == 0)
                 {
+                    playerShip.isTurning = false;
                     if (animationResetSwitchR > 0)
                     {
                         playerShip.resetAnimation();
@@ -758,7 +768,7 @@ namespace MonoGame_Dynamics_Final_Project
                 if (oldState.IsKeyUp(Keys.B) && keyState.IsKeyDown(Keys.B))
                 //|| gamePadState.IsButtonDown(Buttons.LeftTrigger))
                 {
-                    if (playerShip.HasShot)
+                    if (playerShip.HasShot && playerShip.Secondary.Count > 0)
                     {
                         audioManager.PlaySoundEffect("rocket");
                         playerShip.HasShot = false;
@@ -1206,7 +1216,7 @@ namespace MonoGame_Dynamics_Final_Project
                             if (rand < spawnChance)
                                 SpawnPowerUp(Enemywave[i].Position);
                             Enemywave[i].Alive = false;
-                            DisplayScorePos.Add(new Score(Enemywave[i].Position,Enemywave[i].score));
+                            DisplayScorePos.Add(new Score(Enemywave[i].Position,Enemywave[i].score, menuFont));
                             Enemywave.RemoveAt(i);
                         }
                     }

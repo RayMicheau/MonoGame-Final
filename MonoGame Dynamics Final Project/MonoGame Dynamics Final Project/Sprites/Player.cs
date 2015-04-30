@@ -33,6 +33,8 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             get { return position; }
             set { position = value; }
         }
+        public bool isTurning;
+        public int turnOrientation;
 
         protected Vector2 spriteOrigin;
         public Vector2 SpriteOrigin
@@ -247,6 +249,8 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             hasShot = false;
             hasShotPrim = false;
             forcePull = false;
+            isTurning = false;
+            turnOrientation = 1;
         }
 
         public Player(int FrameWidth, int FrameHeight, Texture2D textureImage, Texture2D turretImage, Vector2 position, Vector2 velocity, bool setOrig, float scale, float health)
@@ -310,8 +314,25 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
 
                 //Move the sprite
                 position += Velocity * timeLapse;
-                railLeft.Update(gameTime, position);
+
+                
+                if(isTurning)
+                {
+                    if(turnOrientation == 1)
+                    {
+                        Vector2 pos = position;
+                        pos.X -= railLeft.offset.X * 2;
+                        railRight.Update(gameTime, pos);
+                    }
+                    else if(turnOrientation == -1)
+                    {
+                        railLeft.Update(gameTime, new Vector2(position.X + railRight.offset.X, position.Y));
+                    }
+                }
+
                 railRight.Update(gameTime, position);
+                railLeft.Update(gameTime, position);
+
             }
         }
 
