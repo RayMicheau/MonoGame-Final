@@ -52,7 +52,8 @@ namespace MonoGame_Dynamics_Final_Project
 
         // background
         int windowWidth, windowHeight;
-        Texture2D[] background; // Current Resolution 480w x 800h
+        Texture2D[] background;
+        Texture2D[] background2;
         ScrollingBackground myBackground;
         ScrollingBackground myBGtwo;
         
@@ -241,12 +242,15 @@ namespace MonoGame_Dynamics_Final_Project
                 myBackground = new ScrollingBackground();
                 myBGtwo = new ScrollingBackground();
                 background = new Texture2D[3];
+                background2 = new Texture2D[1];
                 for (int i = 0; i < background.Length; i++)
                 {
-                    background[i] = Content.Load<Texture2D>("Images/Backgrounds/universe0" + (i+1).ToString());
+                    background[i] = Content.Load<Texture2D>("Images/Backgrounds/universe" + (i).ToString());
                 }
-                myBackground.Load(GraphicsDevice, background, background.Length, 0.5f, 1); // change float to change animation speed           
-                myBGtwo.Load(GraphicsDevice, background, background.Length, 0.5f, 2); // change float to change animation speed 
+                background2[0] = Content.Load<Texture2D>("Images/Backgrounds/universe-background");
+
+                myBackground.Load(VIRTUAL_RESOLUTION_WIDTH,VIRTUAL_RESOLUTION_HEIGHT, background, background.Length, 0.5f); // change float to change animation speed           
+                myBGtwo.Load(VIRTUAL_RESOLUTION_WIDTH, VIRTUAL_RESOLUTION_HEIGHT, background2, background2.Length, 0.5f); // change float to change animation speed 
                
                 // player sprites
                 playerTexture = Content.Load<Texture2D>("Images/Animations/Commandunit-idle");
@@ -301,7 +305,7 @@ namespace MonoGame_Dynamics_Final_Project
                 Exit();
             float BGelapsed = (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f; 
             myBackground.Update(gameTime, BGelapsed * 100);
-            myBGtwo.Update(gameTime, BGelapsed * 100);
+            myBGtwo.Update(gameTime, BGelapsed * 50);
             UpdateInput(gameTime); 
 
             if(gameState == GameState.LoadWave)
@@ -882,13 +886,18 @@ namespace MonoGame_Dynamics_Final_Project
                 case GameState.StartMenu:
 
                     _irr.Draw();
+
+                    spriteBatch.BeginCamera(_camera, BlendState.AlphaBlend);
+                    myBGtwo.Draw(spriteBatch);
+                    myBackground.Draw(spriteBatch);
+                    spriteBatch.End();
+
                     _irr.SetupFullViewport();
                     spriteBatch.Begin();
                     
                     //spriteBatch.Begin();
 
-                    myBackground.Draw(spriteBatch);
-                    myBGtwo.Draw(spriteBatch);
+                    
 
                     //spriteBatch.DrawString(menuFont, "Cataclysm", new Vector2(GraphicsDevice.Viewport.Width / 8, GraphicsDevice.Viewport.Height / 9), customColor);
                     spriteBatch.DrawString(menuFont, "FINAL CATACLYSM", new Vector2(GraphicsDevice.Viewport.Width / 8, GraphicsDevice.Viewport.Height / 15), customColor, 0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0.0f);
@@ -917,7 +926,9 @@ namespace MonoGame_Dynamics_Final_Project
                     spriteBatch.BeginCamera(_camera, BlendState.AlphaBlend);
 
                     //Draw Background
+                    myBGtwo.Draw(spriteBatch);
                     myBackground.Draw(spriteBatch);
+                    
 
                     //Draw Stingray Particles
                     foreach (ParticleEngine particle in StingrayParticles) 

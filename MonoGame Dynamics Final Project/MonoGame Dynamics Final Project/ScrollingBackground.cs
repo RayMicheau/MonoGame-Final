@@ -17,9 +17,13 @@ namespace MonoGame_Dynamics_Final_Project
         private float timeBetweenFrames { get; set; }
         private float timeSinceLastFrame;
         private int currentFrame;
+        private int horTiles;
+        private int verTiles;
+        private bool reset = false;
+        private float DeltaY = 0;
         #endregion
 
-        public void Load(GraphicsDevice device, Texture2D[] backgroundTexture, int frames, float timeBetweenFrames, int posFlag)
+        public void Load(int virtualWidth, int virtualHeight, Texture2D[] backgroundTexture, int frames, float timeBetweenFrames)
         {
             textureArray = new Texture2D[frames];
 
@@ -31,30 +35,17 @@ namespace MonoGame_Dynamics_Final_Project
             currentFrame = 0;
             mytexture = backgroundTexture[currentFrame];
             this.timeBetweenFrames = timeBetweenFrames;
-            screenheight = device.Viewport.Height;
-            screenwidth = device.Viewport.Width;
-
-            // Set the origin so that we're drawing from the center of the top edge.
-            origin = new Vector2(mytexture.Width / 2, 0);
-
-            switch (posFlag)
-            {
-                case 1:
-                    // Set the screen position to the left of the screen.
-                    screenpos = new Vector2(screenwidth / 4, screenheight / 1.3f);
-                    break;
-                case 2:
-                    // Set the screen position to the right of the screen.
-                    screenpos = new Vector2(screenwidth / 1.3f, screenheight / 1.3f);
-                    break;
-
-                default: break;
-            }
+            screenheight = virtualHeight;
+            screenwidth = virtualWidth;
+            origin = new Vector2(0, 0);
+            horTiles = virtualWidth / mytexture.Width;
+            verTiles = virtualHeight / mytexture.Height;
         }
 
         // ScrollingBackground.Update
         public void Update(GameTime gameTime, float deltaY)
         {
+            DeltaY = deltaY;
             // animation
             timeSinceLastFrame += (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
 
@@ -71,18 +62,43 @@ namespace MonoGame_Dynamics_Final_Project
             }
 
             // scrolling
+            if (reset == true)
+            {
+                screenpos.Y = 0;
+                reset = false;
+            }
+
             screenpos.Y += deltaY;
-            screenpos.Y = screenpos.Y % mytexture.Height;
+            //screenpos.Y = screenpos.Y % mytexture.Height;
         }
 
         // ScrollingBackground.Draw
         public void Draw(SpriteBatch batch)
         {
             // Draw the texture, if it is still onscreen.
-            if (screenpos.Y < screenheight)
+            if (screenpos.Y< screenheight)
             {
-                batch.Draw(mytexture, screenpos, null,
-                     Color.White, 0, origin, 1, SpriteEffects.None, 0f);
+                for (int i = 0; i <= verTiles+1; i++)
+                {
+                    if (DeltaY > 0)
+                    {
+                        for (int f = 0; f <= horTiles; f++)
+                        {
+                            batch.Draw(mytexture, screenpos + new Vector2(mytexture.Width * f, -mytexture.Height + mytexture.Height * i), null,
+                                 Color.White, 0, origin, 1, SpriteEffects.None, 0f);
+                        }
+                        if (i == 0 && screenpos.Y - mytexture.Height >= 0) { reset = true; }
+                    }
+                    else if (DeltaY < 0)
+                    {
+                        for (int f = 0; f <= horTiles; f++)
+                        {
+                            batch.Draw(mytexture, screenpos + new Vector2(mytexture.Width * f, mytexture.Height * i), null,
+                                 Color.White, 0, origin, 1, SpriteEffects.None, 0f);
+                        }
+                        if (i == verTiles+1 && screenpos.Y + mytexture.Height*i <= screenheight) { reset = true; }
+                    }
+                }
             }
             // Draw the texture a second time, behind the first, to create the scrolling illusion.
             batch.Draw(mytexture, screenpos - texturesize, null,
