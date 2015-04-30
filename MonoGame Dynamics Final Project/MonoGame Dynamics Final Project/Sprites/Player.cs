@@ -72,7 +72,26 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         {
             get { return primaryType; }
             set { primaryType = value; }
-        } 
+        }
+        protected float experience;
+        public float Experience
+        {
+            get { return experience; }
+            set { experience = value; }
+        }
+        protected int level;
+        public int Level
+        {
+            get { return level; }
+            set { level = value; }
+        }
+        protected float experienceToNextLevel;
+        public float ExperienceToNextLevel
+        {
+            get { return experienceToNextLevel; }
+            set { experienceToNextLevel = value; }
+        }
+
 
         public bool SetOrigin { get; set; }
         public float Scale { get; set; }
@@ -230,6 +249,11 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             Health = health;
             Damage = damage;
             Scale = scale;
+            Experience = experience;
+            experience = 0.0f;
+            experienceToNextLevel = 1500;
+            Level = level;
+            level = 1;
             //if (SetOrigin)
             //{
                 SpriteOrigin = new Vector2(FrameWidth * scale/ 2, FrameHeight * scale / 2);

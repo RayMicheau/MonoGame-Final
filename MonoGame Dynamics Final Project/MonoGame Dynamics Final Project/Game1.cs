@@ -86,6 +86,8 @@ namespace MonoGame_Dynamics_Final_Project
         Texture2D playerLeftTurn;
         Texture2D health;
         Rectangle healthRect;
+        Texture2D xp;
+        Rectangle xpRect;
         Player playerShip;
         Player follower;
         // rail turret
@@ -256,6 +258,7 @@ namespace MonoGame_Dynamics_Final_Project
                 turretImage = Content.Load<Texture2D>("Images/Animations/Plasma-Repeater");
 
                 health = Content.Load<Texture2D>("Images/playerhealth");
+                xp = Content.Load<Texture2D>("Images/expereince bar");
  
                 playerShip = new Player(64,70,playerTexture, turretImage,
                     new Vector2(windowWidth / 2, windowHeight - 70),
@@ -323,6 +326,7 @@ namespace MonoGame_Dynamics_Final_Project
                 }
                 playGame = true;
                 healthRect = new Rectangle(100, GraphicsDevice.Viewport.Height - 50, (int)playerShip.Health / 5, health.Height);
+                xpRect = new Rectangle(100, GraphicsDevice.Viewport.Height - 28, (int)playerShip.Experience / 2, xp.Height / 16);
 
                 // updating scroll speed
                 float elapsed = (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f; 
@@ -405,11 +409,18 @@ namespace MonoGame_Dynamics_Final_Project
                                     SpawnPowerUp(Enemywave[i].Position);
                                 Enemywave[i].Alive = false;
                                 DisplayScorePos.Add(new Score(Enemywave[i].Position,Enemywave[i].score));
+                                playerShip.Experience += Enemywave[i].score;
                                 Enemywave.RemoveAt(i);
 
                             }
                         }
                     }
+                }
+                if (playerShip.Experience >= playerShip.ExperienceToNextLevel)
+                {
+                    playerShip.Level++;
+                    playerShip.ExperienceToNextLevel *= 1.05f;
+                    playerShip.Experience = 0;
                 }
 
                
@@ -947,9 +958,13 @@ namespace MonoGame_Dynamics_Final_Project
                     spriteBatch.Begin();
 
                     spriteBatch.Draw(health, healthRect, Color.White);
+                    spriteBatch.DrawString(menuFont, "hp:" + playerShip.Health, new Vector2(110.0f, GraphicsDevice.Viewport.Height - 47.0f), Color.White, 0.08f);
+                    spriteBatch.Draw(xp, xpRect, Color.White);
+                    spriteBatch.DrawString(menuFont, "xp:" + playerShip.Experience + "/" + playerShip.ExperienceToNextLevel, new Vector2(110.0f, GraphicsDevice.Viewport.Height - 27.0f), Color.White, 0.08f);
+                    spriteBatch.DrawString(menuFont, "Lvl:" + playerShip.Level, new Vector2(GraphicsDevice.Viewport.Width - 200.0f, 50.0f), Color.White, 0.25f);
                     spriteBatch.DrawString(menuFont, "Score:" + (Math.Round(timer,2) * score), new Vector2(0.0f, 50.0f), Color.White, 0.0f,Vector2.Zero,0.25f,SpriteEffects.None,0.0f);
-                    spriteBatch.DrawString(menuFont, "Primary:" + playerShip.PrimaryType, new Vector2(100.0f, GraphicsDevice.Viewport.Height - 25.0f), Color.White, 0.0f, Vector2.Zero, 0.15f, SpriteEffects.None, 0.0f);
-                    spriteBatch.DrawString(menuFont, "Secondary:" + playerShip.SecondaryType, new Vector2(GraphicsDevice.Viewport.Width - 550.0f, GraphicsDevice.Viewport.Height - 25.0f), Color.White, 0.0f,Vector2.Zero,0.15f,SpriteEffects.None,0.0f);
+                    spriteBatch.DrawString(menuFont, "Primary:" + playerShip.PrimaryType, new Vector2(100.0f, GraphicsDevice.Viewport.Height - 80.0f), Color.White, 0.0f, Vector2.Zero, 0.15f, SpriteEffects.None, 0.0f);
+                    spriteBatch.DrawString(menuFont, "Secondary:" + playerShip.SecondaryType, new Vector2(GraphicsDevice.Viewport.Width - 550.0f, GraphicsDevice.Viewport.Height - 80.0f), Color.White, 0.0f,Vector2.Zero,0.15f,SpriteEffects.None,0.0f);
 
                 //End Drawing UI
                     spriteBatch.End();
@@ -1178,13 +1193,14 @@ namespace MonoGame_Dynamics_Final_Project
                             if (Enemywave[i].enemyType == "stingRay")
                             {
                                 score += Enemywave[i].score;
+                                playerShip.Experience += Enemywave[i].score;
                                 audioManager.PlaySoundEffect("enemy dead");
                                 StingrayParticles.RemoveAt(StingrayParticles.Count - 1);
                             }
                             if (Enemywave[i].enemyType == "voidVulture")
                             {
                                 score += Enemywave[i].score;
-
+                                playerShip.Experience += Enemywave[i].score;
                                 audioManager.PlaySoundEffect("enemy dead2");
 
                                 DestructionParticles.Add(new ParticleEngine(DestructionTextures, new Vector2(400, 240)));
@@ -1200,6 +1216,7 @@ namespace MonoGame_Dynamics_Final_Project
                             if (Enemywave[i].enemyType == "voidAngel")
                             {
                                 score += Enemywave[i].score;
+                                playerShip.Experience += Enemywave[i].score;
                             }
 
                             double rand = random.NextDouble();
@@ -1207,6 +1224,7 @@ namespace MonoGame_Dynamics_Final_Project
                                 SpawnPowerUp(Enemywave[i].Position);
                             Enemywave[i].Alive = false;
                             DisplayScorePos.Add(new Score(Enemywave[i].Position,Enemywave[i].score));
+                           
                             Enemywave.RemoveAt(i);
                         }
                     }
