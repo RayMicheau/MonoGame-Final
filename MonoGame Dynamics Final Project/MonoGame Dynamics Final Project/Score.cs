@@ -89,9 +89,9 @@ namespace MonoGame_Dynamics_Final_Project
 
             return new Color(red, green, blue);
         }
-        public void Update(GameTime gameTime)
+        public virtual void Update(GameTime gameTime)
         {
-            float timeLapse = gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+           
             elapsed += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
             if (elapsed > 0.3 || (r == r2 && g == g2 && b == b2))
             {
@@ -112,7 +112,7 @@ namespace MonoGame_Dynamics_Final_Project
                 alive = false;
             }
         }
-        public void Draw(SpriteBatch spriteBatch, SpriteFont menuFont)
+        public virtual void Draw(SpriteBatch spriteBatch, SpriteFont menuFont)
         {
             if (alive)
             {

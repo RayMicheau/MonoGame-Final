@@ -100,6 +100,7 @@ namespace MonoGame_Dynamics_Final_Project
         List<Enemy> tempWave = new List<Enemy>();
         List<PowerUp> powerUpList = new List<PowerUp>();
         List<Score> DisplayScorePos = new List<Score>();
+        List<ProgressUI> DisplayProgress = new List<ProgressUI>();
 
         //PowerUps
         double spawnChance = 0.2;
@@ -269,8 +270,9 @@ namespace MonoGame_Dynamics_Final_Project
                     );
 
                 follower = new Follower(32,32,Content, playerShip,new Vector2(0, playerShip.frameHeight+20),1.0f, true);
-
+                
                 LoadWave();
+                currentWave = 1;
 
                 foreach (Enemy enemy in Enemywave)
                 {
@@ -307,7 +309,9 @@ namespace MonoGame_Dynamics_Final_Project
             if(gameState == GameState.LoadWave)
             {
                 LoadWave();
+                currentWave++;
                 gameState = GameState.Play;
+                DisplayProgress.Add(new ProgressUI(new Vector2(VirtualSize.Width / 2, VirtualSize.Height / 2), currentWave, menuFont, "Wave:"));
             }
 
             //If Game is Running
@@ -327,7 +331,22 @@ namespace MonoGame_Dynamics_Final_Project
                 playGame = true;
                 healthRect = new Rectangle(100, GraphicsDevice.Viewport.Height - 50, (int)playerShip.Health / 5, health.Height);
                 xpRect = new Rectangle(100, GraphicsDevice.Viewport.Height - 28, (int)playerShip.Experience / 2, xp.Height / 16);
+                for (int i = 0; i < DisplayProgress.Count; i++)
+                {
+                    if (DisplayProgress[i].progressType == "Wave:")
+                    {
+                        DisplayProgress[i].Update(gameTime);
+                    }
+                    else
+                    {
+                        DisplayProgress[i].Update(playerShip.Position, gameTime);
+                    }
+                    if (!DisplayProgress[i].alive)
+                    {
+                        DisplayProgress.RemoveAt(i);
+                    }
 
+                }
                 // updating scroll speed
                 float elapsed = (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f; 
                 timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -419,8 +438,9 @@ namespace MonoGame_Dynamics_Final_Project
                 if (playerShip.Experience >= playerShip.ExperienceToNextLevel)
                 {
                     playerShip.Level++;
-                    playerShip.ExperienceToNextLevel *= 1.05f;
+                    playerShip.ExperienceToNextLevel *= 1.25f;
                     playerShip.Experience = 0;
+                    DisplayProgress.Add(new ProgressUI(playerShip.Position, playerShip.Level, menuFont, "Level:"));
                 }
 
                
@@ -527,6 +547,7 @@ namespace MonoGame_Dynamics_Final_Project
                 for (int i = 0; i < DisplayScorePos.Count; i++)
                 {
                     DisplayScorePos[i].Update(gameTime);
+                    
                     if (!DisplayScorePos[i].alive)
                     {
                         DisplayScorePos.RemoveAt(i);
@@ -921,6 +942,10 @@ namespace MonoGame_Dynamics_Final_Project
                         scoreDisplay.Draw(spriteBatch, menuFont);
 
                         
+                    }
+                    foreach (ProgressUI progress in DisplayProgress)
+                    {
+                        progress.Draw(spriteBatch, menuFont);
                     }
 
                     //Draw Follower
