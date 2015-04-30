@@ -34,7 +34,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             Ai = RayState.Default;
             collisionRange = new BoundingSphere(new Vector3(position.X + spriteOrigin.X, position.Y + spriteOrigin.Y, 0), 400f);
             velocity = new Vector2(0, 100);
-            enemyType = "stingRay";
+            enemyType = "stingRay2";
             //EnemyShot = content.Load<Texture2D>("Images/Animations/Sting-Ray-shot");
             VectorSpeed = 5.0f;
             score = 600f;
