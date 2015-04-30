@@ -142,6 +142,7 @@ namespace MonoGame_Dynamics_Final_Project
         public bool shakeSwitch = false;
         Vector2 originalCameraPosition;
 
+        float elapsedMS;
         #endregion
 
         public Game1()
@@ -276,13 +277,13 @@ namespace MonoGame_Dynamics_Final_Project
                 LoadWave();
                 currentWave = 1;
 
-                foreach (Enemy enemy in Enemywave)
-                {
-                    if (enemy.enemyType == "stingRay")
-                    {
-                        StingrayParticles.Add(new ParticleEngine(StingrayTextures, new Vector2(400, 240)));
-                    }
-                }
+                //foreach (Enemy enemy in Enemywave)
+                //{
+                //    if (enemy.enemyType == "stingRay")
+                //    {
+                //        StingrayParticles.Add(new ParticleEngine(StingrayTextures, new Vector2(400, 240)));
+                //    }
+                //}
             //}
             //catch (ContentLoadException e)
             //{
@@ -303,9 +304,13 @@ namespace MonoGame_Dynamics_Final_Project
 
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            if (gameState == GameState.Play)
+            {
+                elapsedMS += (float)gameTime.ElapsedGameTime.Milliseconds / 1000000000.0f;
+            }
             float BGelapsed = (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f; 
-            myBackground.Update(gameTime, BGelapsed * 100);
-            myBGtwo.Update(gameTime, BGelapsed * 50);
+            myBackground.Update(gameTime, elapsedMS+BGelapsed * 100);
+            myBGtwo.Update(gameTime, elapsedMS+BGelapsed * 50);
             UpdateInput(gameTime); 
 
             if(gameState == GameState.LoadWave)
@@ -380,7 +385,7 @@ namespace MonoGame_Dynamics_Final_Project
 
                         //Stingray Particles
 
-                        if (EnemyParticleCounter < StingrayParticles.Count)
+                        //if (EnemyParticleCounter < StingrayParticles.Count)
                         enemy.Update(Content, gameTime, playerShip);
                     
                     //Stingray Particles
@@ -1108,6 +1113,7 @@ namespace MonoGame_Dynamics_Final_Project
                 if (percentage > 0 && percentage <= 40)
                 {
                     enemy = new Stingray(Content, GraphicsDevice, i + 1, formationName);
+                    StingrayParticles.Add(new ParticleEngine(StingrayTextures, new Vector2(400, 240)));
                 }
                 else if (percentage > 40 && percentage <= 60)
                 {
