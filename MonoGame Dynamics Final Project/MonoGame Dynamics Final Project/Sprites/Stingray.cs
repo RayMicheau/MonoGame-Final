@@ -12,7 +12,6 @@ using Microsoft.Xna.Framework.Media;
 using MonoGame_Dynamics_Final_Project;
 using MonoGame_Dynamics_Final_Project.Weapons;
 
-
 namespace MonoGame_Dynamics_Final_Project.Sprites
 {
     public enum EnemyState
@@ -61,6 +60,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
 
             collisionRange = new BoundingSphere(new Vector3(position.X + spriteOrigin.X, position.Y + spriteOrigin.Y, 0), 400f);
             setAi(player);
+
             switch(Ai)
             {
                 case EnemyState.Chase :
@@ -74,15 +74,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                     break;
             }
         }
-        public override void UpdateWeapon(GameTime gameTime, Player player, Vector2 directionShot, ContentManager content)
-        {
-            base.UpdateWeapon(gameTime, player, directionShot, content);
-            
-            foreach(Weapon weapon in primary)
-            {
-                weapon.Update(gameTime);
-            }
-        }
+
         public void setAi(Player player)
         {
             if (collisionRange.Intersects(player.collisionRange))

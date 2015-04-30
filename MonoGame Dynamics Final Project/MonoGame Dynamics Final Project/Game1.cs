@@ -347,6 +347,7 @@ namespace MonoGame_Dynamics_Final_Project
                     }
 
                 }
+
                 // updating scroll speed
                 float elapsed = (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f; 
                 timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -355,7 +356,9 @@ namespace MonoGame_Dynamics_Final_Project
                     
                     playerShip.Update(gameTime,VirtualSize , Enemywave);
                     follower.Update(playerShip, gameTime);
-                   
+
+                    UpdateEnemyShots();    
+               
                     Thruster1.EmitterLocation = playerShip.Position + new Vector2(15, playerShip.frameHeight - 30);
                     Thruster2.EmitterLocation = playerShip.Position + new Vector2(-15, playerShip.frameHeight - 30);
                 }
@@ -365,6 +368,8 @@ namespace MonoGame_Dynamics_Final_Project
 
                 foreach (Enemy enemy in Enemywave)
                 {
+                    
+
                     //enemy.Update(gameTime, playerShip);
                     enemy.Update(gameTime, VirtualSize);
                     if (enemy.enemyType == "stingRay" && playGame == true)
@@ -531,6 +536,7 @@ namespace MonoGame_Dynamics_Final_Project
                     }
                 }
 
+                // powerups
                 for (int i = powerUpList.Count - 1; i >= 0; i--)
                 {
                     if (powerUpList[i].removeFromScreen)
@@ -544,6 +550,8 @@ namespace MonoGame_Dynamics_Final_Project
                         powerUpList.RemoveAt(i);
                     }
                 }
+
+                // score display updates
                 for (int i = 0; i < DisplayScorePos.Count; i++)
                 {
                     DisplayScorePos[i].Update(gameTime);
@@ -1266,5 +1274,24 @@ namespace MonoGame_Dynamics_Final_Project
             }
         }
 
+
+        public void UpdateEnemyShots()
+        {
+            int totalDamage = 0;
+
+            foreach(Enemy enemy in Enemywave)
+            {
+                int collide = playerShip.CollisionShot(enemy.Primary);
+                if(collide != -1)
+                {
+                    totalDamage += (int)enemy.Damage;
+                    enemy.Primary.RemoveAt(collide);
+                }
+            }
+            playerShip.Health -= totalDamage;
+        }
+
     }
 }
+
+

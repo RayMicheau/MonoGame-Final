@@ -82,7 +82,12 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
        
         public virtual void UpdateWeapon(GameTime gameTime, Player player, Vector2 directionShot, ContentManager content)
         {
-            directionShot = velocity;           
+            directionShot = velocity;
+
+            foreach (Weapon weapon in primary)
+            {
+                weapon.Update(gameTime);
+            }
         }
         public void Update(GameTime gameTime, Rectangle virtualSize)
         {
