@@ -38,7 +38,8 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             enemyType = "stingRay";
             VectorSpeed = 2.0f;
             damage = 1f;
-            score = 100;
+            score = 100f;
+            health = 200f;
         }
 
         public override void Update(ContentManager content, GameTime gameTime, Player player)

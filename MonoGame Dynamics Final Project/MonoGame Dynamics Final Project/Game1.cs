@@ -317,6 +317,13 @@ namespace MonoGame_Dynamics_Final_Project
             {
                 LoadWave();
                 currentWave++;
+                foreach (Enemy enemy in Enemywave)
+                {
+                    enemy.Level = currentWave;
+                    enemy.Health = (enemy.Health * (enemy.Level / 2));
+                    enemy.Damage = (enemy.Damage * (enemy.Level / 2));
+                    enemy.score = enemy.score * enemy.Level;
+                }
                 gameState = GameState.Play;
                 DisplayProgress.Add(new ProgressUI(new Vector2(VirtualSize.Width / 2, VirtualSize.Height / 2), currentWave, menuFont, "Wave:"));
             }
@@ -379,6 +386,11 @@ namespace MonoGame_Dynamics_Final_Project
 
                     //enemy.Update(gameTime, playerShip);
                     enemy.Update(gameTime, VirtualSize);
+
+                   
+
+                        
+                    
                     if (enemy.enemyType == "stingRay" && playGame == true)
                     {
                         enemy.Update(gameTime, playerShip);
@@ -447,15 +459,13 @@ namespace MonoGame_Dynamics_Final_Project
                         }
                     }
                 }
+
                 if (playerShip.Experience >= playerShip.ExperienceToNextLevel)
                 {
                     playerShip.Level++;
-                    foreach (Enemy enemies in Enemywave)
-                    {
-                        enemies.Level = playerShip.Level;
-                        enemies.Health = enemies.Health * (enemies.Level / 2);
-                        enemies.Damage = enemies.Damage * (enemies.Level / 2);
-                    }
+                    
+
+
                     playerShip.ExperienceToNextLevel *= 1.25f;
                     playerShip.Experience = 0;
                     DisplayProgress.Add(new ProgressUI(playerShip.Position, playerShip.Level, menuFont, "Level:"));
@@ -1268,6 +1278,7 @@ namespace MonoGame_Dynamics_Final_Project
                             if (Enemywave[i].enemyType == "voidAngel")
                             {
                                 score += Enemywave[i].score;
+                                audioManager.PlaySoundEffect("enemy dead");
                                 playerShip.Experience += Enemywave[i].score;
                             }
 
