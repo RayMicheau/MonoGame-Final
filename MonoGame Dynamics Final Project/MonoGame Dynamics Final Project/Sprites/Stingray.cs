@@ -27,7 +27,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         bool chasing;
 
         public Stingray(ContentManager content, GraphicsDevice Device, int spotinFormation, string formationType) :
-            base(content, 80, 80, content.Load<Texture2D>("Images/Animations/Sting-Ray"), Device, spotinFormation, formationType, 0.5f, 100f, 300f)
+            base(content, 80, 80, content.Load<Texture2D>("Images/Animations/Sting-Ray"), Device, spotinFormation, formationType, 0.5f)
         {
             mass = 1f;
             frameNum = 12;
@@ -37,8 +37,8 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             velocity = new Vector2(0, 50);
             enemyType = "stingRay";
             //EnemyShot = content.Load<Texture2D>("Images/Animations/Sting-Ray-shot");
-            VectorSpeed = 3.0f;
-            damage = 1;
+            VectorSpeed = 2.0f;
+            damage = 1f;
             score = 100;
         }
 

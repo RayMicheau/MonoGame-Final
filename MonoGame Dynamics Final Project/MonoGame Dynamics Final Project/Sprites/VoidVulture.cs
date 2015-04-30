@@ -24,19 +24,20 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         public VultureState vultureState;
         protected Vector2 distanceBetween;
         public VoidVulture(ContentManager content, GraphicsDevice Device, int spotinFormation, string formationType) :
-            base(content, 300, 300, content.Load<Texture2D>("Images/Animations/voidVulture"), Device, spotinFormation, formationType, 0.5f, 100f, 2000f)
+            base(content, 300, 300, content.Load<Texture2D>("Images/Animations/voidVulture"), Device, spotinFormation, formationType, 0.5f)
              
         {
-            mass = 10f;
             frameNum = 15;
             frameTime = 0.08f;
             vultureState = VultureState.Idle;
             collisionRange = new BoundingSphere(new Vector3(position.X + spriteOrigin.X, position.Y + spriteOrigin.Y, 0), 200f);
-            velocity = new Vector2(0, 10);
+            velocity = new Vector2(0, 25);
             enemyType = "voidVulture";
             Content = content;
-            damage = 20;
+            damage = 20f;
             score = 1000;
+            health = 2000;
+            mass = 10f;
         }
        
         public override void Update(GameTime gameTime, Player player)

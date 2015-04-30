@@ -30,9 +30,9 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             set { elapsedTime = value; }
         }
         public VoidAngel(ContentManager content, GraphicsDevice Device, int spotinFormation, string formationType) :
-            base(content,100, 100, content.Load<Texture2D>("Images/Animations/Void-Angel"), Device, spotinFormation, formationType, 0.5f, 100f, 500f)
+            base(content,100, 100, content.Load<Texture2D>("Images/Animations/Void-Angel"), Device, spotinFormation, formationType, 0.5f)
         {
-            mass = 3f;
+           
             frameNum = 7;
             frameTime = 0.1f;
             Content = content;
@@ -42,7 +42,10 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             collisionRange = new BoundingSphere(new Vector3(position.X + spriteOrigin.X, position.Y + spriteOrigin.Y, 0), 300f);
             //EnemyShot = Content.Load<Texture2D>("Images/Animations/Void-angel-shot");
             score = 500;
-
+            VectorSpeed = 3.0f;
+            damage = 3f;
+            health = 500;
+            mass = 3f;
         }
         public override void Update(GameTime gameTime, Player player)
         {

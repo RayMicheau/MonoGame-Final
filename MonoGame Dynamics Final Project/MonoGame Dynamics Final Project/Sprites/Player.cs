@@ -196,12 +196,12 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             get { return health; }
             set { health = value; }
         }
-        protected float damage;
+        /*protected float damage;
         public float Damage
         {
             get { return damage; }
             set { damage = value; }
-        }
+        }*/
 
         public float timer;
         public int frameWidth;
@@ -229,7 +229,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         Rectangle extractRegion;
         #endregion
 
-        public Player(int FrameWidth, int FrameHeight, Texture2D textureImage, Vector2 position, Vector2 velocity, bool setOrig, float scale, float health)
+        public Player(int FrameWidth, int FrameHeight, Texture2D textureImage, Vector2 position, Vector2 velocity, bool setOrig, float scale)
         {
             frameWidth = FrameWidth;
             frameHeight = FrameHeight;
@@ -237,7 +237,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             frameNum = 4;
             frameTime = 0.2f;
             TextureImage = textureImage;
-            
+            health = 5000;
             //textureImage.GetData<Color>(0, source, textureData, 0, source.Width * source.Height);
             AtkSpeed = .7f;
             
@@ -249,7 +249,6 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             SetOrigin = setOrig;
             Acceleration = acceleration;
             Health = health;
-            Damage = damage;
             Scale = scale;
             Experience = experience;
             experience = 0.0f;
@@ -277,8 +276,8 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             turnOrientation = 1;
         }
 
-        public Player(int FrameWidth, int FrameHeight, Texture2D textureImage, Texture2D turretImage, Vector2 position, Vector2 velocity, bool setOrig, float scale, float health)
-            : this(FrameWidth, FrameHeight, textureImage, position, velocity, setOrig, scale, health)
+        public Player(int FrameWidth, int FrameHeight, Texture2D textureImage, Texture2D turretImage, Vector2 position, Vector2 velocity, bool setOrig, float scale)
+            : this(FrameWidth, FrameHeight, textureImage, position, velocity, setOrig, scale)
         {
             railTurretImage = turretImage;
             railLeft = new RailTurret(railTurretImage, position, velocity, 1);

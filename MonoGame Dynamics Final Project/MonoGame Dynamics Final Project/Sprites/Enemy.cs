@@ -28,6 +28,12 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             get { return mass; }
             set { mass = value; }
         }
+        protected float damage;
+        public float Damage
+        {
+            get { return damage; }
+            set { damage = value; }
+        }
         public float VectorSpeed;
         protected float tileWidth;
         protected float tileHeight;
@@ -38,8 +44,8 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         public int score; 
         protected Vector2 distanceBetween;
         public Texture2D EnemyShot;
-        public Enemy(ContentManager content, int width, int height, Texture2D textureImage, GraphicsDevice Device, int spotinFormation, string formationType, float scale, float damage, float health)
-            : base(width, height, textureImage, new Vector2(0, -100), new Vector2(0, 100f), true, scale, health)
+        public Enemy(ContentManager content, int width, int height, Texture2D textureImage, GraphicsDevice Device, int spotinFormation, string formationType, float scale)
+            : base(width, height, textureImage, new Vector2(0, -100), new Vector2(0, 100f), true, scale)
         {
             Mass = mass;
             AtkSpeed = 1f;
@@ -52,12 +58,16 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             offScreen = true;
             maxSpeed = 100.0f;
             score = 0;
+            level = 1;
+            damage = Damage;
             
             
         }
 
         public void ChasePlayer(GameTime gameTime, Player player)
         {
+            health = health * (level / 2);
+            damage = damage * (level / 2);
             float timeLapse = (float)(gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
             source = animatedSprite(frameNum, frameTime, frameWidth, frameHeight, TextureImage, timeLapse);
             distanceBetween = ((player.Position + player.SpriteOrigin) - (position + spriteOrigin));
@@ -91,6 +101,8 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         }
         public void Update(GameTime gameTime, Rectangle virtualSize)
         {
+            health = health * (level / 2);
+            damage = damage * (level / 2); 
             float timeLapse = (float)(gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
             position += Velocity * timeLapse;
             velocity.X = MathHelper.Clamp(velocity.X, 0.0f, maxSpeed);
@@ -105,35 +117,40 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             {
                 if (Position.X >= virtualSize.Width)
                 {
-                    //position.X = frameWidth * -1;
+                    position.X = virtualSize.Width;
                     velocity.X *= -1;
                 }
                 else if (Position.X <= 0)
                 {
-                    //position.X = virtualSize.Width + frameWidth;
+                    position.X = 0;
                     velocity.X *= -1;
                 }
 
                 if (Position.Y >= virtualSize.Height)
                 {
-                    //position.Y = virtualSize.Height - SpriteOrigin.Y * Scale;
-                    velocity.Y *= -1;
+                    position.Y = virtualSize.Height;
+                    velocity.Y *= -5;
 
                 }
                 else if (Position.Y <= 0)
                 {
-                    //position.Y = virtualSize.Height - SpriteOrigin.Y * Scale;
-                    velocity.Y *= -1;
+                    position.Y = 0;
+                    velocity.Y *= -5;
 
                 } 
 
             }
             
         }
-        public virtual void Update(ContentManager content, GameTime gameTime, Player player) { }
+        public virtual void Update(ContentManager content, GameTime gameTime, Player player) 
+        {
+            health = health * (level / 2);
+            damage = damage * (level / 2);
+        }
         public virtual void Update(GameTime gameTime, Player player)
         {
-
+            health = health * (level / 2);
+            damage = damage * (level / 2);
             float timeLapse = (float)(gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
             position += Velocity * timeLapse;
             source = animatedSprite(frameNum, frameTime, frameWidth, frameHeight, TextureImage, timeLapse);

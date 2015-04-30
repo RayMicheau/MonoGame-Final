@@ -46,7 +46,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         #endregion
     
         public RailTurret(Texture2D turretImage, Vector2 position, Vector2 velocity, int Orientation)
-            :base(32, 64, turretImage, position, velocity, false, 1f, 100)
+            :base(32, 64, turretImage, position, velocity, false, 1f)
         {
             
             turretTime = 0f;

@@ -27,19 +27,20 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         float elapsedShotTime;
         bool chasing;
         public Stingray2(ContentManager content, GraphicsDevice Device, int spotinFormation, string formationType) :
-            base(content, 80, 80, content.Load<Texture2D>("Images/Animations/Sting-Ray-2"), Device, spotinFormation, formationType, 0.5f, 100f, 500f)
+            base(content, 80, 80, content.Load<Texture2D>("Images/Animations/Sting-Ray-2"), Device, spotinFormation, formationType, 0.5f)
         {
-            mass = 2f;
             frameNum = 12;
             frameTime = 0.1f;
             Ai = RayState.Default;
             collisionRange = new BoundingSphere(new Vector3(position.X + spriteOrigin.X, position.Y + spriteOrigin.Y, 0), 400f);
-            velocity = new Vector2(0, 20);
+            velocity = new Vector2(0, 100);
             enemyType = "stingRay";
             //EnemyShot = content.Load<Texture2D>("Images/Animations/Sting-Ray-shot");
-            VectorSpeed = 3.0f;
-            damage = 3;
-            score = 400;
+            VectorSpeed = 5.0f;
+            score = 500;
+            damage = 4f;
+            health = 800;
+            mass = 2f;
         }
 
         public override void Update(ContentManager content, GameTime gameTime, Player player)

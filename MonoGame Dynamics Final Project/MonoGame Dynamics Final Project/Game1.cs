@@ -72,7 +72,6 @@ namespace MonoGame_Dynamics_Final_Project
         Color customColor;
         float score = 0;
         float timer = 0.0f;
-        float damage = 0.0f; 
         bool playGame;
         float elapsedScoreTime;
         //Buttons;
@@ -265,8 +264,7 @@ namespace MonoGame_Dynamics_Final_Project
                     new Vector2(windowWidth / 2, windowHeight - 70),
                     new Vector2(10, 10),
                     true,
-                    1.0f,
-                    5000.0f
+                    1.0f
                     );
 
                 follower = new Follower(32,32,Content, playerShip,new Vector2(0, playerShip.frameHeight+20),1.0f, true);
@@ -443,6 +441,10 @@ namespace MonoGame_Dynamics_Final_Project
                 if (playerShip.Experience >= playerShip.ExperienceToNextLevel)
                 {
                     playerShip.Level++;
+                    foreach (Enemy enemies in Enemywave)
+                    {
+                        enemies.Level = playerShip.Level;
+                    }
                     playerShip.ExperienceToNextLevel *= 1.25f;
                     playerShip.Experience = 0;
                     DisplayProgress.Add(new ProgressUI(playerShip.Position, playerShip.Level, menuFont, "Level:"));
@@ -487,7 +489,7 @@ namespace MonoGame_Dynamics_Final_Project
                 playerShip.collisionDetected = false;
 
                 shakeSwitch = false;
-
+                float damage = 0.0f;
                 for (int i = 0; i < Enemywave.Count; i++)
                 {
                     if (playerShip.CollisionSprite(Enemywave[i]))
@@ -500,13 +502,8 @@ namespace MonoGame_Dynamics_Final_Project
                             //shakeSwitch = true;
 
                             damage += Enemywave[i].Damage;
-                            Console.WriteLine("Health:" + playerShip.Health);
-                            if (playerShip.Health <= 0.0f)
-                            {
-                                gameState = GameState.GameOver;
-                                playerShip.Alive = false;
-                                follower.Alive = false;
-                            }
+                            
+                            Console.WriteLine("Damage:" + Enemywave[i].Damage);
                             
                         //}
 
@@ -515,8 +512,14 @@ namespace MonoGame_Dynamics_Final_Project
                
                     //else { playerShip.collisionDetected = false; }
                 }
-                playerShip.Health -= damage;
-                damage = 0f;
+                playerShip.Health -= damage; 
+                //playerShip.Health -= damage;
+                if (playerShip.Health <= 0.0f)
+                {
+                    gameState = GameState.GameOver;
+                    playerShip.Alive = false;
+                    follower.Alive = false;
+                } 
 
                 if (shakeSwitch == true) { _camera.Move(new Vector2(random.Next(-50, 50), random.Next(-50, 50))); }
                 else { _camera.Position = originalCameraPosition;}
@@ -1005,7 +1008,7 @@ namespace MonoGame_Dynamics_Final_Project
                     spriteBatch.Draw(xp, xpRect, Color.White);
                     spriteBatch.DrawString(menuFont, "xp:" + playerShip.Experience + "/" + playerShip.ExperienceToNextLevel, new Vector2(110.0f, GraphicsDevice.Viewport.Height - 27.0f), Color.White, 0.08f);
                     spriteBatch.DrawString(menuFont, "Lvl:" + playerShip.Level, new Vector2(GraphicsDevice.Viewport.Width - 200.0f, 50.0f), Color.White, 0.25f);
-                    spriteBatch.DrawString(menuFont, "Score:" + (Math.Round(timer,2) * score), new Vector2(0.0f, 50.0f), Color.White, 0.0f,Vector2.Zero,0.25f,SpriteEffects.None,0.0f);
+                    spriteBatch.DrawString(menuFont, "Score:" + score, new Vector2(0.0f, 50.0f), Color.White, 0.0f,Vector2.Zero,0.25f,SpriteEffects.None,0.0f);
                     spriteBatch.DrawString(menuFont, "Primary:" + playerShip.PrimaryType, new Vector2(100.0f, GraphicsDevice.Viewport.Height - 80.0f), Color.White, 0.0f, Vector2.Zero, 0.15f, SpriteEffects.None, 0.0f);
                     spriteBatch.DrawString(menuFont, "Secondary:" + playerShip.SecondaryType, new Vector2(GraphicsDevice.Viewport.Width - 550.0f, GraphicsDevice.Viewport.Height - 80.0f), Color.White, 0.0f,Vector2.Zero,0.15f,SpriteEffects.None,0.0f);
 
@@ -1037,7 +1040,7 @@ namespace MonoGame_Dynamics_Final_Project
                     //spriteBatch.Begin();
                     drawRect(new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.Black);
                     spriteBatch.DrawString(menuFont, "Game Over\n", new Vector2(GraphicsDevice.Viewport.Width / 4, 100.0f), customColor,0f,Vector2.Zero,0.5f,SpriteEffects.None,0f);
-                    spriteBatch.DrawString(menuFont, "You Scored:" + (Math.Round(timer, 2) * score), new Vector2(GraphicsDevice.Viewport.Width / 6, 200.0f), customColor, 0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
+                    spriteBatch.DrawString(menuFont, "You Scored:" + score, new Vector2(GraphicsDevice.Viewport.Width / 6, 200.0f), customColor, 0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
                     
                     spriteBatch.End();
                     _irr.SetupVirtualScreenViewport();
