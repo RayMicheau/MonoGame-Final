@@ -38,7 +38,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             Content = content;
             enemyType = "voidAngel";
             angelState = AngelState.Idle;
-            velocity = new Vector2(0.0f, 20.0f);
+            velocity = new Vector2(0.0f, 100.0f);
             collisionRange = new BoundingSphere(new Vector3(position.X + spriteOrigin.X, position.Y + spriteOrigin.Y, 0), 300f);
             //EnemyShot = Content.Load<Texture2D>("Images/Animations/Void-angel-shot");
             score = 500;
@@ -59,11 +59,12 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                     break;
                 case AngelState.Chase:
                     ChasePlayer(gameTime, player);
-                    break;
-                case AngelState.Attack:
-                    base.Update(gameTime, player);
                     TextureImage = Content.Load<Texture2D>("Images/Animations/void-angel-Attack");
                     break;
+                //case AngelState.Attack:
+                //    base.Update(gameTime, player);
+                //    TextureImage = Content.Load<Texture2D>("Images/Animations/void-angel-Attack");
+                //    break;
             }
         }
 
@@ -79,17 +80,17 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             {
                 angelState = AngelState.Idle;
             }
-            if (elapsedTime > 5.0f)
-            {
-                angelState = AngelState.Attack;
-                frameNum = 14;
-                velocity = Vector2.Zero;
-                if (frameIndex == 13)
-                {
+          //  if (elapsedTime > 5.0f)
+          //  {
+           //     angelState = AngelState.Attack;
+           //     frameNum = 14;
+           //     velocity = Vector2.Zero;
+                //if (frameIndex == 13)
+                //{
 
-                }
+                //}
                 
-            }
+           // }
         }
              
 
