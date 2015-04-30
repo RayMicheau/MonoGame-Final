@@ -18,7 +18,7 @@ namespace MonoGame_Dynamics_Final_Project
     {
         public string progressType;
         protected int orientation;
-        protected float maxScale;
+        protected float maxScale, minScale;
         public ProgressUI(Vector2 screenPosition, int progressScore, SpriteFont font, string ProgressType)
             :base(screenPosition,progressScore,font)
         {
@@ -29,10 +29,12 @@ namespace MonoGame_Dynamics_Final_Project
             if (progressType == "Wave:")
             {
                 maxScale = 1;
+                minScale = 0.5f;
             }
             else if (progressType == "Level:")
             {
-                maxScale = 0.6f;
+                maxScale = 0.4f;
+                minScale = 0.2f;
             }
         }
         public override void Update(GameTime gameTime)
@@ -46,10 +48,11 @@ namespace MonoGame_Dynamics_Final_Project
                 orientation *= -1;
             }
            
-            else if (scale < 0.5)
+            else if (scale < minScale)
             {
                 orientation = 1;
             }
+
             scale += (0.01f * orientation);
 
             if (elapsed > 3)

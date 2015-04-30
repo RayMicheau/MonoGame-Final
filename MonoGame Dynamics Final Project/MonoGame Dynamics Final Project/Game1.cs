@@ -339,7 +339,7 @@ namespace MonoGame_Dynamics_Final_Project
                     }
                     else
                     {
-                        DisplayProgress[i].Update(playerShip.Position, gameTime);
+                        DisplayProgress[i].Update(new Vector2(playerShip.Position.X, playerShip.Position.Y + (playerShip.SpriteOrigin.Y * 2)), gameTime);
                     }
                     if (!DisplayProgress[i].alive)
                     {
