@@ -53,21 +53,14 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                 shot.Update(gameTime, player);
             }
 
-            if (elapsedShotTime > 2 && !chasing)
+            if (elapsedShotTime > 2)
             {
                 elapsedShotTime = 0f;
-                StingRayWeapon Stingshot = new StingRayWeapon(content, position);
-                primary.Add(Stingshot);
-            }
-            if (elapsedShotTime > 2 && chasing)
-            {
-                elapsedShotTime = 0f;
-                StingRayWeapon Stingshot = new StingRayWeapon(content, position);
-                Stingshot.Velocity = getDirectionVector() * Stingshot.velocitySpeed;
-                primary.Add(Stingshot);
+                shootPrimary(content);
             }
 
             collisionRange = new BoundingSphere(new Vector3(position.X + spriteOrigin.X, position.Y + spriteOrigin.Y, 0), 400f);
+           
             setAi(player);
             switch (Ai)
             {
@@ -99,9 +92,16 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             }
         }
 
-        //public override void Draw(SpriteBatch spriteBatch, GameTime gameTime){
-        //    Draw(spriteBatch, gameTime);
-        //}
+        public override void shootPrimary(ContentManager content)
+        {
+            StingRayWeapon Stingshot = new StingRayWeapon(content, position + spriteOrigin);
+            Stingshot.velocitySpeed = 100f;
+            Stingshot = new StingRayWeapon(content, position + spriteOrigin + Stingshot.SpriteOrigin);     
+            Stingshot.Velocity = getDirectionVector() * 50f;
+            Stingshot.Angle = MathHelper.PiOver2 + (float)Math.Atan2(Stingshot.Velocity.Y, Stingshot.Velocity.X);
+            primary.Add(Stingshot);
+        }
+
     }
 }
 

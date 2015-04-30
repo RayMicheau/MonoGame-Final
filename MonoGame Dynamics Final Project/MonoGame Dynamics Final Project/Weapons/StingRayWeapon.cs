@@ -26,7 +26,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
             shotRectangle = new Rectangle(0, 0, shotFrameWidth, shotFrameHeight);
             shotFrames = 3;
             velocitySpeed = 25f;
-            velocity = new Vector2(0, 1) * velocitySpeed;
+            velocity = new Vector2(0, 10) * velocitySpeed;
             scale = 2;
         }
 

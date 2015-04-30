@@ -36,7 +36,6 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             collisionRange = new BoundingSphere(new Vector3(position.X + spriteOrigin.X, position.Y + spriteOrigin.Y, 0), 400f);
             velocity = new Vector2(0, 50);
             enemyType = "stingRay";
-            //EnemyShot = content.Load<Texture2D>("Images/Animations/Sting-Ray-shot");
             VectorSpeed = 2.0f;
             damage = 1f;
             score = 100;
@@ -90,17 +89,10 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         public override void shootPrimary(ContentManager content)
         {
             StingRayWeapon Stingshot = new StingRayWeapon(content, position + spriteOrigin);
-            if (!chasing)
-            {
-                Stingshot = new StingRayWeapon(content, position + spriteOrigin + Stingshot.SpriteOrigin);
-                primary.Add(Stingshot);
-            }
-            else if(chasing)
-            {
-                Stingshot = new StingRayWeapon(content, position + spriteOrigin + Stingshot.SpriteOrigin);
-                Stingshot.Velocity = getDirectionVector() * Stingshot.velocitySpeed;
-                primary.Add(Stingshot);
-            }
+            Stingshot = new StingRayWeapon(content, position + spriteOrigin + Stingshot.SpriteOrigin);
+            Stingshot.Velocity = getDirectionVector() * Stingshot.velocitySpeed;
+            Stingshot.Angle = -MathHelper.PiOver2 + (float)Math.Atan2(Stingshot.Velocity.Y, Stingshot.Velocity.X);
+            primary.Add(Stingshot);
         }
     }
 }
