@@ -38,8 +38,9 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             velocity = new Vector2(0, 50);
             enemyType = "stingRay";
             //EnemyShot = content.Load<Texture2D>("Images/Animations/Sting-Ray-shot");
-            VectorSpeed = 2.0f;
+            VectorSpeed = 3.0f;
             damage = 1;
+            score = 100;
         }
 
         public override void Update(ContentManager content, GameTime gameTime, Player player)

@@ -41,6 +41,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             velocity = new Vector2(0.0f, 20.0f);
             collisionRange = new BoundingSphere(new Vector3(position.X + spriteOrigin.X, position.Y + spriteOrigin.Y, 0), 300f);
             //EnemyShot = Content.Load<Texture2D>("Images/Animations/Void-angel-shot");
+            score = 500;
 
         }
         public override void Update(GameTime gameTime, Player player)

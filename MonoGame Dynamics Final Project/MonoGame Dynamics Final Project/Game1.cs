@@ -94,6 +94,7 @@ namespace MonoGame_Dynamics_Final_Project
         float timer = 0.0f;
         float damage = 0.0f; 
         bool playGame;
+        float elapsedScoreTime;
         //Buttons;
 
         // player
@@ -116,6 +117,7 @@ namespace MonoGame_Dynamics_Final_Project
         List<Enemy> Enemywave = new List<Enemy>();
         List<Enemy>[] WaveDef = new List<Enemy>[9];
         List<PowerUp> powerUpList = new List<PowerUp>();
+        List<Score> DisplayScorePos = new List<Score>();
 
         //PowerUps
         double spawnChance = 0.2;
@@ -411,6 +413,7 @@ namespace MonoGame_Dynamics_Final_Project
                                 if (random.NextDouble() <= spawnChance)
                                     SpawnPowerUp(Enemywave[i].Position);
                                 Enemywave[i].Alive = false;
+                                DisplayScorePos.Add(new Score(Enemywave[i].Position,Enemywave[i].score));
                                 Enemywave.RemoveAt(i);
 
                             }
@@ -519,7 +522,10 @@ namespace MonoGame_Dynamics_Final_Project
                         powerUpList.RemoveAt(i);
                     }
                 }
-
+                foreach (Score scoreDisplay in DisplayScorePos)
+                {
+                    scoreDisplay.Update(gameTime);
+                }
                 _camera.Update(gameTime);
                 base.Update(gameTime);
                 
@@ -897,6 +903,13 @@ namespace MonoGame_Dynamics_Final_Project
                     {
                         pUp.Draw(spriteBatch, gameTime);
                     }
+                    foreach (Score scoreDisplay in DisplayScorePos)
+                    {
+                        
+                        scoreDisplay.Draw(spriteBatch, menuFont);
+
+                        
+                    }
 
                     //Draw Follower
                     //follower.Draw(spriteBatch, gameTime, Color.White);
@@ -1196,13 +1209,13 @@ namespace MonoGame_Dynamics_Final_Project
                         {
                             if (Enemywave[i].enemyType == "stingRay")
                             {
-                                score += 100;
+                                score += Enemywave[i].score;
                                 audioManager.PlaySoundEffect("enemy dead");
                                 StingrayParticles.RemoveAt(StingrayParticles.Count - 1);
                             }
                             if (Enemywave[i].enemyType == "voidVulture")
                             {
-                                score += 1000;
+                                score += Enemywave[i].score;
 
                                 audioManager.PlaySoundEffect("enemy dead2");
 
@@ -1218,13 +1231,14 @@ namespace MonoGame_Dynamics_Final_Project
                             }
                             if (Enemywave[i].enemyType == "voidAngel")
                             {
-                                score += 500;
+                                score += Enemywave[i].score;
                             }
 
                             double rand = random.NextDouble();
                             if (rand < spawnChance)
                                 SpawnPowerUp(Enemywave[i].Position);
                             Enemywave[i].Alive = false;
+                            DisplayScorePos.Add(new Score(Enemywave[i].Position,Enemywave[i].score));
                             Enemywave.RemoveAt(i);
                         }
                     }

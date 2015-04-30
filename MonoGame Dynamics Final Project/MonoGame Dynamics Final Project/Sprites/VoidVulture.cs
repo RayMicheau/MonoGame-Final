@@ -36,6 +36,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             enemyType = "voidVulture";
             Content = content;
             damage = 20;
+            score = 1000;
         }
        
         public override void Update(GameTime gameTime, Player player)

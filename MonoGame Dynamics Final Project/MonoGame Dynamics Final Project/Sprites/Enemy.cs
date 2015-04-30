@@ -34,7 +34,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         public string enemyType;
         public bool offScreen;
         protected float maxSpeed;
-
+        public int score; 
         protected Vector2 distanceBetween;
         public Texture2D EnemyShot;
         public Enemy(ContentManager content, int width, int height, Texture2D textureImage, GraphicsDevice Device, int spotinFormation, string formationType, float scale, float damage, float health)
@@ -50,6 +50,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             rotation = 0.0f;
             offScreen = true;
             maxSpeed = 100.0f;
+            score = 0;
             
             
         }
