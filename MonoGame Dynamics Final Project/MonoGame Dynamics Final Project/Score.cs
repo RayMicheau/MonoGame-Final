@@ -36,15 +36,17 @@ namespace MonoGame_Dynamics_Final_Project
         public bool alive;
         public Color prevColor;
         public Color newColor;
+        protected Vector2 size, origin;
 
-        public Score(Vector2 enemyPosition, int enemyScore)
+        public Score(Vector2 enemyPosition, int enemyScore, SpriteFont font)
         {
             position = enemyPosition;
             scoreAmount = enemyScore;
             alive = true;
             prevColor = getColor();
             scale = 0.1f;
-
+            size = font.MeasureString(scoreAmount.ToString());
+            origin = size * 0.5f;
         }
         public Color getColor()
         {
@@ -104,6 +106,7 @@ namespace MonoGame_Dynamics_Final_Project
                 prevColor = transitionColor(r, g, b);
             }
             scale += 0.1f;
+            
             if (scale > 2f)
             {
                 alive = false;
@@ -113,7 +116,7 @@ namespace MonoGame_Dynamics_Final_Project
         {
             if (alive)
             {
-                spriteBatch.DrawString(menuFont, scoreAmount.ToString(), position, prevColor, scale);
+                spriteBatch.DrawString(menuFont, scoreAmount.ToString(), position, prevColor, 0f, origin, scale, SpriteEffects.None, 1f);
             }
         }
 

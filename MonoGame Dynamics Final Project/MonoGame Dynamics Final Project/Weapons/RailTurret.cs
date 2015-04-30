@@ -56,6 +56,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             spriteOrigin = new Vector2(turretFrameWidth / 2, turretFrameHeight);
             turretFrames = 6;
             source = new Rectangle(0, 0, turretFrameWidth, turretFrameHeight);
+            Scale = 1.2f;
             orientation = Orientation;
             if (orientation == -1)
             {
@@ -65,7 +66,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             {
                 spriteEffect = SpriteEffects.None;
             }
-            offset = new Vector2(15, -30);
+            offset = new Vector2(15, 0);
             offset.X *= orientation;
         }
 
@@ -92,7 +93,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                              color,
                              rotation,
                              spriteOrigin,
-                             1f,
+                             Scale,
                              SpriteEffect,
                              1f);
         }
