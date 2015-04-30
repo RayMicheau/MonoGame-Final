@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
 using MonoGame_Dynamics_Final_Project;
+using MonoGame_Dynamics_Final_Project.Weapons;
 #endregion
 
 namespace MonoGame_Dynamics_Final_Project.Sprites
@@ -81,9 +82,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
        
         public virtual void UpdateWeapon(GameTime gameTime, Player player, Vector2 directionShot, ContentManager content)
         {
-            directionShot = velocity;
-            
-           
+            directionShot = velocity;           
         }
         public void Update(GameTime gameTime, Rectangle virtualSize)
         {
@@ -136,6 +135,23 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
 
 
             //   TextureImage.GetData<Color>(0, source, textureData, 0, source.Width * source.Height);
+        }
+
+        public override void Draw(SpriteBatch spriteBatch, GameTime gameTime, Color color)
+        {
+            foreach(Weapon shot in primary)
+            {
+                shot.Draw(spriteBatch);
+            }
+            spriteBatch.Draw(TextureImage,
+                            position,
+                            source,
+                            color,
+                            rotation,
+                            spriteOrigin,
+                            Scale * 2,
+                            Spriteeffect,
+                            0.0f);
         }
        
         // This method sets the enemy position depending on it's spot in the formation 

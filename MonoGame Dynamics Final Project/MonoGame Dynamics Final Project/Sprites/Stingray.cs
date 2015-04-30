@@ -85,8 +85,11 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         public override void UpdateWeapon(GameTime gameTime, Player player, Vector2 directionShot, ContentManager content)
         {
             base.UpdateWeapon(gameTime, player, directionShot, content);
-            StingRayWeapon weapon = new StingRayWeapon(content, player.Position);
-            primary.Add(weapon);
+            
+            foreach(Weapon weapon in primary)
+            {
+                weapon.Update(gameTime);
+            }
         }
         public void setAi(Player player)
         {
