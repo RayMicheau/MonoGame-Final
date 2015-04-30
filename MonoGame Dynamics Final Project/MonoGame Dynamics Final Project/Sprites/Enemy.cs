@@ -66,8 +66,6 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
 
         public void ChasePlayer(GameTime gameTime, Player player)
         {
-            health = health * (level / 2);
-            damage = damage * (level / 2);
             float timeLapse = (float)(gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
             source = animatedSprite(frameNum, frameTime, frameWidth, frameHeight, TextureImage, timeLapse);
             distanceBetween = ((player.Position + player.SpriteOrigin) - (position + spriteOrigin));
@@ -101,8 +99,8 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         }
         public void Update(GameTime gameTime, Rectangle virtualSize)
         {
-            health = health * (level / 2);
-            damage = damage * (level / 2); 
+          //  health = health * (level / 2);
+          //  damage = damage * (level / 2); 
             float timeLapse = (float)(gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
             position += Velocity * timeLapse;
             velocity.X = MathHelper.Clamp(velocity.X, 0.0f, maxSpeed);
@@ -144,13 +142,13 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         }
         public virtual void Update(ContentManager content, GameTime gameTime, Player player) 
         {
-            health = health * (level / 2);
-            damage = damage * (level / 2);
+           // health = health * (level / 2);
+           // damage = damage * (level / 2);
         }
         public virtual void Update(GameTime gameTime, Player player)
         {
-            health = health * (level / 2);
-            damage = damage * (level / 2);
+           // health = health * (level / 2);
+           // damage = damage * (level / 2);
             float timeLapse = (float)(gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
             position += Velocity * timeLapse;
             source = animatedSprite(frameNum, frameTime, frameWidth, frameHeight, TextureImage, timeLapse);

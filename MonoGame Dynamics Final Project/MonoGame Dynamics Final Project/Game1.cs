@@ -444,6 +444,8 @@ namespace MonoGame_Dynamics_Final_Project
                     foreach (Enemy enemies in Enemywave)
                     {
                         enemies.Level = playerShip.Level;
+                        enemies.Health = enemies.Health * (enemies.Level / 2);
+                        enemies.Damage = enemies.Damage * (enemies.Level / 2);
                     }
                     playerShip.ExperienceToNextLevel *= 1.25f;
                     playerShip.Experience = 0;
@@ -494,26 +496,13 @@ namespace MonoGame_Dynamics_Final_Project
                 {
                     if (playerShip.CollisionSprite(Enemywave[i]))
                     {
-
-                        //if (playerShip.IntersectsPixel(Enemywave[i]))
-                        //{
                             playerShip.collisionDetected = true;
-                        
-                            //shakeSwitch = true;
-
                             damage += Enemywave[i].Damage;
-                            
                             Console.WriteLine("Damage:" + Enemywave[i].Damage);
-                            
-                        //}
-
-                        //Enemywave.RemoveAt(i);
-                        }
-               
-                    //else { playerShip.collisionDetected = false; }
+                    }
                 }
                 playerShip.Health -= damage; 
-                //playerShip.Health -= damage;
+
                 if (playerShip.Health <= 0.0f)
                 {
                     gameState = GameState.GameOver;
