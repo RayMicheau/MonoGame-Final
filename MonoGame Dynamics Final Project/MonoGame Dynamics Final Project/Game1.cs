@@ -121,8 +121,11 @@ namespace MonoGame_Dynamics_Final_Project
 
         List<ParticleEngine> StingrayParticles = new List<ParticleEngine>();
         List<Texture2D> StingrayTextures;
+        List<ParticleEngine> Stingray2Particles = new List<ParticleEngine>();
+        List<Texture2D> Stingray2Textures;
 
         int EnemyParticleCounter = 0;
+        int EnemyParticleCounter2 = 0;
 
         List<ParticleEngine> DestructionParticles = new List<ParticleEngine>();
         List<Texture2D> DestructionTextures= new List<Texture2D>();
@@ -142,6 +145,7 @@ namespace MonoGame_Dynamics_Final_Project
         public bool shakeSwitch = false;
         Vector2 originalCameraPosition;
 
+        float elapsedMS;
         #endregion
 
         public Game1()
@@ -193,6 +197,10 @@ namespace MonoGame_Dynamics_Final_Project
                 StingrayTextures = new List<Texture2D>();
                 StingrayTextures.Add(Content.Load<Texture2D>("Images/Particles/starpoof1"));
                 StingrayTextures.Add(Content.Load<Texture2D>("Images/Particles/starpoof2"));
+
+                Stingray2Textures = new List<Texture2D>();
+                Stingray2Textures.Add(Content.Load<Texture2D>("Images/Particles/xdiamond"));
+                Stingray2Textures.Add(Content.Load<Texture2D>("Images/Particles/poweruparticle2"));
 
                 //Destruction Particles
                 DestructionTextures.Add(Content.Load<Texture2D>("Images/Particles/meow"));
@@ -276,13 +284,13 @@ namespace MonoGame_Dynamics_Final_Project
                 LoadWave();
                 currentWave = 1;
 
-                foreach (Enemy enemy in Enemywave)
-                {
-                    if (enemy.enemyType == "stingRay")
-                    {
-                        StingrayParticles.Add(new ParticleEngine(StingrayTextures, new Vector2(400, 240)));
-                    }
-                }
+                //foreach (Enemy enemy in Enemywave)
+                //{
+                //    if (enemy.enemyType == "stingRay")
+                //    {
+                //        StingrayParticles.Add(new ParticleEngine(StingrayTextures, new Vector2(400, 240)));
+                //    }
+                //}
             //}
             //catch (ContentLoadException e)
             //{
@@ -303,15 +311,26 @@ namespace MonoGame_Dynamics_Final_Project
 
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            if (gameState == GameState.Play)
+            {
+                elapsedMS += (float)gameTime.ElapsedGameTime.Milliseconds / 1000000000.0f;
+            }
             float BGelapsed = (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f; 
-            myBackground.Update(gameTime, BGelapsed * 100);
-            myBGtwo.Update(gameTime, BGelapsed * 50);
+            myBackground.Update(gameTime, elapsedMS+BGelapsed * 100);
+            myBGtwo.Update(gameTime, elapsedMS+BGelapsed * 50);
             UpdateInput(gameTime); 
 
             if(gameState == GameState.LoadWave)
             {
                 LoadWave();
                 currentWave++;
+                foreach (Enemy enemy in Enemywave)
+                {
+                    enemy.Level = currentWave;
+                    enemy.Health = (enemy.Health * (enemy.Level / 2));
+                    enemy.Damage = (enemy.Damage * (enemy.Level / 2));
+                    enemy.score = enemy.score * enemy.Level;
+                }
                 gameState = GameState.Play;
                 DisplayProgress.Add(new ProgressUI(new Vector2(VirtualSize.Width / 2, VirtualSize.Height / 2), currentWave, menuFont, "Wave:"));
             }
@@ -374,13 +393,18 @@ namespace MonoGame_Dynamics_Final_Project
 
                     //enemy.Update(gameTime, playerShip);
                     enemy.Update(gameTime, VirtualSize);
+
+                   
+
+                        
+                    
                     if (enemy.enemyType == "stingRay" && playGame == true)
                     {
                         enemy.Update(gameTime, playerShip);
 
                         //Stingray Particles
 
-                        if (EnemyParticleCounter < StingrayParticles.Count)
+                        //if (EnemyParticleCounter < StingrayParticles.Count)
                         enemy.Update(Content, gameTime, playerShip);
                     
                     //Stingray Particles
@@ -394,6 +418,28 @@ namespace MonoGame_Dynamics_Final_Project
                         else
                         {
                             EnemyParticleCounter = 0;
+                        }
+                    }
+                    if (enemy.enemyType == "stingRay2" && playGame == true)
+                    {
+                        enemy.Update(gameTime, playerShip);
+
+                        //Stingray2 Particles
+
+                        //if (EnemyParticleCounter < StingrayParticles.Count)
+                        enemy.Update(Content, gameTime, playerShip);
+
+                        //Stingray2 Particles
+
+                        if (EnemyParticleCounter2 < Stingray2Particles.Count)
+                        {
+                            Stingray2Particles[EnemyParticleCounter2].EmitterLocation = enemy.Position + new Vector2(Convert.ToSingle(Math.Cos(enemy.rotation) * enemy.frameWidth / 4), Convert.ToSingle(Math.Sin(enemy.rotation) * enemy.frameWidth / 4));
+                            Stingray2Particles[EnemyParticleCounter2].Update(enemy.Alive, enemy.Velocity, 9f, Color.Blue, 1);
+                            EnemyParticleCounter2++;
+                        }
+                        else
+                        {
+                            EnemyParticleCounter2 = 0;
                         }
                     }
                     if (enemy.enemyType == "voidVulture" && playGame == true)
@@ -442,15 +488,13 @@ namespace MonoGame_Dynamics_Final_Project
                         }
                     }
                 }
+
                 if (playerShip.Experience >= playerShip.ExperienceToNextLevel)
                 {
                     playerShip.Level++;
-                    foreach (Enemy enemies in Enemywave)
-                    {
-                        enemies.Level = playerShip.Level;
-                        enemies.Health = enemies.Health * (enemies.Level / 2);
-                        enemies.Damage = enemies.Damage * (enemies.Level / 2);
-                    }
+                    
+
+
                     playerShip.ExperienceToNextLevel *= 1.25f;
                     playerShip.Experience = 0;
                     DisplayProgress.Add(new ProgressUI(playerShip.Position, playerShip.Level, menuFont, "Level:"));
@@ -935,6 +979,11 @@ namespace MonoGame_Dynamics_Final_Project
                     { 
                         particle.Draw(spriteBatch); 
                     }
+                    //Draw Stingray Particles
+                    foreach (ParticleEngine particle in Stingray2Particles)
+                    {
+                        particle.Draw(spriteBatch);
+                    }
 
                     //Draw Enemies
                     foreach (Enemy enemy in Enemywave)
@@ -1108,10 +1157,12 @@ namespace MonoGame_Dynamics_Final_Project
                 if (percentage > 0 && percentage <= 40)
                 {
                     enemy = new Stingray(Content, GraphicsDevice, i + 1, formationName);
+                    StingrayParticles.Add(new ParticleEngine(StingrayTextures, new Vector2(400, 240)));
                 }
                 else if (percentage > 40 && percentage <= 60)
                 {
                     enemy = new Stingray2(Content, GraphicsDevice, i + 1, formationName);
+                    Stingray2Particles.Add(new ParticleEngine(Stingray2Textures, new Vector2(400, 240)));
                 }
                 else if (percentage > 60 && percentage <= 90)
                 {
@@ -1243,6 +1294,13 @@ namespace MonoGame_Dynamics_Final_Project
                                 audioManager.PlaySoundEffect("enemy dead");
                                 StingrayParticles.RemoveAt(StingrayParticles.Count - 1);
                             }
+                            if (Enemywave[i].enemyType == "stingRay2")
+                            {
+                                score += Enemywave[i].score;
+                                playerShip.Experience += Enemywave[i].score;
+                                audioManager.PlaySoundEffect("enemy dead");
+                                Stingray2Particles.RemoveAt(Stingray2Particles.Count - 1);
+                            }
                             if (Enemywave[i].enemyType == "voidVulture")
                             {
                                 score += Enemywave[i].score;
@@ -1262,6 +1320,7 @@ namespace MonoGame_Dynamics_Final_Project
                             if (Enemywave[i].enemyType == "voidAngel")
                             {
                                 score += Enemywave[i].score;
+                                audioManager.PlaySoundEffect("enemy dead");
                                 playerShip.Experience += Enemywave[i].score;
                             }
 

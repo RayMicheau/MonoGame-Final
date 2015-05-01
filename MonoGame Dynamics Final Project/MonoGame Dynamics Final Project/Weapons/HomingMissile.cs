@@ -33,7 +33,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
             crossHair = content.Load<Texture2D>("Images/Animations/crossHair");
             homingSpeed = velocity;
             angle = 0f;
-            damage = 1200;
+            damage = 1000;
             directionVector = new Vector2(0, 0);
         }
 

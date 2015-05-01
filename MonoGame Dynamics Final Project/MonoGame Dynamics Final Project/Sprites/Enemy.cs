@@ -41,7 +41,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         public string enemyType;
         public bool offScreen;
         protected float maxSpeed;
-        public int score; 
+        public float score; 
         protected Vector2 distanceBetween;
         public Texture2D EnemyShot;
         public Enemy(ContentManager content, int width, int height, Texture2D textureImage, GraphicsDevice Device, int spotinFormation, string formationType, float scale)
@@ -99,12 +99,18 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         }
         public void Update(GameTime gameTime, Rectangle virtualSize)
         {
-          //  health = health * (level / 2);
-          //  damage = damage * (level / 2); 
+            if (velocity.X > 100)
+            {
+                velocity.X = 100;
+            }
+            if (velocity.Y > 100)
+            {
+                velocity.Y = 100;
+            }
             float timeLapse = (float)(gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
             position += Velocity * timeLapse;
-            velocity.X = MathHelper.Clamp(velocity.X, 0.0f, maxSpeed);
-            velocity.Y = MathHelper.Clamp(velocity.Y, 0.0f, maxSpeed);
+            //velocity.X = MathHelper.Clamp(velocity.X, 0.0f, maxSpeed);
+            //velocity.Y = MathHelper.Clamp(velocity.Y, 0.0f, maxSpeed);
             source = animatedSprite(frameNum, frameTime, frameWidth, frameHeight, TextureImage, timeLapse);
             if (Position.Y > 0.0f)
             {
@@ -127,13 +133,13 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                 if (Position.Y >= virtualSize.Height)
                 {
                     position.Y = virtualSize.Height;
-                    velocity.Y *= -5;
+                    velocity.Y *= -1;
 
                 }
                 else if (Position.Y <= 0)
                 {
                     position.Y = 0;
-                    velocity.Y *= -5;
+                    velocity.Y *= -1;
 
                 } 
 
@@ -142,13 +148,9 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         }
         public virtual void Update(ContentManager content, GameTime gameTime, Player player) 
         {
-           // health = health * (level / 2);
-           // damage = damage * (level / 2);
         }
         public virtual void Update(GameTime gameTime, Player player)
         {
-           // health = health * (level / 2);
-           // damage = damage * (level / 2);
             float timeLapse = (float)(gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
             position += Velocity * timeLapse;
             source = animatedSprite(frameNum, frameTime, frameWidth, frameHeight, TextureImage, timeLapse);

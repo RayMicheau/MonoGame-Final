@@ -25,8 +25,8 @@ namespace MonoGame_Dynamics_Final_Project
             get { return position; }
             set { position = value; }
         }
-        protected int scoreAmount;
-        public int ScoreAmount
+        protected float scoreAmount;
+        public float ScoreAmount
         {
             get { return scoreAmount; }
             set { scoreAmount = value; }
@@ -38,7 +38,7 @@ namespace MonoGame_Dynamics_Final_Project
         public Color newColor;
         protected Vector2 size, origin;
 
-        public Score(Vector2 enemyPosition, int enemyScore, SpriteFont font)
+        public Score(Vector2 enemyPosition, float enemyScore, SpriteFont font)
         {
             position = enemyPosition;
             scoreAmount = enemyScore;

@@ -35,7 +35,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             enemyType = "voidVulture";
             Content = content;
             damage = 20f;
-            score = 1000;
+            score = 1000f;
             health = 2000;
             mass = 10f;
         }

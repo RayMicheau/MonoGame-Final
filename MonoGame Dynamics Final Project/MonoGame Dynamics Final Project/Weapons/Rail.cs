@@ -24,7 +24,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
             : base(content.Load<Texture2D>("Images/Animations/Plasma-Repeater-Shot"), startPosition, velocity, 1)
         {
             angle = 0;
-            damage = 500;
+            damage = 300;
             scale = 2f;
             orientation = Orientation;
             spriteEffect = SpriteEffects.None;
