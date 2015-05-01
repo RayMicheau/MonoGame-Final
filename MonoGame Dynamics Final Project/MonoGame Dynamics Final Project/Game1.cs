@@ -81,6 +81,7 @@ namespace MonoGame_Dynamics_Final_Project
         float score = 0;
         float timer = 0.0f;
         bool playGame;
+        bool swapScreen = false;
         float elapsedScoreTime;
         //Buttons;
 
@@ -189,7 +190,7 @@ namespace MonoGame_Dynamics_Final_Project
 
 
             string[] menuItems = { "Launch Ship", "How to Play", "Exit Cockpit" };
-            string[] gameOverItems = { "Main Menu", "Quit" };
+            string[] gameOverItems = { "", "Main Menu", "Quit" };
             // try
             //{
             //Load Particle textures
@@ -575,7 +576,11 @@ namespace MonoGame_Dynamics_Final_Project
 
                 if (playerShip.Health <= 0.0f)
                 {
-                    gameState = GameState.GameOver;
+                    if (!swapScreen)
+                    {
+                        gameState = GameState.GameOver;
+                        swapScreen = true;
+                    }
                     playerShip.Alive = false;
                     follower.Alive = false;
                 }
@@ -645,7 +650,7 @@ namespace MonoGame_Dynamics_Final_Project
                 Rectangle start = new Rectangle(572, 274, 200, 50);
                 Rectangle instr = new Rectangle(572, 344, 150, 50);
                 menuScreen.Update();
-
+               // RefreshGameInfo();
                 if (menuScreen.ItemSelected == 3)
                 {
                     this.Exit();
@@ -659,9 +664,15 @@ namespace MonoGame_Dynamics_Final_Project
             if (gameState == GameState.GameOver)
             {
                 playGame = false;
-                if (keyState.IsKeyDown(Keys.Enter))
+                gameOver.Update();
+                if (gameOver.ItemSelected == 2)
                 {
                     gameState = GameState.StartMenu;
+                    RefreshGameInfo();
+                }
+                if (gameOver.ItemSelected == 3)
+                {
+                    this.Exit();
                 }
             }
             if (gameState == GameState.Play)
@@ -901,6 +912,10 @@ namespace MonoGame_Dynamics_Final_Project
                 {
                     playerShip.setWeapon("rail", 10);
                 }
+                if (keyState.IsKeyDown(Keys.K))
+                {
+                    playerShip.Health = 0;
+                }
                 if (keyState.IsKeyDown(Keys.D2))
                 {
                     playerShip.setWeapon("laser", 10);
@@ -1126,6 +1141,7 @@ namespace MonoGame_Dynamics_Final_Project
                     _irr.Draw();
                     _irr.SetupFullViewport();
                     spriteBatch.Begin();
+                    gameOver.Draw(spriteBatch);
                     //spriteBatch.Begin();
                     drawRect(new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.Black);
                     spriteBatch.DrawString(menuFont, "Game Over\n", new Vector2(VirtualSize.Width / 6, VirtualSize.Height / 8), customColor, 0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
@@ -1388,6 +1404,22 @@ namespace MonoGame_Dynamics_Final_Project
             }
         }
 
+        public void RefreshGameInfo()
+        {
+            if (swapScreen)
+            {
+                gameState = GameState.StartMenu;
+                swapScreen = false;
+            }
+            playerShip.Health = 5000;
+            playerShip.Experience = 0;
+            playerShip.SecondaryAmmo = 0;
+            playerShip.Alive = true;
+            currentWave = 0;
+            Enemywave.Clear();
+
+            
+        }
 
         public void UpdateEnemyShots()
         {
