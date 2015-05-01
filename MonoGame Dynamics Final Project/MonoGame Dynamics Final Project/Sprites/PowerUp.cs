@@ -23,6 +23,9 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         HealthDown,
         MoveSpdDown,
         AtkSpdDown,
+        GravWellAmmo,
+        HelixAmmo,
+        HomingAmmo
     }
 
     class PowerUp
@@ -77,11 +80,11 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             Scale = scale;
         }
 
-        public void Update(GameTime gameTime, GraphicsDevice graphicsDevice)
+        public void Update(GameTime gameTime, Rectangle screenSize)
         {
             dTime = (float)gameTime.ElapsedGameTime.TotalMilliseconds / 1000.0f;
             position.Y += 200 * dTime;
-            if (Position.Y >= graphicsDevice.Viewport.Height)
+            if (Position.Y >= screenSize.Height)
             {
                 Alive = false;
             }
@@ -120,6 +123,18 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
 
                 case PowerUps.MoveSpdDown:
                     player.MoveSpeed *= 1.2f;
+                    break;
+
+                case PowerUps.GravWellAmmo:
+                    player.setWeapon("gravityWell", 4);
+                    break;
+
+                case PowerUps.HelixAmmo:
+                    player.setWeapon("helixMissile", 8);
+                    break;
+
+                case PowerUps.HomingAmmo:
+                    player.setWeapon("homingMissile", 5);
                     break;
 
                 default:

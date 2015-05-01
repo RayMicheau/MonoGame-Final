@@ -50,6 +50,8 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         public override void Update(ContentManager content, GameTime gameTime, Player player)
         {
             elapsedTime += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+            //Console.WriteLine("angel shot:" + elapsedTime);
+
             collisionRange = new BoundingSphere(new Vector3(position.X + spriteOrigin.X, position.Y + spriteOrigin.Y, 0), 300f);
 
             foreach (Weapon shot in primary)
