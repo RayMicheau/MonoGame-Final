@@ -22,8 +22,6 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             Shooting
         }
         #region variables
-        TurretState turretState = TurretState.Idle;
-
         protected SpriteEffects spriteEffect;
         public SpriteEffects SpriteEffect
         {

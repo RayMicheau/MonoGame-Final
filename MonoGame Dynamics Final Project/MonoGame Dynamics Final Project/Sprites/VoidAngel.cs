@@ -23,7 +23,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
     {
        ContentManager Content; 
         public AngelState angelState;
-        protected Vector2 distanceBetween;
+        protected Vector2 distanceBetweenVoidAngel;
         protected float elapsedTime;
         public float ElapsedTime
         {
@@ -83,8 +83,8 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
 
         public void setAngel(Player player)
         {
-            distanceBetween = player.Position - position;
-            float distanceLength = distanceBetween.Length();
+            distanceBetweenVoidAngel = player.Position - position;
+            float distanceLength = distanceBetweenVoidAngel.Length();
             if (collisionRange.Intersects(player.collisionRange))
             {
                 angelState = AngelState.Chase;

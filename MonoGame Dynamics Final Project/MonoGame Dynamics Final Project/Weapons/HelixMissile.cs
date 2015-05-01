@@ -17,9 +17,9 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
     {
         protected float time;
         protected float offsetX;
-        protected float velocitySpeed;
         protected Vector2 startPosition;
-        protected float radius, angle, theta;
+        protected float radius, theta;
+        new protected float angle;
         protected Texture2D textureImage;
         protected int orientation; // -1 left, 1 right
 

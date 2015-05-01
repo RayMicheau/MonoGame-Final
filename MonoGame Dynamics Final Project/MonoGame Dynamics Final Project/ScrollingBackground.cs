@@ -10,7 +10,7 @@ namespace MonoGame_Dynamics_Final_Project
     public class ScrollingBackground
     {
         #region Class Variables
-        private Vector2 screenpos, origin, texturesize;
+        private Vector2 screenpos, origin;
         private Texture2D[] textureArray;
         private Texture2D mytexture;
         private int screenheight, screenwidth;
@@ -101,7 +101,7 @@ namespace MonoGame_Dynamics_Final_Project
                 }
             }
             // Draw the texture a second time, behind the first, to create the scrolling illusion.
-            batch.Draw(mytexture, screenpos - texturesize, null,
+            batch.Draw(mytexture, screenpos, null,
                  Color.White, 0, origin, 1, SpriteEffects.None, 0f);
         }
     }

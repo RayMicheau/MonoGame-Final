@@ -24,8 +24,6 @@ namespace MonoGame_Dynamics_Final_Project
         SoundEffect thrust;
         SoundEffect rocket;
         SoundEffect hit;
-        SoundEffect hitTwo;
-        SoundEffect hitThree;
         SoundEffect shot;
         SoundEffectInstance thruster;
         SoundEffectInstance laser;

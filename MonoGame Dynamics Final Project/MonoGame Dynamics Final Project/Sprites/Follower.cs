@@ -20,7 +20,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         Vector2 Offset;
         Vector2 readyCounter = new Vector2(0, 0);
         Vector2 directionVector = new Vector2(0, 0);
-        bool masterSwitch = true;
+        //bool masterSwitch = true;
 
         public Follower(int frameWidth, int frameHeight, ContentManager content, Player player, Vector2 offset, float scale, bool setOrigin)
             : base(frameWidth, frameHeight, content.Load<Texture2D>("Images/Animations/synth-unit"), player.Position + offset, player.Velocity / 2, setOrigin, 1.0f)

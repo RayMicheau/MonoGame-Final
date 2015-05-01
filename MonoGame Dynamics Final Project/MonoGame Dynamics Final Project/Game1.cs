@@ -82,7 +82,6 @@ namespace MonoGame_Dynamics_Final_Project
         float timer = 0.0f;
         bool playGame;
         bool swapScreen = false;
-        float elapsedScoreTime;
         //Buttons;
 
         // player
@@ -100,7 +99,6 @@ namespace MonoGame_Dynamics_Final_Project
         Player follower;
         // rail turret
         Texture2D turretImage;
-        Weapon weapon;
 
         // enemies
         int currentWave;
@@ -172,7 +170,7 @@ namespace MonoGame_Dynamics_Final_Project
             graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
             this.Window.IsBorderless = true;
-            //graphics.ApplyChanges();
+            graphics.ApplyChanges();
         }
 
         protected override void Initialize()

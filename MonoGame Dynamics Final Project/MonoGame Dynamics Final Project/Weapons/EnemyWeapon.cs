@@ -19,10 +19,9 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
         protected float shotTime, shotSpeed;
         public int shotFrameWidth, shotFrameHeight, shotFrames;
         protected Rectangle shotRectangle;
-        protected float scale;
-
-        protected Vector2 directionShot;
+        new protected float scale;
         Texture2D shotTexture;
+
         public EnemyWeapon(Texture2D ShotTexture, Vector2 startPosition, float velocity)
             :base(ShotTexture, startPosition, velocity, 1)
         {

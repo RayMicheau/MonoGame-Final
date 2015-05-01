@@ -43,7 +43,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         protected float maxSpeed;
         public float score; 
         protected Vector2 distanceBetween;
-        public Texture2D EnemyShot;
+
         public Enemy(ContentManager content, int width, int height, Texture2D textureImage, GraphicsDevice Device, int spotinFormation, string formationType, float scale)
             : base(width, height, textureImage, new Vector2(0, -500), new Vector2(0, 100f), true, scale)
         {

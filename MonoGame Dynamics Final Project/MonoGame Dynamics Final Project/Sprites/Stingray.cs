@@ -24,7 +24,6 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
     {
         public EnemyState Ai;
         float elapsedShotTime;
-        bool chasing;
 
         public Stingray(ContentManager content, GraphicsDevice Device, int spotinFormation, string formationType) :
             base(content, 80, 80, content.Load<Texture2D>("Images/Animations/Sting-Ray"), Device, spotinFormation, formationType, 0.5f)
@@ -64,12 +63,9 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             {
                 case EnemyState.Chase :
                     ChasePlayer(gameTime, player);
-                    chasing = true;
                     break;
                 case EnemyState.Default :
-                    chasing = false;
                     base.Update(gameTime, player);
- 
                     break;
             }
         }

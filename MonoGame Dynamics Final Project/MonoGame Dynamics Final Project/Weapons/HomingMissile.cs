@@ -22,7 +22,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
         protected Texture2D crossHair;
         protected Enemy targetEnemy;
         protected float homingSpeed;
-        protected float angle;
+        new protected float angle;
         protected Vector2 directionVector;
 
         public HomingMissile(ContentManager content, Vector2 startPosition, float velocity)
