@@ -121,24 +121,24 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             {
                 if (Position.X >= virtualSize.Width)
                 {
-                    position.X = virtualSize.Width;
+                    //position.X = virtualSize.Width;
                     velocity.X *= -1;
                 }
                 else if (Position.X <= 0)
                 {
-                    position.X = 0;
+                   // position.X = 0;
                     velocity.X *= -1;
                 }
 
                 if (Position.Y >= virtualSize.Height)
                 {
-                    position.Y = virtualSize.Height;
+                    //position.Y = virtualSize.Height;
                     velocity.Y *= -1;
 
                 }
                 else if (Position.Y <= 0)
                 {
-                    position.Y = 0;
+                    //position.Y = 0;
                     velocity.Y *= -1;
 
                 } 

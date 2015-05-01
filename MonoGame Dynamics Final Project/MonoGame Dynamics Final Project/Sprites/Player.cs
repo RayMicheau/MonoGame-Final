@@ -196,6 +196,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             get { return health; }
             set { health = value; }
         }
+        public float MaxHealth;
         /*protected float damage;
         public float Damage
         {
@@ -238,6 +239,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             frameTime = 0.2f;
             TextureImage = textureImage;
             health = 5000;
+            MaxHealth = 5000;
             //textureImage.GetData<Color>(0, source, textureData, 0, source.Width * source.Height);
             AtkSpeed = .7f;
             
