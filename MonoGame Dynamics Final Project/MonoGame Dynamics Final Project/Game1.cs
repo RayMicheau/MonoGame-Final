@@ -896,12 +896,12 @@ namespace MonoGame_Dynamics_Final_Project
                 }
 
                 // turrets
-                if (keyState.IsKeyDown(Keys.A) && playerShip.PrimaryType == "rail")
+                if ((keyState.IsKeyDown(Keys.A) || gamePadState.ThumbSticks.Right.X > 0.5) && playerShip.PrimaryType == "rail")
                 {
                     playerShip.RailLeft.rotateTurret(-1 * playerShip.RailLeft.orientation);
                     playerShip.RailRight.rotateTurret(-1 * playerShip.RailRight.orientation);
                 }
-                else if (keyState.IsKeyDown(Keys.D) && playerShip.PrimaryType == "rail")
+                else if ((keyState.IsKeyDown(Keys.D) || gamePadState.ThumbSticks.Right.X < -0.5) && playerShip.PrimaryType == "rail")
                 {
                     playerShip.RailLeft.rotateTurret(1 * playerShip.RailLeft.orientation);
                     playerShip.RailRight.rotateTurret(1 * playerShip.RailRight.orientation);
@@ -910,7 +910,7 @@ namespace MonoGame_Dynamics_Final_Project
                 // MathHelper.Clamp(playerShip.RailLeft.rotation, 0, 2f);
 
                 // Primary Weapon
-                if (oldState.IsKeyUp(Keys.Space) && keyState.IsKeyDown(Keys.Space) && playerShip.PrimaryType == "rail")
+                if (((oldState.IsKeyUp(Keys.Space) && keyState.IsKeyDown(Keys.Space))|| gamePadState.Triggers.Right > 0.1) && playerShip.PrimaryType == "rail")
                 {
                     playerShip.HasShotPrim = true;
                     if (playerShip.HasShotPrim)
@@ -923,7 +923,7 @@ namespace MonoGame_Dynamics_Final_Project
                         playerShip.HasShotPrim = false;
                     }
                 }
-                else if (keyState.IsKeyDown(Keys.Space) && playerShip.PrimaryType == "laser")
+                else if ((keyState.IsKeyDown(Keys.Space) || gamePadState.Triggers.Right > 0.1) && playerShip.PrimaryType == "laser")
                 {
                     playerShip.HasShotPrim = true;
                     if (playerShip.HasShotPrim)
@@ -952,7 +952,7 @@ namespace MonoGame_Dynamics_Final_Project
                         }
                 }
                 // Secondary Weapon
-                if (oldState.IsKeyUp(Keys.B) && keyState.IsKeyDown(Keys.B))
+                if ((oldState.IsKeyUp(Keys.B) && keyState.IsKeyDown(Keys.B)) || gamePadState.IsButtonDown(Buttons.A))
                 //|| gamePadState.IsButtonDown(Buttons.LeftTrigger))
                 {
                     if (playerShip.HasShot && playerShip.Secondary.Count > 0)
@@ -971,7 +971,7 @@ namespace MonoGame_Dynamics_Final_Project
                 {
                     playerShip.setWeapon("rail", 10);
                 }
-                if (keyState.IsKeyDown(Keys.K))
+                if (keyState.IsKeyDown(Keys.K) || gamePadState.IsButtonDown(Buttons.Start))
                 {
                     playerShip.Health = 0;
                 }
@@ -981,20 +981,33 @@ namespace MonoGame_Dynamics_Final_Project
                     playerShip.RailLeft.rotation = 0;
                     playerShip.RailRight.rotation = 0;
                 }
-                if (keyState.IsKeyDown(Keys.D3))
+                if(gamePadState.IsButtonDown(Buttons.DPadUp))
+                {
+                    if(playerShip.PrimaryType == "laser")
+                    {
+                        playerShip.setWeapon("rail", 10);
+                    }
+                    if(playerShip.PrimaryType == "rail")
+                    {
+                        playerShip.setWeapon("laser", 10);
+                        playerShip.RailLeft.rotation = 0;
+                        playerShip.RailRight.rotation = 0;
+                    }
+                }
+                if (keyState.IsKeyDown(Keys.D3) || gamePadState.IsButtonDown(Buttons.DPadDown))
                 {
                     playerShip.SecondaryType = "gravityWell";
-                    //playerShip.setWeapon("gravityWell", 1);
+                    playerShip.setWeapon("gravityWell", 1);
                 }
-                if (keyState.IsKeyDown(Keys.D4))
+                if (keyState.IsKeyDown(Keys.D4) || gamePadState.IsButtonDown(Buttons.DPadLeft))
                 {
                     playerShip.SecondaryType = "helixMissile";
-                    //playerShip.setWeapon("helixMissile", 2);
+                    playerShip.setWeapon("helixMissile", 2);
                 }
-                if (keyState.IsKeyDown(Keys.D5))
+                if (keyState.IsKeyDown(Keys.D5) || gamePadState.IsButtonDown(Buttons.DPadRight))
                 {
                     playerShip.SecondaryType = "homingMissile";
-                    //playerShip.setWeapon("homingMissile", 2);
+                    playerShip.setWeapon("homingMissile", 2);
                 }
                 if (keyState.IsKeyDown(Keys.P))
                 {
