@@ -500,7 +500,7 @@ namespace MonoGame_Dynamics_Final_Project
                         }
 
 
-                        PowerupParticles[i].Update(powerUpList[i].Alive, new Vector2(10, 10), 0f, Color.White, 1);
+                        PowerupParticles[i].Update(powerUpList[i].Alive, new Vector2(10, 10), 0f, new Color(random.Next(0, 255), random.Next(0, 255), random.Next(0, 255)), 1);
 
 
                         if (powerUpList[i].removeFromScreen)
@@ -526,18 +526,38 @@ namespace MonoGame_Dynamics_Final_Project
                         int collide = Enemywave[i].CollisionShot(playerShip.Secondary);
                         if (collide != -1)
                         {
+                            if (playerShip.SecondaryType != "gravityWell")
+                            {
+                                audioManager.PlaySoundEffect("hit");
+                                playerShip.CurrentSecondaryAmmo++;
+                                playerShip.Secondary.RemoveAt(collide);
+                                if (random.NextDouble() <= spawnChance)
+                                {
+                                    SpawnPowerUp(Enemywave[i].Position);
+                                    PowerupParticles.Add(new ParticleEngine(PowerupTextures, new Vector2(400, 240)));
+                                    PowerupRadiusCounters.Add(10);
+                                    PowerupAngleCounters.Add(0);
+                                    PowerupEmmision.Add(Enemywave[i].Position);
+                                }
+                                Enemywave[i].Health = 0;
+                                playerShip.Experience += Enemywave[i].score;
+                                DisplayScorePos.Add(new Score(Enemywave[i].Position, Enemywave[i].score, menuFont));
+                                
+                            }
+                            
                             if (Enemywave[i].Health <= 0f)
                             {
-                                if (Enemywave[i].enemyType == "stingRay1" && playGame == true)
+
+                                if (Enemywave[i].enemyType == "stingRay1")
                                 {
 
                                     StingrayParticles.RemoveAt(StingrayParticles.Count - 1);
                                 }
-                                if (Enemywave[i].enemyType == "stingRay2" && playGame == true)
+                                if (Enemywave[i].enemyType == "stingRay2")
                                 {
                                     Stingray2Particles.RemoveAt(Stingray2Particles.Count - 1);
                                 }
-                                if (Enemywave[i].enemyType == "voidVulture" && playGame == true){
+                                if (Enemywave[i].enemyType == "voidVulture"){
                                
                                     shakeSwitch = true;
                                     DestructionParticles.Add(new ParticleEngine(DestructionTextures, new Vector2(400, 240)));
@@ -553,23 +573,10 @@ namespace MonoGame_Dynamics_Final_Project
                             }
                             if (playerShip.SecondaryType != "gravityWell")
                             {
-                                audioManager.PlaySoundEffect("hit");
-                                playerShip.CurrentSecondaryAmmo++;
-                                playerShip.Secondary.RemoveAt(collide);
-                                if (random.NextDouble() <= spawnChance)
-                                {
-                                    SpawnPowerUp(Enemywave[i].Position);
-                                    PowerupParticles.Add(new ParticleEngine(PowerupTextures, new Vector2(400, 240)));
-                                    PowerupRadiusCounters.Add(10);
-                                    PowerupAngleCounters.Add(0);
-                                    PowerupEmmision.Add(Enemywave[i].Position);
-                                }
-                                Enemywave[i].Alive = false;
-                                playerShip.Experience += Enemywave[i].score;
-                                DisplayScorePos.Add(new Score(Enemywave[i].Position, Enemywave[i].score, menuFont));
-                                Enemywave.RemoveAt(i);
+                               Enemywave.RemoveAt(i);
                             }
                         }
+
                     }
                 }
 
@@ -693,7 +700,7 @@ namespace MonoGame_Dynamics_Final_Project
                 {
                 _camera.Move(new Vector2(random.Next(-50, 50), random.Next(-50, 50))); 
                 shakeCounter++;
-                    if (shakeCounter == 50) { 
+                    if (shakeCounter == 30) { 
                         shakeSwitch = false; shakeCounter = 0; 
                     }
                 }
