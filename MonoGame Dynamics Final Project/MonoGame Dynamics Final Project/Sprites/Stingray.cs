@@ -89,9 +89,10 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         public override void shootPrimary(ContentManager content)
         {
             StingRayWeapon Stingshot = new StingRayWeapon(content, position + spriteOrigin);
-            Stingshot = new StingRayWeapon(content, position + spriteOrigin + Stingshot.SpriteOrigin);
+            Stingshot.velocitySpeed = 100f;
+            Stingshot = new StingRayWeapon(content, position + spriteOrigin + Stingshot.SpriteOrigin);     
             Stingshot.Velocity = getDirectionVector() * Stingshot.velocitySpeed;
-            Stingshot.Angle = -MathHelper.PiOver2 + (float)Math.Atan2(Stingshot.Velocity.Y, Stingshot.Velocity.X);
+            Stingshot.Angle = MathHelper.PiOver2 + (float)Math.Atan2(Stingshot.Velocity.Y, Stingshot.Velocity.X);
             primary.Add(Stingshot);
         }
     }

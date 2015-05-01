@@ -38,6 +38,8 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
             set { velocity = value; }
         }
 
+        public float velocitySpeed;
+
         protected Vector2 acceleration;
         public Vector2 Acceleration
         {
@@ -134,6 +136,11 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
         // enemy shooting
         public virtual void Update(GameTime gameTime, Player player)
         {
+            if(velocity.Length() == 0)
+            {
+                velocity = new Vector2(0, velocitySpeed);
+            }
+
             //Time between the frames
             float timeLapse = (float)(gameTime.ElapsedGameTime.TotalSeconds);
 

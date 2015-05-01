@@ -17,7 +17,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
     class StingRayWeapon : EnemyWeapon
     {
         public StingRayWeapon(ContentManager content, Vector2 startPosition)
-            :base(content.Load<Texture2D>("Images/Animations/Sting-Ray-shot"),startPosition, 1f)
+            :base(content.Load<Texture2D>("Images/Animations/Sting-Ray-shot"),startPosition, 25f)
         {
             shotTime = 0f;
             shotSpeed = 0.1f;
@@ -26,7 +26,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
             shotRectangle = new Rectangle(0, 0, shotFrameWidth, shotFrameHeight);
             shotFrames = 3;
             velocitySpeed = 25f;
-            velocity = new Vector2(0, 10) * velocitySpeed;
+            velocity *= velocitySpeed;
             scale = 2;
         }
 

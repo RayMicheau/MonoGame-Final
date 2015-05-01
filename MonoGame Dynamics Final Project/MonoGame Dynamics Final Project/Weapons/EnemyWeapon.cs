@@ -20,7 +20,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
         protected int shotFrameWidth, shotFrameHeight, shotFrames;
         protected Rectangle shotRectangle;
         protected float scale;
-        public float velocitySpeed;
+
         protected Vector2 directionShot;
         Texture2D shotTexture;
         public EnemyWeapon(Texture2D ShotTexture, Vector2 startPosition, float velocity)
