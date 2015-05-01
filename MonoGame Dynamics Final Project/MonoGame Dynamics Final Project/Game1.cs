@@ -16,10 +16,10 @@ namespace MonoGame_Dynamics_Final_Project
 {
     public enum GameState
     {
-        SplashScreen, 
+        SplashScreen,
         LoadWave,
         StartMenu,
-        Play, 
+        Play,
         Pause,
         GameOver,
         Exit
@@ -35,7 +35,7 @@ namespace MonoGame_Dynamics_Final_Project
         private ResolutionRenderer _irr;
         private const int VIRTUAL_RESOLUTION_WIDTH = 2160;
         private const int VIRTUAL_RESOLUTION_HEIGHT = 1440;
-        Rectangle VirtualSize = new Rectangle(0,0,VIRTUAL_RESOLUTION_WIDTH,VIRTUAL_RESOLUTION_HEIGHT);
+        Rectangle VirtualSize = new Rectangle(0, 0, VIRTUAL_RESOLUTION_WIDTH, VIRTUAL_RESOLUTION_HEIGHT);
         private Camera2D _camera;
 
 
@@ -48,6 +48,8 @@ namespace MonoGame_Dynamics_Final_Project
         AudioManager audioManager;
         bool isThrusting = false;
         bool isThrustingDown = false;
+        bool ifFiring = false;
+
         bool songSwap = false;
 
         // background
@@ -56,7 +58,7 @@ namespace MonoGame_Dynamics_Final_Project
         Texture2D[] background2;
         ScrollingBackground myBackground;
         ScrollingBackground myBGtwo;
-        
+
 
         //POWER UP IMGs
         Texture2D AtkSpdUp;
@@ -65,10 +67,14 @@ namespace MonoGame_Dynamics_Final_Project
         Texture2D AtkSpdDown;
         Texture2D MoveSpdDown;
         Texture2D HPDown;
+        Texture2D GravAmmo;
+        Texture2D RocketAmmo;
+
 
         // menu
         Texture2D startMenuScreen;
         Menu menuScreen;
+        Menu gameOver;
         SpriteFont menuFont;
         Color customColor;
         float score = 0;
@@ -93,7 +99,7 @@ namespace MonoGame_Dynamics_Final_Project
         // rail turret
         Texture2D turretImage;
         Weapon weapon;
-        
+
         // enemies
         int currentWave;
         List<Enemy> Enemywave = new List<Enemy>();
@@ -105,7 +111,7 @@ namespace MonoGame_Dynamics_Final_Project
         //PowerUps
         double spawnChance = 0.2;
 
-       // Vector2 gravityForce = new Vector2(0.0f, 150.0f);
+        // Vector2 gravityForce = new Vector2(0.0f, 150.0f);
         Vector2 offset = new Vector2(500, 500);
 
         // input
@@ -128,7 +134,7 @@ namespace MonoGame_Dynamics_Final_Project
         int EnemyParticleCounter2 = 0;
 
         List<ParticleEngine> DestructionParticles = new List<ParticleEngine>();
-        List<Texture2D> DestructionTextures= new List<Texture2D>();
+        List<Texture2D> DestructionTextures = new List<Texture2D>();
         List<int> DestructionRadiusCounters = new List<int>();
         List<int> DestructionAngleCounters = new List<int>();
         List<Vector2> DestructionEmmision = new List<Vector2>();
@@ -164,9 +170,9 @@ namespace MonoGame_Dynamics_Final_Project
         {
             //set virtual screen resolution
             _irr = new ResolutionRenderer(this, VIRTUAL_RESOLUTION_WIDTH, VIRTUAL_RESOLUTION_HEIGHT, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
-            _camera = new Camera2D(_irr) { MaxZoom = 10f, MinZoom = .4f, Zoom = 1.0f};
+            _camera = new Camera2D(_irr) { MaxZoom = 10f, MinZoom = .4f, Zoom = 1.0f };
             //_camera.CenterOnTarget(new Rectangle(0, 0, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height));
-            _camera.SetPosition(new Vector2(VIRTUAL_RESOLUTION_WIDTH/2, VIRTUAL_RESOLUTION_HEIGHT/2));
+            _camera.SetPosition(new Vector2(VIRTUAL_RESOLUTION_WIDTH / 2, VIRTUAL_RESOLUTION_HEIGHT / 2));
             _camera.RecalculateTransformationMatrices();
 
             originalCameraPosition = _camera.Position;
@@ -174,138 +180,141 @@ namespace MonoGame_Dynamics_Final_Project
             base.Initialize();
         }
 
-//Load Content method *******************************************************************************************************************
+        //Load Content method *******************************************************************************************************************
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
 
-            string[] menuItems = { "Launch Ship","How to Play", "Exit Cockpit" };
-
-           // try
+            string[] menuItems = { "Launch Ship", "How to Play", "Exit Cockpit" };
+            string[] gameOverItems = { "Main Menu", "Quit" };
+            // try
             //{
-                //Load Particle textures
-                Thrustertextures = new List<Texture2D>();
-                Thrustertextures.Add(Content.Load<Texture2D>("Images/Particles/smokepoof"));
-                //textures.Add(Content.Load<Texture2D>("Images/Particles/starpoof1"));
-                //textures.Add(Content.Load<Texture2D>("Images/Particles/starpoof2"));
-                Thrustertextures.Add(Content.Load<Texture2D>("Images/Particles/poofparticle"));
-                Thruster1 = new ParticleEngine(Thrustertextures, new Vector2(400, 240));
-                Thruster2 = new ParticleEngine(Thrustertextures, new Vector2(400, 240));
+            //Load Particle textures
+            Thrustertextures = new List<Texture2D>();
+            Thrustertextures.Add(Content.Load<Texture2D>("Images/Particles/smokepoof"));
+            //textures.Add(Content.Load<Texture2D>("Images/Particles/starpoof1"));
+            //textures.Add(Content.Load<Texture2D>("Images/Particles/starpoof2"));
+            Thrustertextures.Add(Content.Load<Texture2D>("Images/Particles/poofparticle"));
+            Thruster1 = new ParticleEngine(Thrustertextures, new Vector2(400, 240));
+            Thruster2 = new ParticleEngine(Thrustertextures, new Vector2(400, 240));
 
-                StingrayTextures = new List<Texture2D>();
-                StingrayTextures.Add(Content.Load<Texture2D>("Images/Particles/starpoof1"));
-                StingrayTextures.Add(Content.Load<Texture2D>("Images/Particles/starpoof2"));
+            StingrayTextures = new List<Texture2D>();
+            StingrayTextures.Add(Content.Load<Texture2D>("Images/Particles/starpoof1"));
+            StingrayTextures.Add(Content.Load<Texture2D>("Images/Particles/starpoof2"));
 
-                Stingray2Textures = new List<Texture2D>();
-                Stingray2Textures.Add(Content.Load<Texture2D>("Images/Particles/xdiamond"));
-                Stingray2Textures.Add(Content.Load<Texture2D>("Images/Particles/poweruparticle2"));
+            Stingray2Textures = new List<Texture2D>();
+            Stingray2Textures.Add(Content.Load<Texture2D>("Images/Particles/xdiamond"));
+            Stingray2Textures.Add(Content.Load<Texture2D>("Images/Particles/poweruparticle2"));
 
-                //Destruction Particles
-                DestructionTextures.Add(Content.Load<Texture2D>("Images/Particles/meow"));
-                DestructionTextures.Add(Content.Load<Texture2D>("Images/Particles/meow1"));
-                DestructionTextures.Add(Content.Load<Texture2D>("Images/Particles/meow2"));
-                DestructionTextures.Add(Content.Load<Texture2D>("Images/Particles/meow3"));
-                DestructionTextures.Add(Content.Load<Texture2D>("Images/Particles/meow4"));    
-            
+            //Destruction Particles
+            DestructionTextures.Add(Content.Load<Texture2D>("Images/Particles/meow"));
+            DestructionTextures.Add(Content.Load<Texture2D>("Images/Particles/meow1"));
+            DestructionTextures.Add(Content.Load<Texture2D>("Images/Particles/meow2"));
+            DestructionTextures.Add(Content.Load<Texture2D>("Images/Particles/meow3"));
+            DestructionTextures.Add(Content.Load<Texture2D>("Images/Particles/meow4"));
+
             //AftershockTextures.Add(Content.Load<Texture2D>("Images/Particles/smokepoof"));
-                AftershockTextures.Add(Content.Load<Texture2D>("Images/Particles/xdiamond"));
-                AftershockTextures.Add(Content.Load<Texture2D>("Images/Particles/exhaust"));
-                
-                AftershockTextures.Add(Content.Load<Texture2D>("Images/Particles/starpoo"));
-                AftershockTextures.Add(Content.Load<Texture2D>("Images/Particles/pulse"));
-                
+            AftershockTextures.Add(Content.Load<Texture2D>("Images/Particles/xdiamond"));
+            AftershockTextures.Add(Content.Load<Texture2D>("Images/Particles/exhaust"));
 
-                //Loading audio
-                audioManager = new AudioManager();
-                audioManager.Initialize(Content);
-                audioManager.Play("");
+            AftershockTextures.Add(Content.Load<Texture2D>("Images/Particles/starpoo"));
+            AftershockTextures.Add(Content.Load<Texture2D>("Images/Particles/pulse"));
+
+
+            //Loading audio
+            audioManager = new AudioManager();
+            audioManager.Initialize(Content);
+            audioManager.Play("");
             //TODO: ADD MENU SCREEN SONG
-                
-
-                menuFont = Content.Load<SpriteFont>("Fonts/titleFont");
-                menuScreen = new Menu(GraphicsDevice,Content, menuFont, menuItems);
-                startMenuScreen = Content.Load<Texture2D>("Images/Backgrounds/MenuTwo");
-                customColor.A = 1;
-                customColor.R = 200;
-                customColor.G = 0;
-                customColor.B = 255;
-
-                windowWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-                windowHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
-                random = new Random();
-                playGame = false;
-
-                //PwrUpTextures
-                AtkSpdUp = Content.Load<Texture2D>("Images/PowerUps/AtkSpdUp");
-                MoveSpdUp = Content.Load<Texture2D>("Images/PowerUps/MoveSpdUp");
-                HPUp = Content.Load<Texture2D>("Images/PowerUps/HPUp");
-                AtkSpdDown = Content.Load<Texture2D>("Images/PowerUps/AtkSpdDown");
-                MoveSpdDown = Content.Load<Texture2D>("Images/PowerUps/MoveSpdDown");
-                HPDown = Content.Load<Texture2D>("Images/PowerUps/HPDown");
 
 
-                // background
-                myBackground = new ScrollingBackground();
-                myBGtwo = new ScrollingBackground();
-                background = new Texture2D[3];
-                background2 = new Texture2D[1];
-                for (int i = 0; i < background.Length; i++)
-                {
-                    background[i] = Content.Load<Texture2D>("Images/Backgrounds/universe" + (i).ToString());
-                }
-                background2[0] = Content.Load<Texture2D>("Images/Backgrounds/universe-background");
+            menuFont = Content.Load<SpriteFont>("Fonts/titleFont");
+            menuScreen = new Menu(GraphicsDevice, Content, menuFont, menuItems);
+            gameOver = new Menu(GraphicsDevice, Content, menuFont, gameOverItems);
 
-                myBackground.Load(VIRTUAL_RESOLUTION_WIDTH,VIRTUAL_RESOLUTION_HEIGHT, background, background.Length, 0.5f); // change float to change animation speed           
-                myBGtwo.Load(VIRTUAL_RESOLUTION_WIDTH, VIRTUAL_RESOLUTION_HEIGHT, background2, background2.Length, 0.5f); // change float to change animation speed 
-               
-                // player sprites
-                playerTexture = Content.Load<Texture2D>("Images/Animations/Commandunit-idle");
-                playerMove = Content.Load<Texture2D>("Images/Animations/Commandunit-move");
-                playerRight = Content.Load<Texture2D>("Images/Animations/Commandunit-right");
-                playerLeft = Content.Load<Texture2D>("Images/Animations/Commandunit-left");
-                playerRightTurn = Content.Load<Texture2D>("Images/Animations/Commandunit-Turn");
-                playerLeftTurn = Content.Load<Texture2D>("Images/Animations/Commandunit-Turn-left");
-                turretImage = Content.Load<Texture2D>("Images/Animations/Plasma-Repeater");
+            startMenuScreen = Content.Load<Texture2D>("Images/Backgrounds/MenuTwo");
+            customColor.A = 1;
+            customColor.R = 200;
+            customColor.G = 0;
+            customColor.B = 255;
 
-                health = Content.Load<Texture2D>("Images/playerhealth");
-                xp = Content.Load<Texture2D>("Images/expereince bar");
- 
-                playerShip = new Player(64,70,playerTexture, turretImage,
-                    new Vector2(windowWidth / 2, windowHeight - 70),
-                    new Vector2(10, 10),
-                    true,
-                    1.0f
-                    );
+            windowWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            windowHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            random = new Random();
+            playGame = false;
 
-                follower = new Follower(32,32,Content, playerShip,new Vector2(0, playerShip.frameHeight+20),1.0f, true);
-                
-                LoadWave();
-                currentWave = 1;
+            //PwrUpTextures
+            AtkSpdUp = Content.Load<Texture2D>("Images/PowerUps/AtkSpdUp");
+            MoveSpdUp = Content.Load<Texture2D>("Images/PowerUps/MoveSpdUp");
+            HPUp = Content.Load<Texture2D>("Images/PowerUps/HPUp");
+            AtkSpdDown = Content.Load<Texture2D>("Images/PowerUps/AtkSpdDown");
+            MoveSpdDown = Content.Load<Texture2D>("Images/PowerUps/MoveSpdDown");
+            HPDown = Content.Load<Texture2D>("Images/PowerUps/HPDown");
+            GravAmmo = Content.Load<Texture2D>("Images/PowerUps/GravWell");
+            RocketAmmo = Content.Load<Texture2D>("Images/PowerUps/Rockets");
 
-                //foreach (Enemy enemy in Enemywave)
-                //{
-                //    if (enemy.enemyType == "stingRay")
-                //    {
-                //        StingrayParticles.Add(new ParticleEngine(StingrayTextures, new Vector2(400, 240)));
-                //    }
-                //}
+            // background
+            myBackground = new ScrollingBackground();
+            myBGtwo = new ScrollingBackground();
+            background = new Texture2D[3];
+            background2 = new Texture2D[1];
+            for (int i = 0; i < background.Length; i++)
+            {
+                background[i] = Content.Load<Texture2D>("Images/Backgrounds/universe" + (i).ToString());
+            }
+            background2[0] = Content.Load<Texture2D>("Images/Backgrounds/universe-background");
+
+            myBackground.Load(VIRTUAL_RESOLUTION_WIDTH, VIRTUAL_RESOLUTION_HEIGHT, background, background.Length, 0.5f); // change float to change animation speed           
+            myBGtwo.Load(VIRTUAL_RESOLUTION_WIDTH, VIRTUAL_RESOLUTION_HEIGHT, background2, background2.Length, 0.5f); // change float to change animation speed 
+
+            // player sprites
+            playerTexture = Content.Load<Texture2D>("Images/Animations/Commandunit-idle");
+            playerMove = Content.Load<Texture2D>("Images/Animations/Commandunit-move");
+            playerRight = Content.Load<Texture2D>("Images/Animations/Commandunit-right");
+            playerLeft = Content.Load<Texture2D>("Images/Animations/Commandunit-left");
+            playerRightTurn = Content.Load<Texture2D>("Images/Animations/Commandunit-Turn");
+            playerLeftTurn = Content.Load<Texture2D>("Images/Animations/Commandunit-Turn-left");
+            turretImage = Content.Load<Texture2D>("Images/Animations/Plasma-Repeater");
+
+            health = Content.Load<Texture2D>("Images/playerhealth");
+            xp = Content.Load<Texture2D>("Images/expereince bar");
+
+            playerShip = new Player(64, 70, playerTexture, turretImage,
+                new Vector2(windowWidth / 2, windowHeight - 70),
+                new Vector2(10, 10),
+                true,
+                1.0f
+                );
+
+            follower = new Follower(32, 32, Content, playerShip, new Vector2(0, playerShip.frameHeight + 20), 1.0f, true);
+
+            LoadWave();
+            currentWave = 1;
+
+            //foreach (Enemy enemy in Enemywave)
+            //{
+            //    if (enemy.enemyType == "stingRay")
+            //    {
+            //        StingrayParticles.Add(new ParticleEngine(StingrayTextures, new Vector2(400, 240)));
+            //    }
+            //}
             //}
             //catch (ContentLoadException e)
             //{
-                //Will properly display error messages soon
-                //Console.WriteLine("Could not load " + e.Source);
-                //Console.ReadLine();
+            //Will properly display error messages soon
+            //Console.WriteLine("Could not load " + e.Source);
+            //Console.ReadLine();
             //}
-            
+
         }
 
         protected override void UnloadContent()
         {
         }
-        
-//Update Method *************************************************************************************************************************
+
+        //Update Method *************************************************************************************************************************
         protected override void Update(GameTime gameTime)
         {
 
@@ -315,12 +324,12 @@ namespace MonoGame_Dynamics_Final_Project
             {
                 elapsedMS += (float)gameTime.ElapsedGameTime.Milliseconds / 1000000000.0f;
             }
-            float BGelapsed = (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f; 
-            myBackground.Update(gameTime, elapsedMS+BGelapsed * 100);
-            myBGtwo.Update(gameTime, elapsedMS+BGelapsed * 50);
-            UpdateInput(gameTime); 
+            float BGelapsed = (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+            myBackground.Update(gameTime, elapsedMS + BGelapsed * 100);
+            myBGtwo.Update(gameTime, elapsedMS + BGelapsed * 50);
+            UpdateInput(gameTime);
 
-            if(gameState == GameState.LoadWave)
+            if (gameState == GameState.LoadWave)
             {
                 LoadWave();
                 currentWave++;
@@ -338,7 +347,7 @@ namespace MonoGame_Dynamics_Final_Project
             //If Game is Running
             if (gameState == GameState.Play)
             {
-                if(Enemywave.Count == 0)
+                if (Enemywave.Count == 0)
                 {
                     playerShip.Secondary.Clear();
                     gameState = GameState.LoadWave;
@@ -370,16 +379,16 @@ namespace MonoGame_Dynamics_Final_Project
                 }
 
                 // updating scroll speed
-                float elapsed = (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f; 
+                float elapsed = (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
                 timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 if (playerShip.Alive && playGame == true)
                 {
-                    
-                    playerShip.Update(gameTime,VirtualSize , Enemywave);
+
+                    playerShip.Update(gameTime, VirtualSize, Enemywave);
                     follower.Update(playerShip, gameTime);
 
-                    UpdateEnemyShots();    
-               
+                    UpdateEnemyShots();
+
                     Thruster1.EmitterLocation = playerShip.Position + new Vector2(15, playerShip.frameHeight - 30);
                     Thruster2.EmitterLocation = playerShip.Position + new Vector2(-15, playerShip.frameHeight - 30);
                 }
@@ -389,15 +398,15 @@ namespace MonoGame_Dynamics_Final_Project
 
                 foreach (Enemy enemy in Enemywave)
                 {
-                    
+
 
                     //enemy.Update(gameTime, playerShip);
                     enemy.Update(gameTime, VirtualSize);
 
-                   
 
-                        
-                    
+
+
+
                     if (enemy.enemyType == "stingRay" && playGame == true)
                     {
                         enemy.Update(gameTime, playerShip);
@@ -406,10 +415,10 @@ namespace MonoGame_Dynamics_Final_Project
 
                         //if (EnemyParticleCounter < StingrayParticles.Count)
                         enemy.Update(Content, gameTime, playerShip);
-                    
-                    //Stingray Particles
-                    
-                    if (EnemyParticleCounter < StingrayParticles.Count)
+
+                        //Stingray Particles
+
+                        if (EnemyParticleCounter < StingrayParticles.Count)
                         {
                             StingrayParticles[EnemyParticleCounter].EmitterLocation = enemy.Position + new Vector2(Convert.ToSingle(Math.Cos(enemy.rotation) * enemy.frameWidth / 4), Convert.ToSingle(Math.Sin(enemy.rotation) * enemy.frameWidth / 4));
                             StingrayParticles[EnemyParticleCounter].Update(enemy.Alive, enemy.Velocity, 9f, Color.Plum, 1);
@@ -454,7 +463,7 @@ namespace MonoGame_Dynamics_Final_Project
 
                 foreach (PowerUp pUp in powerUpList)
                 {
-                    pUp.Update(gameTime, GraphicsDevice);
+                    pUp.Update(gameTime, VirtualSize);
                     if (pUp.removeFromScreen)
                     {
                         pUp.Alive = false;
@@ -475,15 +484,15 @@ namespace MonoGame_Dynamics_Final_Project
                         {
                             if (playerShip.SecondaryType != "gravityWell")
                             {
+                                audioManager.PlaySoundEffect("hit");
                                 playerShip.CurrentSecondaryAmmo++;
                                 playerShip.Secondary.RemoveAt(collide);
                                 if (random.NextDouble() <= spawnChance)
                                     SpawnPowerUp(Enemywave[i].Position);
                                 Enemywave[i].Alive = false;
                                 playerShip.Experience += Enemywave[i].score;
-                                DisplayScorePos.Add(new Score(Enemywave[i].Position,Enemywave[i].score, menuFont));
+                                DisplayScorePos.Add(new Score(Enemywave[i].Position, Enemywave[i].score, menuFont));
                                 Enemywave.RemoveAt(i);
-
                             }
                         }
                     }
@@ -492,50 +501,48 @@ namespace MonoGame_Dynamics_Final_Project
                 if (playerShip.Experience >= playerShip.ExperienceToNextLevel)
                 {
                     playerShip.Level++;
-                    playerShip.MaxHealth += (int)playerShip.Level*10;
-                    
-
-
+                    playerShip.MaxHealth += (int)playerShip.Level * 10;
+                    audioManager.PlaySoundEffect("Spawn pUp");
                     playerShip.ExperienceToNextLevel *= 1.25f;
                     playerShip.Experience = 0;
                     DisplayProgress.Add(new ProgressUI(playerShip.Position, playerShip.Level, menuFont, "Level:"));
                 }
 
-               
 
 
-                    //Destrcution Update
-                    for (int i = 0; i < DestructionParticles.Count; i++)
+
+                //Destrcution Update
+                for (int i = 0; i < DestructionParticles.Count; i++)
+                {
+                    DestructionParticles[i].EmitterLocation = DestructionEmmision[i];
+                    DestructionEmmision[i] += new Vector2(Convert.ToSingle(Math.Cos(DestructionAngleCounters[i]) * DestructionRadiusCounters[i]), Convert.ToSingle(Math.Sin(DestructionAngleCounters[i]) * DestructionRadiusCounters[i]));
+                    DestructionRadiusCounters[i] += 10;
+                    DestructionAngleCounters[i] += 10;
+
+                    //DestructionParticles[i].Update((DestructionRadiusCounters[i] < 1000), new Vector2(10, 10), 0f, new Color(random.Next(0, 255), random.Next(0, 50), random.Next(0, 100)), 10);
+                    DestructionParticles[i].Update((DestructionRadiusCounters[i] < 200), new Vector2(10, 10), 0f, Color.White, 20);
+                    DestructionParticles[i].Update((DestructionRadiusCounters[i] < 400 && DestructionRadiusCounters[i] >= 200), new Vector2(10, 10), 0f, Color.Yellow, 40);
+                    DestructionParticles[i].Update((DestructionRadiusCounters[i] < 600 && DestructionRadiusCounters[i] >= 400), new Vector2(10, 10), 0f, Color.Orange, 60);
+                    DestructionParticles[i].Update((DestructionRadiusCounters[i] < 800 && DestructionRadiusCounters[i] >= 600), new Vector2(10, 10), 0f, Color.Red, 80);
+                    DestructionParticles[i].Update((DestructionRadiusCounters[i] < 1000 && DestructionRadiusCounters[i] >= 800), new Vector2(10, 10), 0f, Color.DarkRed, 100);
+
+                    if (DestructionRadiusCounters[i] >= 200)
                     {
-                        DestructionParticles[i].EmitterLocation = DestructionEmmision[i];
-                        DestructionEmmision[i] += new Vector2(Convert.ToSingle(Math.Cos(DestructionAngleCounters[i]) * DestructionRadiusCounters[i]), Convert.ToSingle(Math.Sin(DestructionAngleCounters[i]) * DestructionRadiusCounters[i]));
-                        DestructionRadiusCounters[i] += 10;
-                        DestructionAngleCounters[i] += 10;
-
-                        //DestructionParticles[i].Update((DestructionRadiusCounters[i] < 1000), new Vector2(10, 10), 0f, new Color(random.Next(0, 255), random.Next(0, 50), random.Next(0, 100)), 10);
-                        DestructionParticles[i].Update((DestructionRadiusCounters[i] < 200), new Vector2(10, 10), 0f, Color.White, 20);
-                        DestructionParticles[i].Update((DestructionRadiusCounters[i] < 400 && DestructionRadiusCounters[i] >= 200), new Vector2(10, 10), 0f, Color.Yellow, 40);
-                        DestructionParticles[i].Update((DestructionRadiusCounters[i] < 600 && DestructionRadiusCounters[i] >= 400), new Vector2(10, 10), 0f, Color.Orange, 60);
-                        DestructionParticles[i].Update((DestructionRadiusCounters[i] < 800 && DestructionRadiusCounters[i] >= 600), new Vector2(10, 10), 0f, Color.Red, 80);
-                        DestructionParticles[i].Update((DestructionRadiusCounters[i] < 1000 && DestructionRadiusCounters[i] >= 800), new Vector2(10, 10), 0f, Color.DarkRed, 100);
-
-                        if (DestructionRadiusCounters[i] >= 200)
+                        for (int f = 0; f < AftershockParticles.Count; f++)
                         {
-                            for (int f = 0; f < AftershockParticles.Count; f++)
-                            {
-                                AftershockParticles[f].EmitterLocation = AftershockEmmision[f];
-                                AftershockEmmision[f] += new Vector2(Convert.ToSingle(Math.Cos(AftershockAngleCounters[f]) * AftershockRadiusCounters[f]), Convert.ToSingle(Math.Sin(AftershockAngleCounters[f]) * AftershockRadiusCounters[f]));
-                                AftershockRadiusCounters[f] += 10;
-                                AftershockAngleCounters[f] -= 10;
+                            AftershockParticles[f].EmitterLocation = AftershockEmmision[f];
+                            AftershockEmmision[f] += new Vector2(Convert.ToSingle(Math.Cos(AftershockAngleCounters[f]) * AftershockRadiusCounters[f]), Convert.ToSingle(Math.Sin(AftershockAngleCounters[f]) * AftershockRadiusCounters[f]));
+                            AftershockRadiusCounters[f] += 10;
+                            AftershockAngleCounters[f] -= 10;
 
-                                AftershockParticles[f].Update((AftershockRadiusCounters[f] <= 200), new Vector2(10, 10), 0f, Color.Purple, 4);
-                                AftershockParticles[f].Update((AftershockRadiusCounters[f] <= 400 && AftershockRadiusCounters[f] > 200), new Vector2(10, 10), 0f, Color.Blue, 6);
-                                AftershockParticles[f].Update((AftershockRadiusCounters[f] <= 600 && AftershockRadiusCounters[f] > 400), new Vector2(10, 10), 0f, Color.Turquoise, 8);
-                                AftershockParticles[f].Update((AftershockRadiusCounters[f] <= 800 && AftershockRadiusCounters[f] > 600), new Vector2(10, 10), 0f, Color.Goldenrod, 10);
-                            }
+                            AftershockParticles[f].Update((AftershockRadiusCounters[f] <= 200), new Vector2(10, 10), 0f, Color.Purple, 4);
+                            AftershockParticles[f].Update((AftershockRadiusCounters[f] <= 400 && AftershockRadiusCounters[f] > 200), new Vector2(10, 10), 0f, Color.Blue, 6);
+                            AftershockParticles[f].Update((AftershockRadiusCounters[f] <= 600 && AftershockRadiusCounters[f] > 400), new Vector2(10, 10), 0f, Color.Turquoise, 8);
+                            AftershockParticles[f].Update((AftershockRadiusCounters[f] <= 800 && AftershockRadiusCounters[f] > 600), new Vector2(10, 10), 0f, Color.Goldenrod, 10);
                         }
                     }
-                
+                }
+
                 // testing collision of playership with enemy
                 playerShip.collisionDetected = false;
 
@@ -545,22 +552,22 @@ namespace MonoGame_Dynamics_Final_Project
                 {
                     if (playerShip.CollisionSprite(Enemywave[i]))
                     {
-                            playerShip.collisionDetected = true;
-                            damage += Enemywave[i].Damage;
-                            Console.WriteLine("Damage:" + Enemywave[i].Damage);
+                        playerShip.collisionDetected = true;
+                        damage += Enemywave[i].Damage;
+                        Console.WriteLine("Damage:" + Enemywave[i].Damage);
                     }
                 }
-                playerShip.Health -= (int)damage; 
+                playerShip.Health -= (int)damage;
 
                 if (playerShip.Health <= 0.0f)
                 {
                     gameState = GameState.GameOver;
                     playerShip.Alive = false;
                     follower.Alive = false;
-                } 
+                }
 
                 if (shakeSwitch == true) { _camera.Move(new Vector2(random.Next(-50, 50), random.Next(-50, 50))); }
-                else { _camera.Position = originalCameraPosition;}
+                else { _camera.Position = originalCameraPosition; }
                 //_camera.Shake(new Vector2(random.Next(-50, 50), random.Next(-50, 50)), shakeCounter);
                 shakeCounter++;
                 // gravity well
@@ -596,7 +603,7 @@ namespace MonoGame_Dynamics_Final_Project
                 for (int i = 0; i < DisplayScorePos.Count; i++)
                 {
                     DisplayScorePos[i].Update(gameTime);
-                    
+
                     if (!DisplayScorePos[i].alive)
                     {
                         DisplayScorePos.RemoveAt(i);
@@ -604,19 +611,19 @@ namespace MonoGame_Dynamics_Final_Project
                 }
                 _camera.Update(gameTime);
                 base.Update(gameTime);
-                
+
             }
         }
 
         //public void ResetGame
 
-//Update Input Method **************************************************************************************************************
+        //Update Input Method **************************************************************************************************************
         public void UpdateInput(GameTime gameTime)
         {
             bool keyPressed = false;
             KeyboardState keyState = Keyboard.GetState();
             GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
-            
+
             if (gameState == GameState.StartMenu)
             {
                 playGame = false;
@@ -654,7 +661,7 @@ namespace MonoGame_Dynamics_Final_Project
                     playerShip.Up();
                     if (!isThrusting)
                     {
-                        audioManager.setLooping(true);
+                        audioManager.setThrustLooping(true);
                         audioManager.PlaySoundEffect("thrust");
                         isThrusting = true;
                     }
@@ -675,9 +682,9 @@ namespace MonoGame_Dynamics_Final_Project
                   || gamePadState.DPad.Up == ButtonState.Released
                   || gamePadState.ThumbSticks.Left.Y == 0)
                 {
-                    if (isThrusting && audioManager.isLooping())
+                    if (isThrusting && audioManager.isThrustLooping())
                     {
-                        audioManager.setLooping(false);
+                        audioManager.setThrustLooping(false);
                         audioManager.StopThrust();
                         isThrusting = false;
                     }
@@ -697,7 +704,7 @@ namespace MonoGame_Dynamics_Final_Project
                     playerShip.Down();
                     if (!isThrustingDown)
                     {
-                        audioManager.setLooping(true);
+                        audioManager.setThrustLooping(true);
                         audioManager.PlaySoundEffect("thrust");
                         isThrustingDown = true;
                     }
@@ -708,9 +715,9 @@ namespace MonoGame_Dynamics_Final_Project
                   || gamePadState.DPad.Down == ButtonState.Released
                   || gamePadState.ThumbSticks.Left.Y == 0)
                 {
-                    if (isThrustingDown && audioManager.isLooping())
+                    if (isThrustingDown && audioManager.isThrustLooping())
                     {
-                        audioManager.setLooping(false);
+                        audioManager.setThrustLooping(false);
                         audioManager.StopThrust();
                         isThrustingDown = false;
                     }
@@ -803,7 +810,7 @@ namespace MonoGame_Dynamics_Final_Project
                     }
 
                 }
-                
+
                 // turrets
                 if (keyState.IsKeyDown(Keys.A) && playerShip.PrimaryType == "rail")
                 {
@@ -815,8 +822,8 @@ namespace MonoGame_Dynamics_Final_Project
                     playerShip.RailLeft.rotateTurret(1 * playerShip.RailLeft.orientation);
                     playerShip.RailRight.rotateTurret(1 * playerShip.RailRight.orientation);
                 }
-               // playerShip.RailLeft.rotation = MathHelper.Clamp(playerShip.RailLeft.rotation, 0, -MathHelper.PiOver2);
-               // MathHelper.Clamp(playerShip.RailLeft.rotation, 0, 2f);
+                // playerShip.RailLeft.rotation = MathHelper.Clamp(playerShip.RailLeft.rotation, 0, -MathHelper.PiOver2);
+                // MathHelper.Clamp(playerShip.RailLeft.rotation, 0, 2f);
 
                 // Primary Weapon
                 if (oldState.IsKeyUp(Keys.Space) && keyState.IsKeyDown(Keys.Space) && playerShip.PrimaryType == "rail")
@@ -837,13 +844,28 @@ namespace MonoGame_Dynamics_Final_Project
                     playerShip.HasShotPrim = true;
                     if (playerShip.HasShotPrim)
                     {
-                        audioManager.PlaySoundEffect("shot");
+                        if (!ifFiring)
+                        {
+                            audioManager.PlaySoundEffect("shot");
+                            audioManager.setLaserLooping(true);
+                            ifFiring = true;
+                        }
                         playerShip.shootPrimary(Content, gameTime);
                     }
                     else
                     {
                         playerShip.HasShotPrim = false;
                     }
+                    
+                }
+                else if (keyState.IsKeyUp(Keys.Space) && playerShip.PrimaryType == "laser")
+                {
+                        if (ifFiring && audioManager.isLaserLooping())
+                        {
+                            ifFiring = false;
+                            audioManager.setLaserLooping(false);
+                            audioManager.StopLaser();
+                        }
                 }
                 // Secondary Weapon
                 if (oldState.IsKeyUp(Keys.B) && keyState.IsKeyDown(Keys.B))
@@ -863,14 +885,14 @@ namespace MonoGame_Dynamics_Final_Project
                 }
                 if (keyState.IsKeyDown(Keys.D1))
                 {
-                    playerShip.setWeapon("rail",4);
+                    playerShip.setWeapon("rail", 4);
                 }
                 if (keyState.IsKeyDown(Keys.D2))
                 {
                     playerShip.setWeapon("laser", 5);
                     playerShip.RailLeft.rotation = 0;
                     playerShip.RailRight.rotation = 0;
-                } 
+                }
                 if (keyState.IsKeyDown(Keys.D3))
                 {
                     playerShip.setWeapon("gravityWell", 1);
@@ -878,7 +900,7 @@ namespace MonoGame_Dynamics_Final_Project
                 if (keyState.IsKeyDown(Keys.D4))
                 {
                     playerShip.setWeapon("helixMissile", 2);
-                } 
+                }
                 if (keyState.IsKeyDown(Keys.D5))
                 {
                     playerShip.setWeapon("homingMissile", 2);
@@ -894,7 +916,7 @@ namespace MonoGame_Dynamics_Final_Project
                         playGame = true;
                     }*/
                 }
-                
+
                 /*if (gameState == GameState.Pause && keyState.IsKeyDown(Keys.P))
                 {
                     //if (keyState.IsKeyDown(Keys.P))
@@ -918,16 +940,16 @@ namespace MonoGame_Dynamics_Final_Project
             rect.SetData(new[] { color });
         }
 
-//Draw Method***********************************************************************************************************************
+        //Draw Method***********************************************************************************************************************
         protected override void Draw(GameTime gameTime)
         {
             switch (gameState)
             {
                 case GameState.SplashScreen:
-                    
+
                     break;
 
-    //Menu?***********************************************************************************************************************
+                //Menu?***********************************************************************************************************************
                 case GameState.StartMenu:
 
                     _irr.Draw();
@@ -939,46 +961,46 @@ namespace MonoGame_Dynamics_Final_Project
 
                     _irr.SetupFullViewport();
                     spriteBatch.Begin();
-                    
+
                     //spriteBatch.Begin();
 
-                    
+
 
                     //spriteBatch.DrawString(menuFont, "Cataclysm", new Vector2(GraphicsDevice.Viewport.Width / 8, GraphicsDevice.Viewport.Height / 9), customColor);
                     spriteBatch.DrawString(menuFont, "FINAL CATACLYSM", new Vector2(GraphicsDevice.Viewport.Width / 8, GraphicsDevice.Viewport.Height / 15), customColor, 0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0.0f);
 
                     spriteBatch.Draw(startMenuScreen, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
-                    
+
                     menuScreen.Draw(spriteBatch);
 
                     spriteBatch.End();
-                   
+
                     _irr.SetupVirtualScreenViewport();
 
                     break;
 
-    //Play?***********************************************************************************************************************
+                //Play?***********************************************************************************************************************
                 case GameState.Play:
 
                     //Clear screen
                     GraphicsDevice.Clear(Color.Black);
-                    
+
                     //IRR
                     _irr.Draw();
                     //spriteBatch.BeginResolution(_irr);
-                
-                //Begin Drawing Gameplay Stuff!!
+
+                    //Begin Drawing Gameplay Stuff!!
                     spriteBatch.BeginCamera(_camera, BlendState.AlphaBlend);
 
                     //Draw Background
                     myBGtwo.Draw(spriteBatch);
                     myBackground.Draw(spriteBatch);
-                    
+
 
                     //Draw Stingray Particles
-                    foreach (ParticleEngine particle in StingrayParticles) 
-                    { 
-                        particle.Draw(spriteBatch); 
+                    foreach (ParticleEngine particle in StingrayParticles)
+                    {
+                        particle.Draw(spriteBatch);
                     }
                     //Draw Stingray Particles
                     foreach (ParticleEngine particle in Stingray2Particles)
@@ -999,10 +1021,10 @@ namespace MonoGame_Dynamics_Final_Project
                     }
                     foreach (Score scoreDisplay in DisplayScorePos)
                     {
-                        
+
                         scoreDisplay.Draw(spriteBatch, menuFont);
 
-                        
+
                     }
                     foreach (ProgressUI progress in DisplayProgress)
                     {
@@ -1013,7 +1035,7 @@ namespace MonoGame_Dynamics_Final_Project
                     //follower.Draw(spriteBatch, gameTime, Color.White);
 
                     //Draw Explosion
-                    for(int i = 0; i < DestructionParticles.Count; i++)
+                    for (int i = 0; i < DestructionParticles.Count; i++)
                     {
                         if (DestructionRadiusCounters[i] >= 200)
                         {
@@ -1045,12 +1067,12 @@ namespace MonoGame_Dynamics_Final_Project
 
                     //Draw Ship
                     playerShip.Draw(spriteBatch, gameTime, Color.White);
-                    
-                //End Drawing Gameplay Stuff!!
+
+                    //End Drawing Gameplay Stuff!!
                     spriteBatch.End();
                     _irr.SetupFullViewport();
 
-                //Begin Drawing UI
+                    //Begin Drawing UI
                     spriteBatch.Begin();
 
                     spriteBatch.Draw(health, healthRect, Color.White);
@@ -1058,58 +1080,58 @@ namespace MonoGame_Dynamics_Final_Project
                     spriteBatch.Draw(xp, xpRect, Color.White);
                     spriteBatch.DrawString(menuFont, "xp:" + playerShip.Experience + "/" + playerShip.ExperienceToNextLevel, new Vector2(110.0f, GraphicsDevice.Viewport.Height - 27.0f), Color.White, 0.08f);
                     spriteBatch.DrawString(menuFont, "Lvl:" + playerShip.Level, new Vector2(GraphicsDevice.Viewport.Width - 200.0f, 50.0f), Color.White, 0.25f);
-                    spriteBatch.DrawString(menuFont, "Score:" + score, new Vector2(0.0f, 50.0f), Color.White, 0.0f,Vector2.Zero,0.25f,SpriteEffects.None,0.0f);
+                    spriteBatch.DrawString(menuFont, "Score:" + score, new Vector2(0.0f, 50.0f), Color.White, 0.0f, Vector2.Zero, 0.25f, SpriteEffects.None, 0.0f);
                     spriteBatch.DrawString(menuFont, "Primary:" + playerShip.PrimaryType, new Vector2(100.0f, GraphicsDevice.Viewport.Height - 80.0f), Color.White, 0.0f, Vector2.Zero, 0.15f, SpriteEffects.None, 0.0f);
-                    spriteBatch.DrawString(menuFont, "Secondary:" + playerShip.SecondaryType, new Vector2(GraphicsDevice.Viewport.Width - 550.0f, GraphicsDevice.Viewport.Height - 80.0f), Color.White, 0.0f,Vector2.Zero,0.15f,SpriteEffects.None,0.0f);
+                    spriteBatch.DrawString(menuFont, "Secondary:" + playerShip.SecondaryType, new Vector2(GraphicsDevice.Viewport.Width - 550.0f, GraphicsDevice.Viewport.Height - 80.0f), Color.White, 0.0f, Vector2.Zero, 0.15f, SpriteEffects.None, 0.0f);
 
-                //End Drawing UI
+                    //End Drawing UI
                     spriteBatch.End();
                     _irr.SetupVirtualScreenViewport();
                     //base.Draw(gameTime);
-                    
+
                     break;
 
-    //Pause?******************************************************************************************************************
+                //Pause?******************************************************************************************************************
                 case GameState.Pause:
                     _irr.DrawPause();
                     _irr.SetupFullViewport();
                     spriteBatch.Begin();
-                    spriteBatch.DrawString(menuFont, "Paused", new Vector2(GraphicsDevice.Viewport.Width / 4, 100.0f), customColor, 0.0f,Vector2.Zero,0.5f,SpriteEffects.None,0.0f);
+                    spriteBatch.DrawString(menuFont, "Paused", new Vector2(GraphicsDevice.Viewport.Width / 4, 100.0f), customColor, 0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0.0f);
                     spriteBatch.End();
                     _irr.SetupVirtualScreenViewport();
-                    
+
                     break;
 
-    //Game Over?**************************************************************************************************************
+                //Game Over?**************************************************************************************************************
                 case GameState.GameOver:
-                   
+
                     GraphicsDevice.Clear(Color.Black);
                     _irr.Draw();
                     _irr.SetupFullViewport();
                     spriteBatch.Begin();
                     //spriteBatch.Begin();
                     drawRect(new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.Black);
-                    spriteBatch.DrawString(menuFont, "Game Over\n", new Vector2(VirtualSize.Width / 6, VirtualSize.Height / 8), customColor,0f,Vector2.Zero,0.5f,SpriteEffects.None,0f);
+                    spriteBatch.DrawString(menuFont, "Game Over\n", new Vector2(VirtualSize.Width / 6, VirtualSize.Height / 8), customColor, 0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
                     spriteBatch.DrawString(menuFont, "You Scored:" + score, new Vector2(VirtualSize.Width / 8, VirtualSize.Height / 4), customColor, 0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
-                    
+
                     spriteBatch.End();
                     _irr.SetupVirtualScreenViewport();
-                    
+
                     break;
 
-    //Exit?**********************************************************************************************************************************
+                //Exit?**********************************************************************************************************************************
                 case GameState.Exit:
-                    
+
                     break;
             }
 
-            
+
             //spriteBatch.End();
         }
 
-//Load the enemy level/waves here*******************************************************************************************************
+        //Load the enemy level/waves here*******************************************************************************************************
 
-//Define the enemy waves here************************************************************************************************************
+        //Define the enemy waves here************************************************************************************************************
         public void LoadWave()
         {
             Enemywave.Clear();
@@ -1195,10 +1217,10 @@ namespace MonoGame_Dynamics_Final_Project
 
         }
 
-//Spawn Powerups Method *************************************************************************************************************
+        //Spawn Powerups Method *************************************************************************************************************
         public void SpawnPowerUp(Vector2 Position)
         {
-            switch (random.Next(6))
+            switch (random.Next(8))
             {
                 case 0:
                     Powerups = PowerUps.AtkSpdUp;
@@ -1224,19 +1246,31 @@ namespace MonoGame_Dynamics_Final_Project
                     Powerups = PowerUps.HealthDown;
                     powerUpList.Add(new PowerUp(HPDown, GraphicsDevice, Powerups, playerShip, Position, 2.0f));
                     break;
+                case 6:
+                    Powerups = PowerUps.GravWellAmmo;
+                    powerUpList.Add(new PowerUp(GravAmmo, GraphicsDevice, Powerups, playerShip, Position, 2.0f));
+                    break;
+                case 7:
+                    Powerups = PowerUps.HelixAmmo;
+                    powerUpList.Add(new PowerUp(RocketAmmo, GraphicsDevice, Powerups, playerShip, Position, 2.0f));
+                    break;
+
+                    //case 8:
+
+                    //break;
+
 
                 default: break;
             }
-            audioManager.PlaySoundEffect("Spawn pUp");
         }
 
-//Check Powerups Method *************************************************************************************************************
+        //Check Powerups Method *************************************************************************************************************
         public bool CheckForPowerUps(Rectangle player, Rectangle pwerUp)
         {
             return player.Intersects(pwerUp);
         }
 
-//Primary Collisions Check Method *************************************************************************************************************
+        //Primary Collisions Check Method *************************************************************************************************************
         public void checkPrimaryCollisions(int turret)
         {
             List<Weapon> weaponList = new List<Weapon>();
@@ -1289,24 +1323,24 @@ namespace MonoGame_Dynamics_Final_Project
                         if (Enemywave[i].Health <= 0f)
                         {
                             score += Enemywave[i].score;
-                            playerShip.Experience += Enemywave[i].score; 
+                            playerShip.Experience += Enemywave[i].score;
                             if (Enemywave[i].enemyType == "stingRay")
                             {
                                 //playerShip.Experience += Enemywave[i].score;
-                                audioManager.PlaySoundEffect("enemy dead");
+                                audioManager.PlaySoundEffect("enemy dead2");
                                 StingrayParticles.RemoveAt(StingrayParticles.Count - 1);
                             }
                             if (Enemywave[i].enemyType == "stingRay2")
                             {
                                 score += Enemywave[i].score;
                                 playerShip.Experience += Enemywave[i].score;
-                                audioManager.PlaySoundEffect("enemy dead");
+                                audioManager.PlaySoundEffect("enemy dead2");
                                 Stingray2Particles.RemoveAt(Stingray2Particles.Count - 1);
                             }
                             if (Enemywave[i].enemyType == "voidVulture")
                             {
                                 //playerShip.Experience += Enemywave[i].score;
-                                audioManager.PlaySoundEffect("enemy dead2");
+                                audioManager.PlaySoundEffect("enemy dead");
 
                                 DestructionParticles.Add(new ParticleEngine(DestructionTextures, new Vector2(400, 240)));
                                 DestructionRadiusCounters.Add(10);
@@ -1321,14 +1355,14 @@ namespace MonoGame_Dynamics_Final_Project
                             if (Enemywave[i].enemyType == "voidAngel")
                             {
                                 audioManager.PlaySoundEffect("enemy dead");
-                               
+
                             }
 
                             double rand = random.NextDouble();
                             if (rand < spawnChance)
                                 SpawnPowerUp(Enemywave[i].Position);
                             Enemywave[i].Alive = false;
-                            DisplayScorePos.Add(new Score(Enemywave[i].Position,Enemywave[i].score, menuFont));
+                            DisplayScorePos.Add(new Score(Enemywave[i].Position, Enemywave[i].score, menuFont));
                             Enemywave.RemoveAt(i);
                         }
                     }
@@ -1341,11 +1375,12 @@ namespace MonoGame_Dynamics_Final_Project
         {
             int totalDamage = 0;
 
-            foreach(Enemy enemy in Enemywave)
+            foreach (Enemy enemy in Enemywave)
             {
                 int collide = playerShip.CollisionShot(enemy.Primary);
-                if(collide != -1)
+                if (collide != -1)
                 {
+                    audioManager.PlaySoundEffect("hit");
                     totalDamage += (int)enemy.Damage;
                     enemy.Primary.RemoveAt(collide);
                 }

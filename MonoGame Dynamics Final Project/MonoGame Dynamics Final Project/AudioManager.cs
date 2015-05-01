@@ -28,7 +28,7 @@ namespace MonoGame_Dynamics_Final_Project
         SoundEffect hitThree;
         SoundEffect shot;
         SoundEffectInstance thruster;
-
+        SoundEffectInstance laser;
         public void Initialize(ContentManager Content)
         {
             shot = Content.Load<SoundEffect>("Audio Files/Sound Effects/basic laser");
@@ -44,6 +44,8 @@ namespace MonoGame_Dynamics_Final_Project
             //gameplaySong = Content.Load<Song>("Audio Files/Songs/Catalysm Song");
             //menuSong = Content.Load<Song>("Audio Files/Songs/menu song");
 
+            laser = shot.CreateInstance();
+            laser.IsLooped = false;
             thruster = thrust.CreateInstance();
             thruster.IsLooped = false;
 
@@ -128,8 +130,38 @@ namespace MonoGame_Dynamics_Final_Project
         {
             thruster.Stop(true);
         }
+        public void StopLaser()
+        {
+            laser.Stop(true);
+        }
 
-        public void setLooping(bool set)
+        public void setLaserLooping(bool set)
+        {
+            if (set)
+            {
+                laser.IsLooped = true;
+
+            }
+            else if (!set)
+            {
+                laser.IsLooped = false;
+            }
+        }
+
+        public bool isLaserLooping()
+        {
+            if (laser.IsLooped)
+            {
+                return true;
+            }
+            if (!laser.IsLooped)
+            {
+                return false;
+            }
+            else { return false; }
+        }
+
+        public void setThrustLooping(bool set)
         {
             if (set)
             {
@@ -142,7 +174,7 @@ namespace MonoGame_Dynamics_Final_Project
             }
         }
 
-        public bool isLooping()
+        public bool isThrustLooping()
         {
             if (thruster.IsLooped)
             {

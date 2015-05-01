@@ -472,10 +472,10 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                     {
                         currentPrimaryAmmo++;
                     }
-                    else if (weapon[i].WeaponType == 2)
-                    {
-                        currentSecondaryAmmo++;
-                    }
+    //                else if (weapon[i].WeaponType == 2)
+    //                {
+                       //currentSecondaryAmmo++;
+    //                }
 
                     weapon.RemoveAt(i);
                 }
@@ -660,14 +660,17 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                 if (secondaryType == "gravityWell")
                 {
                     shootGravityWell(content);
+                    currentSecondaryAmmo--;
                 }
                 if (secondaryType == "helixMissile")
                 {
                     shootHelixMissile(content);
+                    currentSecondaryAmmo--;
                 }
                 if (secondaryType == "homingMissile")
                 {
                     shootHomingMissile(content);
+                    currentSecondaryAmmo--;
                 }
                 timer = 0;
             }
