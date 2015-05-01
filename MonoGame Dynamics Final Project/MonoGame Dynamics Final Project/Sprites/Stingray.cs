@@ -45,7 +45,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         public override void Update(ContentManager content, GameTime gameTime, Player player)
         {
             elapsedShotTime += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
-            
+            collisionRange = new BoundingSphere(new Vector3(position.X + spriteOrigin.X, position.Y + spriteOrigin.Y, 0), 400f);
             
             foreach (Weapon shot in primary)
             {     
@@ -57,8 +57,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                 elapsedShotTime = 0f;
                 shootPrimary(content);
             }
-
-            collisionRange = new BoundingSphere(new Vector3(position.X + spriteOrigin.X, position.Y + spriteOrigin.Y, 0), 400f);
+           
             setAi(player);
 
             switch(Ai)
@@ -89,11 +88,15 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
 
         public override void shootPrimary(ContentManager content)
         {
-            StingRayWeapon Stingshot = new StingRayWeapon(content, position + spriteOrigin);
+            StingRayWeapon Stingshot = new StingRayWeapon(content, position);
             Stingshot.velocitySpeed = 100f;
-            Stingshot = new StingRayWeapon(content, position + spriteOrigin + Stingshot.SpriteOrigin);     
+            Stingshot = new StingRayWeapon(content, new Vector2(position.X + spriteOrigin.X, position.Y));     
             Stingshot.Velocity = getDirectionVector() * Stingshot.velocitySpeed;
-            Stingshot.Angle = MathHelper.PiOver2 + (float)Math.Atan2(Stingshot.Velocity.Y, Stingshot.Velocity.X);
+            Stingshot.Angle = (float)Math.Atan2(Stingshot.Velocity.Y, Stingshot.Velocity.X);
+            if(Ai == EnemyState.Chase)
+            {
+                Stingshot.Angle += MathHelper.PiOver2;
+            }
             primary.Add(Stingshot);
         }
     }
