@@ -126,14 +126,15 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                     break;
 
                 case PowerUps.GravWellAmmo:
-                    player.setWeapon("gravityWell", 10);
+                    player.setWeapon("gravityWell", 4);
                     break;
 
                 case PowerUps.HelixAmmo:
-                    player.setWeapon("helixMissile", 10);
+                    player.setWeapon("helixMissile", 8);
                     break;
 
                 case PowerUps.HomingAmmo:
+                    player.setWeapon("homingMissile", 5);
                     break;
 
                 default:

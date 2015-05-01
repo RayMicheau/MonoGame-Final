@@ -69,6 +69,7 @@ namespace MonoGame_Dynamics_Final_Project
         Texture2D HPDown;
         Texture2D GravAmmo;
         Texture2D RocketAmmo;
+        Texture2D HomingAmmo;
 
 
         // menu
@@ -254,6 +255,7 @@ namespace MonoGame_Dynamics_Final_Project
             HPDown = Content.Load<Texture2D>("Images/PowerUps/HPDown");
             GravAmmo = Content.Load<Texture2D>("Images/PowerUps/GravWell");
             RocketAmmo = Content.Load<Texture2D>("Images/PowerUps/Rockets");
+            HomingAmmo = Content.Load<Texture2D>("Images/PowerUps/Homing");
 
             // background
             myBackground = new ScrollingBackground();
@@ -1232,7 +1234,7 @@ namespace MonoGame_Dynamics_Final_Project
         //Spawn Powerups Method *************************************************************************************************************
         public void SpawnPowerUp(Vector2 Position)
         {
-            switch (random.Next(8))
+            switch (random.Next(9))
             {
                 case 0:
                     Powerups = PowerUps.AtkSpdUp;
@@ -1267,9 +1269,10 @@ namespace MonoGame_Dynamics_Final_Project
                     powerUpList.Add(new PowerUp(RocketAmmo, GraphicsDevice, Powerups, playerShip, Position, 2.0f));
                     break;
 
-                    //case 8:
-
-                    //break;
+                case 8:
+                    Powerups = PowerUps.HomingAmmo;
+                    powerUpList.Add(new PowerUp(HomingAmmo, GraphicsDevice, Powerups, playerShip, Position, 2.0f));
+                    break;
 
 
                 default: break;
