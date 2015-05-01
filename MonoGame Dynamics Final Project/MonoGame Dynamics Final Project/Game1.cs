@@ -240,7 +240,7 @@ namespace MonoGame_Dynamics_Final_Project
             //Loading audio
             audioManager = new AudioManager();
             audioManager.Initialize(Content);
-            audioManager.Play("");
+            audioManager.Play("menu song");
             //TODO: ADD MENU SCREEN SONG
 
 
@@ -370,7 +370,7 @@ namespace MonoGame_Dynamics_Final_Project
 
                 if (songSwap)
                 {
-                    audioManager.Play("");
+                    audioManager.Play("Catalysm Song");
                     songSwap = false;
                 }
                 playGame = true;

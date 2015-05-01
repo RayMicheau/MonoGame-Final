@@ -31,6 +31,7 @@ namespace MonoGame_Dynamics_Final_Project
         SoundEffectInstance laser;
         public void Initialize(ContentManager Content)
         {
+
             shot = Content.Load<SoundEffect>("Audio Files/Sound Effects/basic laser");
             enemyDeath = Content.Load<SoundEffect>("Audio Files/Sound Effects/enemy dead");
             enemyDeathTwo = Content.Load<SoundEffect>("Audio Files/Sound Effects/Enemy dead2");
@@ -41,9 +42,10 @@ namespace MonoGame_Dynamics_Final_Project
             thrust = Content.Load<SoundEffect>("Audio Files/Sound Effects/thrust");
             rocket = Content.Load<SoundEffect>("Audio Files/Sound Effects/rocket shot");
             hit = Content.Load<SoundEffect>("Audio Files/Sound Effects/hit noise");
-            //gameplaySong = Content.Load<Song>("Audio Files/Songs/Catalysm Song");
-            //menuSong = Content.Load<Song>("Audio Files/Songs/menu song");
+            gameplaySong = Content.Load<Song>("Audio Files/Songs/Catalysm Song");
+            menuSong = Content.Load<Song>("Audio Files/Songs/menu song");
 
+            
             laser = shot.CreateInstance();
             laser.IsLooped = false;
             thruster = thrust.CreateInstance();
