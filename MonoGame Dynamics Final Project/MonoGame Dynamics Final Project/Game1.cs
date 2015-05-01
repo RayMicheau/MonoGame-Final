@@ -329,7 +329,7 @@ namespace MonoGame_Dynamics_Final_Project
                     enemy.Level = currentWave;
                     enemy.Health = (enemy.Health * (enemy.Level / 2));
                     enemy.Damage = (enemy.Damage * (enemy.Level / 2));
-                    //enemy.score = enemy.score * enemy.Level;
+                    enemy.score = enemy.score * enemy.Level;
                 }
                 gameState = GameState.Play;
                 DisplayProgress.Add(new ProgressUI(new Vector2(VirtualSize.Width / 2, VirtualSize.Height / 2), currentWave, menuFont, "Wave:"));
