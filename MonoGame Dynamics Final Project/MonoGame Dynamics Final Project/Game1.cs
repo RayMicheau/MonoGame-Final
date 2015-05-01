@@ -537,8 +537,9 @@ namespace MonoGame_Dynamics_Final_Project
                                 {
                                     Stingray2Particles.RemoveAt(Stingray2Particles.Count - 1);
                                 }
-                                if (Enemywave[i].enemyType == "voidVulture" && playGame == true)
-                                {
+                                if (Enemywave[i].enemyType == "voidVulture" && playGame == true){
+                               
+                                    shakeSwitch = true;
                                     DestructionParticles.Add(new ParticleEngine(DestructionTextures, new Vector2(400, 240)));
                                     DestructionRadiusCounters.Add(10);
                                     DestructionAngleCounters.Add(0);
@@ -615,12 +616,12 @@ namespace MonoGame_Dynamics_Final_Project
                             AftershockParticles[f].Update((AftershockRadiusCounters[f] <= 800 && AftershockRadiusCounters[f] > 600), new Vector2(10, 10), 0f, Color.Goldenrod, 10);
                         }
                     }
+                    
                 }
 
                 // testing collision of playership with enemy
                 playerShip.collisionDetected = false;
 
-                shakeSwitch = false;
                 float damage = 0.0f;
                 for (int i = 0; i < Enemywave.Count; i++)
                 {
@@ -631,6 +632,7 @@ namespace MonoGame_Dynamics_Final_Project
                         Console.WriteLine("Damage:" + Enemywave[i].Damage);
                     }
                 }
+
                 playerShip.Health -= (int)damage;
 
                 if (playerShip.Health <= 0.0f)
@@ -643,11 +645,7 @@ namespace MonoGame_Dynamics_Final_Project
                     playerShip.Alive = false;
                     follower.Alive = false;
                 }
-
-                if (shakeSwitch == true) { _camera.Move(new Vector2(random.Next(-50, 50), random.Next(-50, 50))); }
-                else { _camera.Position = originalCameraPosition; }
-                //_camera.Shake(new Vector2(random.Next(-50, 50), random.Next(-50, 50)), shakeCounter);
-                shakeCounter++;
+                
                 // gravity well
                 if (playerShip.ForcePull && playerShip.Secondary.Count > 0)
                 {
@@ -687,6 +685,18 @@ namespace MonoGame_Dynamics_Final_Project
                         DisplayScorePos.RemoveAt(i);
                     }
                 }
+            if(shakeSwitch == false) 
+            { 
+                _camera.Position = originalCameraPosition;  
+            }
+            if (shakeSwitch == true)
+                {
+                _camera.Move(new Vector2(random.Next(-50, 50), random.Next(-50, 50))); 
+                shakeCounter++;
+                    if (shakeCounter == 50) { 
+                        shakeSwitch = false; shakeCounter = 0; 
+                    }
+                }
                 _camera.Update(gameTime);
                 base.Update(gameTime);
 
@@ -720,7 +730,7 @@ namespace MonoGame_Dynamics_Final_Project
                     songSwap = true;
                 }
             }
-            if (gameState == GameState.GameOver)
+            if(gameState == GameState.GameOver)
             {
                 playGame = false;
                 gameOver.Update();
@@ -1449,6 +1459,7 @@ namespace MonoGame_Dynamics_Final_Project
                             }
                             if (Enemywave[i].enemyType == "voidVulture")
                             {
+                                 shakeSwitch = true;
                                 //playerShip.Experience += Enemywave[i].score;
                                 audioManager.PlaySoundEffect("enemy dead");
 
