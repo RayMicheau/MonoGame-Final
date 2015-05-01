@@ -147,6 +147,13 @@ namespace MonoGame_Dynamics_Final_Project
         List<int> AftershockAngleCounters = new List<int>();
         List<Vector2> AftershockEmmision = new List<Vector2>();
 
+        List<ParticleEngine> PowerupParticles = new List<ParticleEngine>();
+        List<Texture2D> PowerupTextures = new List<Texture2D>();
+        List<int> PowerupRadiusCounters = new List<int>();
+        List<int> PowerupAngleCounters = new List<int>();
+        List<Vector2> PowerupEmmision = new List<Vector2>();
+        int powFlip = 2;
+
         Random randomnumber = new Random();
 
         public int shakeCounter = 0;
@@ -224,6 +231,11 @@ namespace MonoGame_Dynamics_Final_Project
             AftershockTextures.Add(Content.Load<Texture2D>("Images/Particles/starpoo"));
             AftershockTextures.Add(Content.Load<Texture2D>("Images/Particles/pulse"));
 
+
+            PowerupTextures.Add(Content.Load<Texture2D>("Images/Particles/poweruparticle1"));
+            PowerupTextures.Add(Content.Load<Texture2D>("Images/Particles/poweruparticle2"));
+            PowerupTextures.Add(Content.Load<Texture2D>("Images/Particles/poweruparticle3"));
+            PowerupTextures.Add(Content.Load<Texture2D>("Images/Particles/poweruparticle4"));
 
             //Loading audio
             audioManager = new AudioManager();
@@ -328,8 +340,8 @@ namespace MonoGame_Dynamics_Final_Project
                 elapsedMS += (float)gameTime.ElapsedGameTime.Milliseconds / 1000000000.0f;
             }
             float BGelapsed = (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
-            myBackground.Update(gameTime, elapsedMS + BGelapsed * 100);
-            myBGtwo.Update(gameTime, elapsedMS + BGelapsed * 50);
+            myBackground.Update(gameTime, elapsedMS + BGelapsed * 400);
+            myBGtwo.Update(gameTime, elapsedMS + BGelapsed * 200);
             UpdateInput(gameTime);
 
             if (gameState == GameState.LoadWave)
@@ -464,12 +476,41 @@ namespace MonoGame_Dynamics_Final_Project
                     }
                 }
 
-                foreach (PowerUp pUp in powerUpList)
+                if (powerUpList.Count > 0)
                 {
-                    pUp.Update(gameTime, VirtualSize);
-                    if (pUp.removeFromScreen)
+                    for (int i = 0; i < powerUpList.Count; i++)
                     {
-                        pUp.Alive = false;
+
+                        powerUpList[i].Update(gameTime, VirtualSize);
+
+                        PowerupEmmision[i] = powerUpList[i].Position;
+                        PowerupEmmision[i] += new Vector2(Convert.ToSingle(Math.Cos(PowerupAngleCounters[i]) * PowerupRadiusCounters[i]), Convert.ToSingle(Math.Sin(PowerupAngleCounters[i]) * PowerupRadiusCounters[i]));
+                        PowerupParticles[i].EmitterLocation = PowerupEmmision[i];
+                        PowerupRadiusCounters[i] += powFlip;
+                        PowerupAngleCounters[i] += 1;
+
+                        if (PowerupRadiusCounters[i] >= 20)
+                        {
+                            powFlip *= -1;
+
+                        }
+                        if (PowerupRadiusCounters[i] <= 0)
+                        {
+                            powFlip *= -1;
+                        }
+
+
+                        PowerupParticles[i].Update(powerUpList[i].Alive, new Vector2(10, 10), 0f, Color.White, 1);
+
+
+                        if (powerUpList[i].removeFromScreen)
+                        {
+                            powerUpList[i].Alive = false;
+                            PowerupParticles.RemoveAt(i);
+                            PowerupRadiusCounters.RemoveAt(i);
+                            PowerupEmmision.RemoveAt(i);
+                            PowerupAngleCounters.RemoveAt(i);
+                        }
                     }
                 }
 
@@ -496,6 +537,18 @@ namespace MonoGame_Dynamics_Final_Project
                                 {
                                     Stingray2Particles.RemoveAt(Stingray2Particles.Count - 1);
                                 }
+                                if (Enemywave[i].enemyType == "voidVulture" && playGame == true)
+                                {
+                                    DestructionParticles.Add(new ParticleEngine(DestructionTextures, new Vector2(400, 240)));
+                                    DestructionRadiusCounters.Add(10);
+                                    DestructionAngleCounters.Add(0);
+                                    DestructionEmmision.Add(Enemywave[i].Position);
+
+                                    AftershockParticles.Add(new ParticleEngine(AftershockTextures, new Vector2(400, 240)));
+                                    AftershockRadiusCounters.Add(10);
+                                    AftershockAngleCounters.Add(0);
+                                    AftershockEmmision.Add(Enemywave[i].Position);
+                                }
                             }
                             if (playerShip.SecondaryType != "gravityWell")
                             {
@@ -503,7 +556,13 @@ namespace MonoGame_Dynamics_Final_Project
                                 playerShip.CurrentSecondaryAmmo++;
                                 playerShip.Secondary.RemoveAt(collide);
                                 if (random.NextDouble() <= spawnChance)
+                                {
                                     SpawnPowerUp(Enemywave[i].Position);
+                                    PowerupParticles.Add(new ParticleEngine(PowerupTextures, new Vector2(400, 240)));
+                                    PowerupRadiusCounters.Add(10);
+                                    PowerupAngleCounters.Add(0);
+                                    PowerupEmmision.Add(Enemywave[i].Position);
+                                }
                                 Enemywave[i].Alive = false;
                                 playerShip.Experience += Enemywave[i].score;
                                 DisplayScorePos.Add(new Score(Enemywave[i].Position, Enemywave[i].score, menuFont));
@@ -1047,6 +1106,10 @@ namespace MonoGame_Dynamics_Final_Project
                     }
 
                     //Draw Powerups
+                    foreach (ParticleEngine powerParticle in PowerupParticles)
+                    {
+                        powerParticle.Draw(spriteBatch);
+                    }
                     foreach (PowerUp pUp in powerUpList)
                     {
                         pUp.Draw(spriteBatch, gameTime);
@@ -1394,7 +1457,13 @@ namespace MonoGame_Dynamics_Final_Project
 
                             double rand = random.NextDouble();
                             if (rand < spawnChance)
+                            {
                                 SpawnPowerUp(Enemywave[i].Position);
+                                PowerupParticles.Add(new ParticleEngine(PowerupTextures, new Vector2(400, 240)));
+                                PowerupRadiusCounters.Add(10);
+                                PowerupAngleCounters.Add(0);
+                                PowerupEmmision.Add(Enemywave[i].Position);
+                            }
                             Enemywave[i].Alive = false;
                             DisplayScorePos.Add(new Score(Enemywave[i].Position, Enemywave[i].score, menuFont));
                             Enemywave.RemoveAt(i);

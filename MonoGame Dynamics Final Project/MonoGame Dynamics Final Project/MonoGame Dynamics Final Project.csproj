@@ -66,6 +66,7 @@
     <Compile Include="Weapons\Rail.cs" />
     <Compile Include="Weapons\RailTurret.cs" />
     <Compile Include="Weapons\StingRayWeapon.cs" />
+    <Compile Include="Weapons\VoidAngelWeapon.cs" />
     <Compile Include="Weapons\Weapon.cs" />
   </ItemGroup>
   <ItemGroup>
