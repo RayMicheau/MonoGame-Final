@@ -25,7 +25,6 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
     {
         public RayState Ai;
         float elapsedShotTime;
-        bool chasing;
         public Stingray2(ContentManager content, GraphicsDevice Device, int spotinFormation, string formationType) :
             base(content, 80, 80, content.Load<Texture2D>("Images/Animations/Sting-Ray-2"), Device, spotinFormation, formationType, 0.5f)
         {
@@ -93,11 +92,15 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
 
         public override void shootPrimary(ContentManager content)
         {
-            StingRayWeapon Stingshot = new StingRayWeapon(content, position + spriteOrigin);
-            Stingshot.velocitySpeed = 100f;
-            Stingshot = new StingRayWeapon(content, position + spriteOrigin + Stingshot.SpriteOrigin);     
+            StingRayWeapon Stingshot = new StingRayWeapon(content, position);
+            Stingshot.velocitySpeed = 300f;
+            Stingshot = new StingRayWeapon(content, new Vector2(position.X + spriteOrigin.X, position.Y));     
             Stingshot.Velocity = getDirectionVector() * Stingshot.velocitySpeed;
-            Stingshot.Angle = MathHelper.PiOver2 + (float)Math.Atan2(Stingshot.Velocity.Y, Stingshot.Velocity.X);
+            Stingshot.Angle = (float)Math.Atan2(Stingshot.Velocity.Y, Stingshot.Velocity.X);
+            if (Ai == RayState.Chase)
+            {
+                Stingshot.Angle += MathHelper.PiOver2;
+            }
             primary.Add(Stingshot);
         }
 

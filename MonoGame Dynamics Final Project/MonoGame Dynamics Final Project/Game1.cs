@@ -460,7 +460,7 @@ namespace MonoGame_Dynamics_Final_Project
                     }
                     if (enemy.enemyType == "voidAngel" && playGame == true)
                     {
-                        enemy.Update(gameTime, playerShip);
+                        enemy.Update(Content, gameTime, playerShip);
                     }
                 }
 
@@ -1427,8 +1427,8 @@ namespace MonoGame_Dynamics_Final_Project
                 int collide = playerShip.CollisionShot(enemy.Primary);
                 if (collide != -1)
                 {
+                    totalDamage += (int)enemy.Primary[0].Damage;
                     audioManager.PlaySoundEffect("hit");
-                    totalDamage += (int)enemy.Damage;
                     enemy.Primary.RemoveAt(collide);
                 }
             }

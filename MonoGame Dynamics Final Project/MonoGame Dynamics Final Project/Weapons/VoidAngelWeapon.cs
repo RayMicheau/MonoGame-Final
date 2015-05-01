@@ -14,23 +14,22 @@ using MonoGame_Dynamics_Final_Project.Sprites;
 
 namespace MonoGame_Dynamics_Final_Project.Weapons
 {
-    class StingRayWeapon : EnemyWeapon
+    class VoidAngelWeapon : EnemyWeapon
     {
-        public StingRayWeapon(ContentManager content, Vector2 startPosition)
-            :base(content.Load<Texture2D>("Images/Animations/Sting-Ray-shot"),startPosition, 25f)
+        public VoidAngelWeapon(ContentManager content, Vector2 startPosition)
+            : base(content.Load<Texture2D>("Images/Animations/VoidAngel-Shot"), startPosition, 50f)
         {
             shotTime = 0f;
             shotSpeed = 0.1f;
-            shotFrameWidth = 10;
-            shotFrameHeight = 11;
+            shotFrameWidth = 50;
+            shotFrameHeight = 50;
             shotRectangle = new Rectangle(0, 0, shotFrameWidth, shotFrameHeight);
-            shotFrames = 3;
-            velocitySpeed = 25f;
+            shotFrames = 8;
+            velocitySpeed = 50f;
             velocity *= velocitySpeed;
-            scale = 2;
-            damage = 100;
+            scale = 1f;
+            damage = 500;
         }
-
 
 
     }

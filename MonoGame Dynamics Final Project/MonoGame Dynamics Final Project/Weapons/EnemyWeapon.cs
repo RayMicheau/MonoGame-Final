@@ -17,7 +17,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
         protected int shotFrameIndex = 1;
         protected int shotX = 0;
         protected float shotTime, shotSpeed;
-        protected int shotFrameWidth, shotFrameHeight, shotFrames;
+        public int shotFrameWidth, shotFrameHeight, shotFrames;
         protected Rectangle shotRectangle;
         protected float scale;
 
@@ -26,7 +26,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
         public EnemyWeapon(Texture2D ShotTexture, Vector2 startPosition, float velocity)
             :base(ShotTexture, startPosition, velocity, 1)
         {
-            shotTexture = shotTexture;
+            shotTexture = ShotTexture;
             scale = 1f;
         }
         public override void Update(GameTime gameTime, Sprites.Player player)
