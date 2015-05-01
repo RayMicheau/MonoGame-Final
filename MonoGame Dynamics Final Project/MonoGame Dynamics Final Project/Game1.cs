@@ -899,25 +899,28 @@ namespace MonoGame_Dynamics_Final_Project
                 }
                 if (keyState.IsKeyDown(Keys.D1))
                 {
-                    playerShip.setWeapon("rail", 4);
+                    playerShip.setWeapon("rail", 10);
                 }
                 if (keyState.IsKeyDown(Keys.D2))
                 {
-                    playerShip.setWeapon("laser", 5);
+                    playerShip.setWeapon("laser", 10);
                     playerShip.RailLeft.rotation = 0;
                     playerShip.RailRight.rotation = 0;
                 }
                 if (keyState.IsKeyDown(Keys.D3))
                 {
-                    playerShip.setWeapon("gravityWell", 1);
+                    playerShip.SecondaryType = "gravityWell";
+                    //playerShip.setWeapon("gravityWell", 1);
                 }
                 if (keyState.IsKeyDown(Keys.D4))
                 {
-                    playerShip.setWeapon("helixMissile", 2);
+                    playerShip.SecondaryType = "helixMissile";
+                    //playerShip.setWeapon("helixMissile", 2);
                 }
                 if (keyState.IsKeyDown(Keys.D5))
                 {
-                    playerShip.setWeapon("homingMissile", 2);
+                    playerShip.SecondaryType = "homingMissile";
+                    //playerShip.setWeapon("homingMissile", 2);
                 }
                 if (keyState.IsKeyDown(Keys.P))
                 {
