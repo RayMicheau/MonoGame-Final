@@ -338,7 +338,7 @@ namespace MonoGame_Dynamics_Final_Project
                     enemy.Level = currentWave;
                     enemy.Health = (enemy.Health * (enemy.Level / 2));
                     enemy.Damage = (enemy.Damage * (enemy.Level / 2));
-                    //enemy.score = enemy.score * enemy.Level;
+                    enemy.score = enemy.score * enemy.Level;
                 }
                 gameState = GameState.Play;
                 DisplayProgress.Add(new ProgressUI(new Vector2(VirtualSize.Width / 2, VirtualSize.Height / 2), currentWave, menuFont, "Wave:"));
@@ -482,6 +482,18 @@ namespace MonoGame_Dynamics_Final_Project
                         int collide = Enemywave[i].CollisionShot(playerShip.Secondary);
                         if (collide != -1)
                         {
+                            if (Enemywave[i].Health <= 0f)
+                            {
+                                if (Enemywave[i].enemyType == "stingRay1" && playGame == true)
+                                {
+
+                                    StingrayParticles.RemoveAt(StingrayParticles.Count - 1);
+                                }
+                                if (Enemywave[i].enemyType == "stingRay2" && playGame == true)
+                                {
+                                    Stingray2Particles.RemoveAt(Stingray2Particles.Count - 1);
+                                }
+                            }
                             if (playerShip.SecondaryType != "gravityWell")
                             {
                                 audioManager.PlaySoundEffect("hit");
@@ -1076,11 +1088,11 @@ namespace MonoGame_Dynamics_Final_Project
                     spriteBatch.Begin();
 
                     spriteBatch.Draw(health, healthRect, Color.White);
-                    spriteBatch.DrawString(menuFont, "hp:" + playerShip.Health + " / " + playerShip.MaxHealth, new Vector2(110.0f, GraphicsDevice.Viewport.Height - 47.0f), Color.White, 0.08f);
+                    spriteBatch.DrawString(menuFont, "hp:" + (int)playerShip.Health + " / " + playerShip.MaxHealth, new Vector2(110.0f, GraphicsDevice.Viewport.Height - 47.0f), Color.White, 0.08f);
                     spriteBatch.Draw(xp, xpRect, Color.White);
-                    spriteBatch.DrawString(menuFont, "xp:" + playerShip.Experience + "/" + playerShip.ExperienceToNextLevel, new Vector2(110.0f, GraphicsDevice.Viewport.Height - 27.0f), Color.White, 0.08f);
+                    spriteBatch.DrawString(menuFont, "xp:" + (int)playerShip.Experience + "/" + playerShip.ExperienceToNextLevel, new Vector2(110.0f, GraphicsDevice.Viewport.Height - 27.0f), Color.White, 0.08f);
                     spriteBatch.DrawString(menuFont, "Lvl:" + playerShip.Level, new Vector2(GraphicsDevice.Viewport.Width - 200.0f, 50.0f), Color.White, 0.25f);
-                    spriteBatch.DrawString(menuFont, "Score:" + score, new Vector2(0.0f, 50.0f), Color.White, 0.0f, Vector2.Zero, 0.25f, SpriteEffects.None, 0.0f);
+                    spriteBatch.DrawString(menuFont, "Score:" + (int)score, new Vector2(0.0f, 50.0f), Color.White, 0.0f,Vector2.Zero,0.25f,SpriteEffects.None,0.0f);
                     spriteBatch.DrawString(menuFont, "Primary:" + playerShip.PrimaryType, new Vector2(100.0f, GraphicsDevice.Viewport.Height - 80.0f), Color.White, 0.0f, Vector2.Zero, 0.15f, SpriteEffects.None, 0.0f);
                     spriteBatch.DrawString(menuFont, "Secondary:" + playerShip.SecondaryType, new Vector2(GraphicsDevice.Viewport.Width - 550.0f, GraphicsDevice.Viewport.Height - 80.0f), Color.White, 0.0f, Vector2.Zero, 0.15f, SpriteEffects.None, 0.0f);
 
