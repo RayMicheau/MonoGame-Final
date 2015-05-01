@@ -473,6 +473,17 @@ namespace MonoGame_Dynamics_Final_Project
                         int collide = Enemywave[i].CollisionShot(playerShip.Secondary);
                         if (collide != -1)
                         {
+                            if (Enemywave[i].Health <= 0f)
+                            {
+                                if (Enemywave[i].enemyType == "stingRay1" && playGame == true)
+                                {
+                                    StingrayParticles.RemoveAt(StingrayParticles.Count - 1);
+                                }
+                                if (Enemywave[i].enemyType == "stingRay2" && playGame == true)
+                                {
+                                    Stingray2Particles.RemoveAt(Stingray2Particles.Count - 1);
+                                }
+                            }
                             if (playerShip.SecondaryType != "gravityWell")
                             {
                                 playerShip.CurrentSecondaryAmmo++;
