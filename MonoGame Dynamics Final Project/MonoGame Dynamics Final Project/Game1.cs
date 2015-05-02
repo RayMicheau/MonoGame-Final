@@ -156,6 +156,7 @@ namespace MonoGame_Dynamics_Final_Project
 
         public int shakeCounter = 0;
         public bool shakeSwitch = false;
+        public bool shakeReset = false;
         Vector2 originalCameraPosition;
 
         float elapsedMS;
@@ -696,9 +697,18 @@ namespace MonoGame_Dynamics_Final_Project
             }
             if (shakeSwitch == true)
                 {
-                _camera.Move(new Vector2(random.Next(-50, 50), random.Next(-50, 50))); 
+                    if (shakeReset == false)
+                    {
+                        _camera.Move(new Vector2(random.Next(-50, 50), random.Next(-50, 50)));
+                        shakeReset = true;
+                    }
+                    else
+                    {
+                        _camera.Position = originalCameraPosition;
+                        shakeReset = false;
+                    }
                 shakeCounter++;
-                    if (shakeCounter == 30) { 
+                    if (shakeCounter == 50) { 
                         shakeSwitch = false; shakeCounter = 0; 
                     }
                 }
