@@ -30,7 +30,5 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
             scale = 1f;
             damage = 500;
         }
-
-
     }
 }

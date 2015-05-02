@@ -285,7 +285,7 @@ namespace MonoGame_Dynamics_Final_Project
             turretImage = Content.Load<Texture2D>("Images/Animations/Plasma-Repeater");
 
             playerShip = new Player(64, 70, playerTexture, turretImage,
-                new Vector2(windowWidth / 2, windowHeight - 70),
+                new Vector2(VirtualSize.Width / 2, VirtualSize.Height - 70),
                 new Vector2(10, 10),
                 true,
                 1.0f
@@ -424,7 +424,7 @@ namespace MonoGame_Dynamics_Final_Project
                     }
                     if (enemy.enemyType == "voidVulture" && playGame == true)
                     {
-                        enemy.Update(gameTime, playerShip);
+                        enemy.Update(Content, gameTime, playerShip);
                     }
                     if (enemy.enemyType == "voidAngel" && playGame == true)
                     {

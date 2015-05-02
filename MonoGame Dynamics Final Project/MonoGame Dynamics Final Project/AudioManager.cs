@@ -42,13 +42,11 @@ namespace MonoGame_Dynamics_Final_Project
             hit = Content.Load<SoundEffect>("Audio Files/Sound Effects/hit noise");
             gameplaySong = Content.Load<Song>("Audio Files/Songs/Catalysm Song");
             menuSong = Content.Load<Song>("Audio Files/Songs/menu song");
-
             
             laser = shot.CreateInstance();
             laser.IsLooped = false;
             thruster = thrust.CreateInstance();
             thruster.IsLooped = false;
-
         }
 
         public void Play(string songName)

@@ -15,8 +15,7 @@ using MonoGame_Dynamics_Final_Project;
 namespace MonoGame_Dynamics_Final_Project.Sprites
 {
     class Player:animateSprite
-    {
-        
+    {        
         //IDEAL CLASS SET UP
         //Set up all player variables to be used
         //Create Player constructor
@@ -238,31 +237,30 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             frameNum = 4;
             frameTime = 0.2f;
             TextureImage = textureImage;
+
             health = 5000;
             MaxHealth = 5000;
-            //textureImage.GetData<Color>(0, source, textureData, 0, source.Width * source.Height);
-            AtkSpeed = .7f;
-            
-
-            Position = position;
-            
-            InitialVelocity = velocity;
-            Velocity = velocity;
-            SetOrigin = setOrig;
-            Acceleration = acceleration;
-            Health = health;
-            Scale = scale;
+            Health = MaxHealth;
             Experience = experience;
             experience = 0.0f;
             experienceToNextLevel = 1500;
             Level = level;
             level = 1;
+            AtkSpeed = .7f;
+
+            Position = position;            
+            InitialVelocity = velocity;
+            Velocity = velocity;
+            SetOrigin = setOrig;
+            Acceleration = acceleration;
+
             //if (SetOrigin)
             //{
                 SpriteOrigin = new Vector2(FrameWidth * scale/ 2, FrameHeight * scale / 2);
             //}
             collisionRange = new BoundingSphere(new Vector3(position.X + spriteOrigin.X, position.Y + spriteOrigin.Y, 0), frameWidth / 2);
-            
+
+            Scale = scale;           
             rotation = 0f;
             Alive = true;
             isMoving = false;
@@ -278,6 +276,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             turnOrientation = 1;
         }
 
+        // actual player constructor
         public Player(int FrameWidth, int FrameHeight, Texture2D textureImage, Texture2D turretImage, Vector2 position, Vector2 velocity, bool setOrig, float scale)
             : this(FrameWidth, FrameHeight, textureImage, position, velocity, setOrig, scale)
         {
@@ -325,21 +324,19 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         }
 
         #region Update Methods
-
     
         public virtual void Update(GameTime gameTime, List<Enemy> enemyWave)
         {
             if (Alive)
             {
                 collisionRange = new BoundingSphere(new Vector3(position.X + spriteOrigin.X, position.Y + spriteOrigin.Y, 0), 100f);
+                
                 //Time between the frames
                 float timeLapse = gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
                 source = animatedSprite(frameNum, frameTime, frameWidth, frameHeight, TextureImage, timeLapse);
-            //    TextureImage.GetData<Color>(0, source, textureData, 0, source.Width * source.Height);
 
                 //Move the sprite
                 position += Velocity * timeLapse;
-
                 
                 if(isTurning)
                 {
@@ -354,26 +351,20 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                         railLeft.Update(gameTime, new Vector2(position.X + railRight.offset.X, position.Y));
                     }
                 }
-
                 railRight.Update(gameTime, position);
                 railLeft.Update(gameTime, position);
-
             }
         }
 
-        // Follower Update. Confirmed. 
+        // Follower Update.
         public virtual void Update(Player player, GameTime gameTime)
         {
             float timeLapse = gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
             source = animatedSprite(frameNum, frameTime, frameWidth, frameHeight, TextureImage, timeLapse);
-           // TextureImage.GetData<Color>(0, source, textureData, 0, source.Width * source.Height);
             if (position.Y > 0)
             {
                 Alive = true;
             }
-            //position.Y = player.position.Y;
-            //position.X = player.position.X;
-            //position += Velocity * timeLapse;
         }
 
         // Update methods for bounds checks
@@ -386,7 +377,6 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             railLeft.UpdateWeapon(railLeft.primary, gameTime, enemyWave, virtualSize);
             UpdateWeapon(secondary, gameTime, enemyWave, virtualSize);
 
-         //   TextureImage.GetData<Color>(0, source, textureData, 0, source.Width * source.Height);
             if (Alive)
             {
                 //Keep the sprite onscreen
@@ -412,12 +402,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                 else if (Position.Y < SpriteOrigin.Y * Scale)
                 { 
                    velocity.Y *= -0.15f;
-                }
-                /*
-                 If the velocity is less than 1000, increase it.
-                 */
-                 
-
+                }              
                 //Console.WriteLine("{0}, {1}, {2}", position.Y, velocity.Y, velocity.X);
             }
         }
@@ -472,20 +457,12 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                     {
                         currentPrimaryAmmo++;
                     }
-    //                else if (weapon[i].WeaponType == 2)
-    //                {
-                       //currentSecondaryAmmo++;
-    //                }
-
                     weapon.RemoveAt(i);
                 }
             }
         }
         // turret update
-        public virtual void Update(GameTime gameTime, Vector2 playerPos)
-        {
-
-        }
+        public virtual void Update(GameTime gameTime, Vector2 playerPos) { }
         #endregion
 
         #region Collision Detection Methods
@@ -542,13 +519,11 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                 {
                     return i;
                 }*/
-
                 if(shots[i].CollisionRectangle.Intersects(CollisionRectangle))
                 {
                     return i;
                 }
             }
-
             return -1;
         }
         #endregion
@@ -720,9 +695,6 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             rail = new Rail(content, railRight.position, 250f, 1);
             railRight.primary.Add(rail);
         }
-        #endregion
-
-        #region Reinforcement Methods
         #endregion
     }
 }

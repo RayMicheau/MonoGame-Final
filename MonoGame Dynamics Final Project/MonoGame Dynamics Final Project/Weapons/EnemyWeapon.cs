@@ -28,14 +28,14 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
             shotTexture = ShotTexture;
             scale = 1f;
         }
+
         public override void Update(GameTime gameTime, Sprites.Player player)
         {
             base.Update(gameTime, player);
             float time = gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
-            shotRectangle = animatedSprite(shotFrames, shotSpeed, shotFrameWidth, shotFrameHeight, shotTexture, time);
-            
-            
+            shotRectangle = animatedSprite(shotFrames, shotSpeed, shotFrameWidth, shotFrameHeight, shotTexture, time);                       
         }
+
         public Rectangle animatedSprite(int frames, float frameTime, int frameWidth, int frameHeight, Texture2D image, float timeLapse)
         {
             if (shotFrameIndex == frames + 1)
@@ -44,16 +44,13 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
                 shotX = 0;
             }
             // Calculate the source rectangle of the current frame.
-
             Rectangle source = new Rectangle(shotX * frameWidth, 0, frameWidth, frameHeight);
-
             shotTime += timeLapse;
             while (shotTime > frameTime)
             {
                 // Play the next frame in the SpriteSheet
                 shotFrameIndex++;
                 shotX++;
-
                 // reset elapsed time
                 shotTime = 0f;
             }

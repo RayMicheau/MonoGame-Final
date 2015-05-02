@@ -14,7 +14,6 @@ using MonoGame_Dynamics_Final_Project;
 
 namespace MonoGame_Dynamics_Final_Project.Sprites
 {
-
     public enum RayState
     {
         Default,
@@ -44,7 +43,6 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         public override void Update(ContentManager content, GameTime gameTime, Player player)
         {
             elapsedShotTime += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
-
 
             foreach (Weapon shot in primary)
             {
@@ -86,7 +84,6 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             else
             {
                 Ai = RayState.Default;
-
             }
         }
 

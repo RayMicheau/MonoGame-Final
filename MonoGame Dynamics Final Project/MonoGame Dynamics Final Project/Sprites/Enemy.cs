@@ -21,7 +21,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         /// Multiple types of enemies spawn, that logic is placed here 
         /// to control enemy movements
         /// 
-
+        #region variables
         protected float mass;
         public float Mass
         {
@@ -43,13 +43,14 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         protected float maxSpeed;
         public float score; 
         protected Vector2 distanceBetween;
+        #endregion
 
         public Enemy(ContentManager content, int width, int height, Texture2D textureImage, Rectangle virtualSize, int spotinFormation, string formationType, float scale)
             : base(width, height, textureImage, new Vector2(0, -500), new Vector2(0, 100f), true, scale)
         {
             Mass = mass;
             AtkSpeed = 1f;
-            tileWidth = virtualSize.Width / 7f;
+            tileWidth = virtualSize.Width / 8f;
             tileHeight = virtualSize.Height / 5f;
             windowHeight = virtualSize.Height;
             setEnemy(spotinFormation, formationType);
@@ -59,9 +60,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             maxSpeed = 100.0f;
             score = 0;
             level = 1;
-            damage = Damage;
-            
-            
+            damage = Damage;       
         }
 
         public void ChasePlayer(GameTime gameTime, Player player)
@@ -74,8 +73,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                 distanceBetween.Normalize();
                 rotation = (float)Math.Atan2(distanceBetween.Y, distanceBetween.X) - MathHelper.PiOver2;
                 position += distanceBetween * VectorSpeed; // set speed here
-            }
-            
+            }            
         }
 
         public Vector2 getDirectionVector()
@@ -86,7 +84,6 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             }
             return new Vector2(0, 100);
         }
-
        
         public virtual void UpdateWeapon(GameTime gameTime, Player player, Vector2 directionShot, ContentManager content)
         {
@@ -97,6 +94,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                 weapon.Update(gameTime);
             }
         }
+
         public void Update(GameTime gameTime, Rectangle virtualSize)
         {
             if (velocity.X > 100)
@@ -107,56 +105,44 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             {
                 velocity.Y = 100;
             }
+
             float timeLapse = (float)(gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
             position += Velocity * timeLapse;
-            //velocity.X = MathHelper.Clamp(velocity.X, 0.0f, maxSpeed);
-            //velocity.Y = MathHelper.Clamp(velocity.Y, 0.0f, maxSpeed);
             source = animatedSprite(frameNum, frameTime, frameWidth, frameHeight, TextureImage, timeLapse);
+
             if (Position.Y > 0.0f)
             {
                 offScreen = false;
-
             } 
             if (!offScreen)
             {
                 if (Position.X >= virtualSize.Width)
                 {
-                    //position.X = virtualSize.Width;
                     velocity.X *= -1;
                 }
                 else if (Position.X <= 0)
                 {
-                   // position.X = 0;
                     velocity.X *= -1;
                 }
 
                 if (Position.Y >= virtualSize.Height)
                 {
-                    //position.Y = virtualSize.Height;
                     velocity.Y *= -1;
-
                 }
                 else if (Position.Y <= 0)
                 {
-                    //position.Y = 0;
                     velocity.Y *= -1;
-
                 } 
+            }          
+        }
 
-            }
-            
-        }
-        public virtual void Update(ContentManager content, GameTime gameTime, Player player) 
-        {
-        }
+        public virtual void Update(ContentManager content, GameTime gameTime, Player player){ }
+
         public virtual void Update(GameTime gameTime, Player player)
         {
             float timeLapse = (float)(gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
             position += Velocity * timeLapse;
             source = animatedSprite(frameNum, frameTime, frameWidth, frameHeight, TextureImage, timeLapse);
-
-
-            //   TextureImage.GetData<Color>(0, source, textureData, 0, source.Width * source.Height);
         }
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime, Color color)
@@ -176,11 +162,9 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
                             0.0f);
         }
 
-        public virtual void shootPrimary(ContentManager content)
-        {
+        public virtual void shootPrimary(ContentManager content) { }
 
-        }
-
+        #region hardcoded formations
         // This method sets the enemy position depending on it's spot in the formation 
         private void setEnemy(int spotinFormation, string formationType)
         {        
@@ -362,5 +346,6 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         {
             return new Vector2(x * tileWidth, (y * tileHeight) - windowHeight);
         }
+        #endregion
     }
 }

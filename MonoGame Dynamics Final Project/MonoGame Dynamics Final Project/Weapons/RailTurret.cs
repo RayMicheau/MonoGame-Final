@@ -45,8 +45,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
     
         public RailTurret(Texture2D turretImage, Vector2 position, Vector2 velocity, int Orientation)
             :base(32, 64, turretImage, position, velocity, false, 1f)
-        {
-            
+        {            
             turretTime = 0f;
             turretSpeed = 0.1f;
             turretFrameWidth = 32;
@@ -55,6 +54,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             turretFrames = 6;
             source = new Rectangle(0, 0, turretFrameWidth, turretFrameHeight);
             Scale = 1.2f;
+
             orientation = Orientation;
             if (orientation == -1)
             {
@@ -64,13 +64,13 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             {
                 spriteEffect = SpriteEffects.None;
             }
+
             offset = new Vector2(15, 0);
             offset.X *= orientation;
         }
 
         public override void Update(GameTime gameTime, Vector2 playerPosition)
         {
-          //  base.Update(gameTime, Device, enemyWave);
             float timeLapse = gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
             source = animatedSprite(turretFrames, turretSpeed, turretFrameWidth, turretFrameHeight, TextureImage, timeLapse);
             position = playerPosition + offset;
@@ -83,8 +83,6 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime, Color color)
         {
-            //base.Draw(spriteBatch, gameTime);
-
             spriteBatch.Draw(TextureImage,
                              position,
                              source,

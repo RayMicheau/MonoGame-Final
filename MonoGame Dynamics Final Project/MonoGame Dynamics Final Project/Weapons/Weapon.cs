@@ -124,7 +124,6 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
         {
             //Time between the frames
             float timeLapse = (float)(gameTime.ElapsedGameTime.TotalSeconds);
-
             //Move the sprite
             position += velocity * timeLapse;
 
@@ -133,6 +132,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
                 offScreen = true;
             }
         }
+
         // enemy shooting
         public virtual void Update(GameTime gameTime, Player player)
         {
@@ -143,7 +143,6 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
 
             //Time between the frames
             float timeLapse = (float)(gameTime.ElapsedGameTime.TotalSeconds);
-
             //Move the sprite
             position += velocity * timeLapse * 10f;
 
@@ -157,7 +156,6 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
         {
             //Time between the frames
             float timeLapse = (float)(gameTime.ElapsedGameTime.TotalSeconds);
-
             //Move the sprite
             position += velocity * timeLapse * 10f;
 
@@ -179,7 +177,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
                 Microsoft.Xna.Framework.Color.White,
                 angle,
                 SpriteOrigin,
-                scale, // scale
+                scale,
                 SpriteEffects.None,
                 1f);
         }
