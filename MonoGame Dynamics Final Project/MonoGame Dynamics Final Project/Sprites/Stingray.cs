@@ -25,8 +25,8 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         public EnemyState Ai;
         float elapsedShotTime;
 
-        public Stingray(ContentManager content, GraphicsDevice Device, int spotinFormation, string formationType) :
-            base(content, 80, 80, content.Load<Texture2D>("Images/Animations/Sting-Ray"), Device, spotinFormation, formationType, 0.5f)
+        public Stingray(ContentManager content, Rectangle virtualSize, int spotinFormation, string formationType) :
+            base(content, 80, 80, content.Load<Texture2D>("Images/Animations/Sting-Ray"), virtualSize, spotinFormation, formationType, 0.5f)
         {
             mass = 1f;
             frameNum = 12;

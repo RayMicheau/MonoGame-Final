@@ -44,14 +44,14 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         public float score; 
         protected Vector2 distanceBetween;
 
-        public Enemy(ContentManager content, int width, int height, Texture2D textureImage, GraphicsDevice Device, int spotinFormation, string formationType, float scale)
+        public Enemy(ContentManager content, int width, int height, Texture2D textureImage, Rectangle virtualSize, int spotinFormation, string formationType, float scale)
             : base(width, height, textureImage, new Vector2(0, -500), new Vector2(0, 100f), true, scale)
         {
             Mass = mass;
             AtkSpeed = 1f;
-            tileWidth = Device.Adapter.CurrentDisplayMode.Width / 7f;
-            tileHeight = Device.Adapter.CurrentDisplayMode.Height / 5f;
-            windowHeight = Device.Adapter.CurrentDisplayMode.Height;
+            tileWidth = virtualSize.Width / 7f;
+            tileHeight = virtualSize.Height / 5f;
+            windowHeight = virtualSize.Height;
             setEnemy(spotinFormation, formationType);
             VectorSpeed = 1.0f;
             rotation = 0.0f;

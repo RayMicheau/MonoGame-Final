@@ -23,8 +23,8 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         ContentManager Content; 
         public VultureState vultureState;
         protected Vector2 distanceBetweenVoidVulture;
-        public VoidVulture(ContentManager content, GraphicsDevice Device, int spotinFormation, string formationType) :
-            base(content, 300, 300, content.Load<Texture2D>("Images/Animations/voidVulture"), Device, spotinFormation, formationType, 0.5f)
+        public VoidVulture(ContentManager content, Rectangle virtualSize, int spotinFormation, string formationType) :
+            base(content, 300, 300, content.Load<Texture2D>("Images/Animations/voidVulture"), virtualSize, spotinFormation, formationType, 0.5f)
              
         {
             frameNum = 15;

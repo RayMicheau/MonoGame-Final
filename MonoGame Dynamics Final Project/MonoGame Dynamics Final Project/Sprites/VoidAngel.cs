@@ -30,8 +30,8 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             get { return elapsedTime; }
             set { elapsedTime = value; }
         }
-        public VoidAngel(ContentManager content, GraphicsDevice Device, int spotinFormation, string formationType) :
-            base(content,100, 100, content.Load<Texture2D>("Images/Animations/Void-Angel"), Device, spotinFormation, formationType, 0.5f)
+        public VoidAngel(ContentManager content, Rectangle virtualSize, int spotinFormation, string formationType) :
+            base(content,100, 100, content.Load<Texture2D>("Images/Animations/Void-Angel"), virtualSize, spotinFormation, formationType, 0.5f)
         {
            
             frameNum = 7;
