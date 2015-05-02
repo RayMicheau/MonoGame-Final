@@ -40,8 +40,7 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
                                    (float)Math.Sin(turretRotation)) * scalarVelocity;
             base.Update(gameTime);
 
-            elapsedShotTime += gameTime.ElapsedGameTime.Milliseconds / 1000.0f; 
-         
+            elapsedShotTime += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;          
             if(elapsedShotTime > 0.5f)
             {
                 if(spriteEffect == SpriteEffects.None)

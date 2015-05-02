@@ -8,8 +8,6 @@ using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
 
-
-
 namespace MonoGame_Dynamics_Final_Project
 {
     public class Particle
@@ -21,8 +19,7 @@ namespace MonoGame_Dynamics_Final_Project
         public float AngularVelocity { get; set; }    // The speed that the angle is changing
         public Color Color { get; set; }            // The color of the particle
         public float Size { get; set; }                // The size of the particle
-        public int TTL { get; set; }                // The 'time to live' of the particle
-    
+        public int TTL { get; set; }                // The 'time to live' of the particle 
 
         public Particle(Texture2D texture, Vector2 position, Vector2 velocity,float angle, float angularVelocity, Color color, float size, int ttl)
         {
@@ -52,6 +49,4 @@ namespace MonoGame_Dynamics_Final_Project
                 Angle, origin, Size, SpriteEffects.None, 0f);
         }
     }
-
-
 }

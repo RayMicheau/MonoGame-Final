@@ -66,7 +66,6 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
                     }
                 }
             }
-
             return targeted;
         }
 

@@ -30,8 +30,9 @@ namespace MonoGame_Dynamics_Final_Project
             Texture2D texture = textures[random.Next(textures.Count)];
             Vector2 position = EmitterLocation;
             Vector2 velocity = new Vector2(
-                    1f * (float)(random.NextDouble() * 2 - 1),
-                    1f * (float)(random.NextDouble() * 2 - 1));
+                                             1f * (float)(random.NextDouble() * 2 - 1),
+                                             1f * (float)(random.NextDouble() * 2 - 1)
+                                          );
             float angle = 0;
             float angularVelocity = 0.1f * (float)(random.NextDouble() * 2 - 1);
             float size = (float)random.NextDouble();

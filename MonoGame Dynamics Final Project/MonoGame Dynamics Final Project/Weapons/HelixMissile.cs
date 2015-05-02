@@ -44,11 +44,8 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
         {
             time += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
             float timeStep = time;
-
             position -= new Vector2((float)Math.Cos(theta) * orientation, (float)Math.Sin(theta)) * radius;
-
             position.Y -= velocitySpeed;
-
 
             if (position.Y + TextureImage.Height < 0)
             {
@@ -56,15 +53,12 @@ namespace MonoGame_Dynamics_Final_Project.Weapons
             }
 
             angle += 5;
-
             if (angle > 180)
             {
                 angle = 0;
                 orientation *= -1;
             }
-
             theta = getAngle(angle);
-
             base.angle = -MathHelper.PiOver2 * orientation + (theta * orientation);
         }
     }

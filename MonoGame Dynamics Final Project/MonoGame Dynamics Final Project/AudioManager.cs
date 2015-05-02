@@ -42,13 +42,11 @@ namespace MonoGame_Dynamics_Final_Project
             hit = Content.Load<SoundEffect>("Audio Files/Sound Effects/hit noise");
             gameplaySong = Content.Load<Song>("Audio Files/Songs/Catalysm Song");
             menuSong = Content.Load<Song>("Audio Files/Songs/menu song");
-
             
             laser = shot.CreateInstance();
             laser.IsLooped = false;
             thruster = thrust.CreateInstance();
             thruster.IsLooped = false;
-
         }
 
         public void Play(string songName)
@@ -80,42 +78,39 @@ namespace MonoGame_Dynamics_Final_Project
             switch (effectName)
             {
                 case "gravity well":
-                    gravityWell.Play();
+                    gravityWell.Play(0.1f, 0.0f, 0.0f);
                     break;
 
                 case "enemy dead":
-                    enemyDeath.Play();
+                    enemyDeath.Play(0.1f, 0.0f, 0.0f);
                     break;
 
                 case "enemy dead2":
-                    enemyDeathTwo.Play();
-                    break;
-                   
-                case "enemy dead3":
+                    enemyDeathTwo.Play(0.1f, 0.0f, 0.0f);
                     break;
 
                 case "thrust":
-                    thrust.Play();
+                    thrust.Play(0.1f, 0.0f, 0.0f);
                     break;
 
                 case "rocket":
-                    rocket.Play();
+                    rocket.Play(0.1f, 0.0f, 0.0f);
                     break;
 
                 case "Spawn pUp":
-                    powerUpSpawn.Play();
+                    powerUpSpawn.Play(0.1f, 0.0f, 0.0f);
                     break;
 
                 case "Get pUp":
-                    powerUpGet.Play();
+                    powerUpGet.Play(0.1f, 0.0f, 0.0f);
                     break;
 
                 case "hit":
-                    hit.Play();
+                    hit.Play(0.1f, 0.0f, 0.0f);
                     break;
 
                 case "shot":
-                    shot.Play();
+                    shot.Play(0.1f, 0.0f, 0.0f);
                     break;
                 default: break;
             }

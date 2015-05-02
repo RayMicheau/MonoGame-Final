@@ -73,7 +73,6 @@ namespace MonoGame_Dynamics_Final_Project
                     enemy.InitialVelocity = enemy.Velocity;
                 }
             }
-
         }
     }
 }

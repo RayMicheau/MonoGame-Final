@@ -19,13 +19,12 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         Impale
     }
     class VoidVulture : Enemy
-    {
-        ContentManager Content; 
+    { 
         public VultureState vultureState;
         protected Vector2 distanceBetweenVoidVulture;
-        public VoidVulture(ContentManager content, GraphicsDevice Device, int spotinFormation, string formationType) :
-            base(content, 300, 300, content.Load<Texture2D>("Images/Animations/voidVulture"), Device, spotinFormation, formationType, 0.5f)
-             
+
+        public VoidVulture(ContentManager content, Rectangle virtualSize, int spotinFormation, string formationType)
+            :base(content, 300, 300, content.Load<Texture2D>("Images/Animations/voidVulture"), virtualSize, spotinFormation, formationType, 0.5f)             
         {
             frameNum = 15;
             frameTime = 0.08f;
@@ -33,27 +32,26 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             collisionRange = new BoundingSphere(new Vector3(position.X + spriteOrigin.X, position.Y + spriteOrigin.Y, 0), 200f);
             velocity = new Vector2(0, 25);
             enemyType = "voidVulture";
-            Content = content;
             damage = 20f;
             score = 1000f;
             health = 2000;
             mass = 10f;
         }
        
-        public override void Update(GameTime gameTime, Player player)
+        public override void Update(ContentManager content, GameTime gameTime, Player player)
         {
             collisionRange = new BoundingSphere(new Vector3(position.X + spriteOrigin.X, position.Y + spriteOrigin.Y, 0), 200f);
             setVulture(player);
             switch (vultureState)
             {
                 case VultureState.Expel:
-                    TextureImage = Content.Load<Texture2D>("Images/Animations/void-vulture-expel");
+                    TextureImage = content.Load<Texture2D>("Images/Animations/void-vulture-expel");
                     ChasePlayer(gameTime, player);
                     frameHeight = 300;
                     frameWidth = 300;
                     break;
                 case VultureState.Idle:
-                    TextureImage = Content.Load<Texture2D>("Images/Animations/voidVulture");
+                    TextureImage = content.Load<Texture2D>("Images/Animations/voidVulture");
                     base.Update(gameTime, player);
                     frameHeight = 300;
                     frameWidth = 300;
@@ -73,13 +71,7 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             if (collisionRange.Intersects(player.collisionRange))
             {            
                 vultureState = VultureState.Expel;      
-            }
-            /*if (distanceLength < 100f)
-            {
-                vultureState = VultureState.Impale;
-            }*/
-            
-
+            }         
         }
     }
 }

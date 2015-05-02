@@ -21,7 +21,6 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
     }
     class VoidAngel : Enemy 
     {
-       ContentManager Content; 
         public AngelState angelState;
         protected Vector2 distanceBetweenVoidAngel;
         protected float elapsedTime;
@@ -30,13 +29,11 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             get { return elapsedTime; }
             set { elapsedTime = value; }
         }
-        public VoidAngel(ContentManager content, GraphicsDevice Device, int spotinFormation, string formationType) :
-            base(content,100, 100, content.Load<Texture2D>("Images/Animations/Void-Angel"), Device, spotinFormation, formationType, 0.5f)
-        {
-           
+        public VoidAngel(ContentManager content, Rectangle virtualSize, int spotinFormation, string formationType) :
+            base(content,100, 100, content.Load<Texture2D>("Images/Animations/Void-Angel"), virtualSize, spotinFormation, formationType, 0.5f)
+        {           
             frameNum = 7;
             frameTime = 0.1f;
-            Content = content;
             enemyType = "voidAngel";
             angelState = AngelState.Idle;
             velocity = new Vector2(0.0f, 100.0f);
@@ -51,7 +48,6 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
         {
             elapsedTime += gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
             //Console.WriteLine("angel shot:" + elapsedTime);
-
             collisionRange = new BoundingSphere(new Vector3(position.X + spriteOrigin.X, position.Y + spriteOrigin.Y, 0), 300f);
 
             foreach (Weapon shot in primary)
@@ -70,12 +66,12 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             {
                 case AngelState.Idle:
                     base.Update(gameTime, player);
-                    TextureImage = Content.Load<Texture2D>("Images/Animations/Void-Angel");
+                    TextureImage = content.Load<Texture2D>("Images/Animations/Void-Angel");
                     frameNum = 7;
                     break;
                 case AngelState.Chase:
                     ChasePlayer(gameTime, player);
-                    TextureImage = Content.Load<Texture2D>("Images/Animations/void-angel-Attack");
+                    TextureImage = content.Load<Texture2D>("Images/Animations/void-angel-Attack");
                     frameNum = 14;
                     break;
             }
@@ -93,17 +89,6 @@ namespace MonoGame_Dynamics_Final_Project.Sprites
             {
                 angelState = AngelState.Idle;
             }
-          //  if (elapsedTime > 5.0f)
-          //  {
-           //     angelState = AngelState.Attack;
-           //     frameNum = 14;
-           //     velocity = Vector2.Zero;
-                //if (frameIndex == 13)
-                //{
-
-                //}
-                
-           // }
         }
 
         public override void shootPrimary(ContentManager content)
